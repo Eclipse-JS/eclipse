@@ -93,7 +93,7 @@ if (true) {
     },
     pexec: async function (name, func, env) {
       if (typeof func !== "function") {
-        return "Not a process";
+        throw("Not a process");
       }
 
       pids++;
