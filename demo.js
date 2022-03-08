@@ -7,13 +7,13 @@ Applications = [
       }
 
       while (true) {
-        await sleep(900);
         kernel.stdout("jsKernelReq$cls");
         kernel.stdout("pid    name\n");
 
         for (data of kernel.plist) {
           kernel.stdout(data[1], "    ", data[0], "\n");
         }
+        await sleep(900);
       }
     },
   },
@@ -43,7 +43,7 @@ Applications = [
         let resp = "";
 
         try {
-          resp = await eval(stdin);
+          resp = await eval(`JSON.stringify(${stdin})`);
         } catch (e) {
           resp = e;
         }

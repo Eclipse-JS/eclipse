@@ -1,117 +1,114 @@
-let kernel = {};
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-if (true) {
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+let processList = [];
+let pids = 0;
 
-  let processList = [];
-  let pids = 0;
+let isKbdEnabled = false;
 
-  let isKbdEnabled = false;
+let stdout = "";
+let vstd = "";
 
-  let stdout = "";
-  let vstd = "";
+document.addEventListener("keydown", function (e) {
+  if (isKbdEnabled) {
+    let bannedKbdKeys = [
+      "Control",
+      "Alt",
+      "WakeUp",
+      "Meta",
+      "Page",
+      "Arrow",
+      "Shift",
+      "Escape",
+      "CapsLock",
+      "Tab",
+      "Home",
+      "End",
+      "Insert",
+      "Delete",
+      "Unidentified",
+      "F1",
+      "F2",
+      "F0",
+      "ContextMenu",
+    ];
 
-  document.addEventListener("keydown", function (e) {
-    if (isKbdEnabled) {
-      let bannedKbdKeys = [
-        "Control",
-        "Alt",
-        "WakeUp",
-        "Meta",
-        "Page",
-        "Arrow",
-        "Shift",
-        "Escape",
-        "CapsLock",
-        "Tab",
-        "Home",
-        "End",
-        "Insert",
-        "Delete",
-        "Unidentified",
-        "F1",
-        "F2",
-        "F0",
-      ];
+    if (e.key == "Enter") {
+      isKbdEnabled = false;
+      return;
+    }
 
-      if (e.key == "Enter") {
-        isKbdEnabled = false;
-        return;
-      }
-
-      if (e.key == "Backspace") {
-        vstd = vstd.slice(0, -1);
-        document.getElementsByClassName("main")[0].innerText = stdout + vstd;
-        window.scrollTo(0, document.body.scrollHeight);
-        return;
-      }
-
-      let check = false;
-
-      for (kbd of bannedKbdKeys) {
-        if (e.key.startsWith(kbd)) check = true;
-      }
-
-      if (!check) {
-        vstd += e.key;
-      }
-
+    if (e.key == "Backspace") {
+      vstd = vstd.slice(0, -1);
       document.getElementsByClassName("main")[0].innerText = stdout + vstd;
       window.scrollTo(0, document.body.scrollHeight);
+      return;
     }
-  });
 
-  kernel = {
-    stdout: function (...args) {
-      let argv = args.join(" ");
+    let check = false;
 
-      if (argv == "jsKernelReq$cls") {
-        document.getElementsByClassName("main")[0].innerText = "";
-        stdout = "";
-        return;
-      }
-      stdout += argv;
-      document.getElementsByClassName("main")[0].innerText = stdout;
+    for (kbd of bannedKbdKeys) {
+      if (e.key.startsWith(kbd)) check = true;
+    }
 
-      window.scrollTo(0, document.body.scrollHeight);
-    },
-    stdin: async function () {
-      isKbdEnabled = true;
+    if (!check) {
+      vstd += e.key;
+    }
 
-      while (isKbdEnabled !== false) {
-        await sleep(100);
-      }
+    document.getElementsByClassName("main")[0].innerText = stdout + vstd;
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+});
 
-      let vsh = vstd;
-      vstd = "";
+const kernel = {
+  stdout: function (...args) {
+    let argv = args.join(" ");
 
-      kernel.stdout(vsh, "\n");
+    if (argv == "jsKernelReq$cls") {
+      document.getElementsByClassName("main")[0].innerText = "";
+      stdout = "";
+      return;
+    }
+    stdout += argv;
+    document.getElementsByClassName("main")[0].innerText = stdout;
 
-      return vsh;
-    },
-    pexec: async function (name, func, env) {
-      if (typeof func !== "function") {
-        throw("Not a process");
-      }
+    window.scrollTo(0, document.body.scrollHeight);
+  },
+  stdin: async function () {
+    isKbdEnabled = true;
 
-      pids++;
-      processList.push([name, pids]);
+    while (isKbdEnabled !== false) {
+      await sleep(100);
+    }
 
-      if (env && typeof env == "object") {
-        await func(env);
-      } else {
-        await func([]);
-      }
+    let vsh = vstd;
+    vstd = "";
 
-      let localPk = [];
-      for (local of processList) {
-        if (local !== name) localPk.push(local);
-      }
+    kernel.stdout(vsh, "\n");
 
-      processList = localPk;
-    },
-    plist: processList,
-  };
-}
+    return vsh;
+  },
+  pexec: async function (name, func, env) {
+    if (typeof func !== "function") {
+      throw "Not a process";
+    }
+
+    pids++;
+    processList.push([name, pids]);
+
+    if (env && typeof env == "object") {
+      await func(env);
+    } else {
+      await func([]);
+    }
+
+    let localPk = [];
+    for (local of processList) {
+      if (local !== name) localPk.push(local);
+    }
+
+    processList = localPk;
+  },
+  plist: processList,
+};
