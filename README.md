@@ -1,4 +1,4 @@
-# JSKernel
+# femOS
 Operating system written in JavaScript
 ## Running
 Git clone this repo:

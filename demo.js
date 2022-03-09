@@ -51,6 +51,28 @@ Applications = [
       }
     },
   },
+  {
+    name: "clear",
+    function() {
+      kernel.stdout("jsKernelReq$cls");
+    },
+  },
+  {
+    name: "cls",
+    function() {
+      kernel.stdout("jsKernelReq$cls");
+    },
+  },
+  {
+      name: "fetch",
+      function() {
+        let platform = navigator.oscpu;
+        kernel.stdout("bottom@femOS\n")
+        kernel.stdout("-------------\n")
+        kernel.stdout(`OS: femOS (${platform})\n`);
+        kernel.stdout(`Kernel: ${kernel.ver}.femOS\n`);
+      }
+  }
 ];
 
 let motd = "Welcome!\nTo get a list of commands, run 'help'.";
@@ -58,7 +80,7 @@ let motd = "Welcome!\nTo get a list of commands, run 'help'.";
 document.addEventListener("DOMContentLoaded", async function () {
   await kernel.pexec("jshell", async function () {
     kernel.stdout(
-      "JShell, running on JSKernel",
+      "btm.sh v0.0.1\nRunning on femOS",
       kernel.ver,
       "\n\n",
       motd,
