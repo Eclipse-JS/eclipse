@@ -16,10 +16,10 @@ let vstd = "";
 let hasCtrl = false;
 
 document.addEventListener("keyup", function (e) {
-    if (e.key == "Control") {
-        hasCtrl = false;
-    }
-})
+  if (e.key == "Control") {
+    hasCtrl = false;
+  }
+});
 
 document.addEventListener("keydown", function (e) {
   if (isKbdEnabled) {
@@ -43,6 +43,8 @@ document.addEventListener("keydown", function (e) {
       "F2",
       "F0",
       "ContextMenu",
+      "AudioVolumeDown",
+      "AudioVolumeUp",
     ];
 
     if (e.key == "Enter") {
@@ -62,7 +64,7 @@ document.addEventListener("keydown", function (e) {
     for (kbd of bannedKbdKeys) {
       if (e.key.startsWith(kbd) || hasCtrl) {
         if (kbd == "Control") {
-            hasCtrl = true;
+          hasCtrl = true;
         }
 
         return;
@@ -108,53 +110,53 @@ const kernel = {
   audio: {
     play: function (src) {
       if (avDev.includes(src)) {
-        throw("Music already playing");
+        throw "Music already playing";
       }
-      
+
       let audio = new Audio();
       audio.src = src;
 
       avList.push(audio);
       avDev.push(src);
-      
+
       avList[avDev.indexOf(src)].play();
     },
     pause: function (src) {
       if (!avDev.includes(src)) {
-        throw("Music not playing");
+        throw "Music not playing";
       }
 
       avList[avDev.indexOf(src)].pause();
     },
     unpause: function (src) {
       if (!avDev.includes(src)) {
-        throw("Music not playing");
+        throw "Music not playing";
       }
 
       avList[avDev.indexOf(src)].play();
-    }
+    },
   },
   paste: function (self, e) {
     let text = e.clipboardData.getData("text/plain");
     console.log(text);
 
     if (isKbdEnabled) {
-        vstd += text;
-    
-        document.getElementsByClassName("main")[0].innerText = stdout + vstd;
-        window.scrollTo(0, document.body.scrollHeight);
+      vstd += text;
+
+      document.getElementsByClassName("main")[0].innerText = stdout + vstd;
+      window.scrollTo(0, document.body.scrollHeight);
     }
   },
   users: {
     list: function () {
       if (localStorage.getItem("users") == null) {
-        throw("Users not found!");
+        throw "Users not found!";
       }
-      
-      return(JSON.parse(localStorage.getItem("users")));
-    }
+
+      return JSON.parse(localStorage.getItem("users"));
+    },
   },
-  initExec: async function(func) {
+  initExec: async function (func) {
     if (typeof func !== "function") {
       throw "Not a process";
     }
@@ -198,7 +200,7 @@ const kernel = {
 
     processList = localPk;
   },
-  plist: function() {
+  plist: function () {
     return processList;
   },
 };
