@@ -1,120 +1,55 @@
-Applications = [
-  {
-    name: "top",
-    function: async function (env) {
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
+const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-      while (true) {
-        kernel.stdout("jsKernelReq$cls");
-        kernel.stdout("pid    name\n");
+let Applications = [];
 
-        for (data of kernel.plist) {
-          kernel.stdout(data[1], "    ", data[0], "\n");
-        }
-        await sleep(900);
-      }
-    },
-  },
-  {
-    name: "help",
-    function(env) {
-      kernel.stdout("List of commands:");
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-      for (app of Applications) {
-        kernel.stdout(" ", app.name, " ");
-      }
-    },
-  },
-  {
-    name: "execjs",
-    async function() {
-      kernel.stdout("execJS v0.1.0\n\n");
+addEventListener("DOMContentLoaded", async function() {
+    kernel.initExec(async function() {
+        kernel.stdout("femInit v0.0.1\n");
+        kernel.stdout("Fetching applications manifest...\n\n");
 
-      while (true) {
-        kernel.stdout("> ");
-        let stdin = await kernel.stdin();
-
-        if (stdin.startsWith(".exit")) {
-          return;
-        }
-
-        let resp = "";
+        let manifest = {};
 
         try {
-          resp = await eval(`JSON.stringify(${stdin})`);
+            manifest = await axios.get("app/manifest.json");
         } catch (e) {
-          resp = e;
+            kernel.stdout("Could not fetch applications manifest.\n");
+            kernel.stdout(e);
         }
-        kernel.stdout(resp, "\n");
-      }
-    },
-  },
-  {
-    name: "clear",
-    function() {
-      kernel.stdout("jsKernelReq$cls");
-    },
-  },
-  {
-    name: "cls",
-    function() {
-      kernel.stdout("jsKernelReq$cls");
-    },
-  },
-  {
-    name: "fetch",
-    function() {
-      let platform = navigator.oscpu;
-      kernel.stdout("bottom@femOS\n");
-      kernel.stdout("-------------\n");
-      kernel.stdout(`OS: femOS (${platform})\n`);
-      kernel.stdout(`Kernel: ${kernel.ver}.femOS\n`);
-    },
-  },
-  {
-    name: "playAudio",
-    function(args) {
-      let url = args[0];
-      kernel.stdout("Playing '" + url + "'\n");
-      kernel.playAudio(url);
-    },
-  },
-];
 
-let motd = "Welcome!\nTo get a list of commands, run 'help'.";
+        for await (item of manifest.data) {
+            kernel.stdout("Loading: ", item.name);
+            
+            try {
+                let app = await axios.get("app/" + item.path);
 
-document.addEventListener("DOMContentLoaded", async function () {
-  await kernel.pexec("btm.sh", async function () {
-    kernel.stdout(
-      "btm.sh v0.0.1\nRunning on femOS",
-      kernel.ver,
-      "\n\n",
-      motd,
-      "\n\n"
-    );
+                let func = new AsyncFunction("args", app.data);
 
-    while (true) {
-      kernel.stdout("# ");
-      let stdin = await kernel.stdin();
-      let args = stdin.split(" ");
-      args.shift();
+                Applications.push({ name: item.name, function: func });
 
-      let isFound = false;
-
-      for (func of Applications) {
-        if (stdin.startsWith(func.name)) {
-          isFound = true;
-          await kernel.pexec(func.name, func.function, args);
+                kernel.stdout("   [OK]\n");
+            } catch (e) {
+                console.error(e);
+                kernel.stdout("   [FAIL]\n");
+            }
         }
-      }
 
-      if (!isFound) {
-        kernel.stdout("Unknown command.\n");
-      } else {
         kernel.stdout("\n");
-      }
-    }
-  });
+        kernel.stdout("Applications loaded.\n\n");
+
+        let shellIndex = 0;
+
+        for (let i = 0; i < Applications.length; i++) {
+            if (Applications.name == "btm.sh") shellIndex = i;
+        }
+
+        try {
+            await kernel.pexec(Applications[shellIndex].name, Applications[shellIndex].function);
+        } catch (e) {
+            kernel.stdout("Error running shell:", e, "\n");
+        }
+    })
 });

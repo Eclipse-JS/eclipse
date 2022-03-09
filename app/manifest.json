@@ -1,0 +1,47 @@
+[
+    {
+        "name": "btm.sh",
+        "version": "0.1.0",
+        "path": "btmshell.js"
+    },
+    {
+        "name": "top",
+        "version": "1.0.0",
+        "path": "top.js"
+    },
+    {
+        "name": "help",
+        "version": "1.0.0",
+        "path": "help.js"
+    },
+    {
+        "name": "execjs",
+        "version": "0.1.0",
+        "path": "exec.js"
+    },
+    {
+        "name": "clear",
+        "version": "1.0.0",
+        "path": "clear.js"
+    },
+    {
+        "name": "cls",
+        "version": "1.0.0",
+        "path": "clear.js"
+    },
+    {
+        "name": "echo",
+        "version": "1.0.0",
+        "path": "echo.js"
+    },
+    {
+        "name": "fetch",
+        "version": "1.0.0",
+        "path": "fetch.js"
+    },
+    {
+        "name": "avd",
+        "version": "1.0.0",
+        "path": "avd.js"
+    }
+]
