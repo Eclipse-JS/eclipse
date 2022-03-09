@@ -89,6 +89,7 @@ const kernel = {
 
     return vsh;
   },
+  ver: "0.1.0",
   pexec: async function (name, func, env) {
     if (typeof func !== "function") {
       throw "Not a process";

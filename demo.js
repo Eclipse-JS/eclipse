@@ -57,7 +57,13 @@ let motd = "Welcome!\nTo get a list of commands, run 'help'.";
 
 document.addEventListener("DOMContentLoaded", async function () {
   await kernel.pexec("jshell", async function () {
-    kernel.stdout("JShell, running on JSKernel\n\n", motd, "\n\n");
+    kernel.stdout(
+      "JShell, running on JSKernel",
+      kernel.ver,
+      "\n\n",
+      motd,
+      "\n\n"
+    );
 
     while (true) {
       kernel.stdout("# ");
