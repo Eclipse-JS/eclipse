@@ -64,21 +64,29 @@ Applications = [
     },
   },
   {
-      name: "fetch",
-      function() {
-        let platform = navigator.oscpu;
-        kernel.stdout("bottom@femOS\n")
-        kernel.stdout("-------------\n")
-        kernel.stdout(`OS: femOS (${platform})\n`);
-        kernel.stdout(`Kernel: ${kernel.ver}.femOS\n`);
-      }
-  }
+    name: "fetch",
+    function() {
+      let platform = navigator.oscpu;
+      kernel.stdout("bottom@femOS\n");
+      kernel.stdout("-------------\n");
+      kernel.stdout(`OS: femOS (${platform})\n`);
+      kernel.stdout(`Kernel: ${kernel.ver}.femOS\n`);
+    },
+  },
+  {
+    name: "playAudio",
+    function(args) {
+      let url = args[0];
+      kernel.stdout("Playing '" + url + "'\n");
+      kernel.playAudio(url);
+    },
+  },
 ];
 
 let motd = "Welcome!\nTo get a list of commands, run 'help'.";
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await kernel.pexec("jshell", async function () {
+  await kernel.pexec("btm.sh", async function () {
     kernel.stdout(
       "btm.sh v0.0.1\nRunning on femOS",
       kernel.ver,
@@ -90,13 +98,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     while (true) {
       kernel.stdout("# ");
       let stdin = await kernel.stdin();
+      let args = stdin.split(" ");
+      args.shift();
 
       let isFound = false;
 
       for (func of Applications) {
         if (stdin.startsWith(func.name)) {
           isFound = true;
-          await kernel.pexec(func.name, func.function);
+          await kernel.pexec(func.name, func.function, args);
         }
       }
 

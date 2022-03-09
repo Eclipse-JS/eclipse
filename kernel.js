@@ -10,6 +10,14 @@ let isKbdEnabled = false;
 let stdout = "";
 let vstd = "";
 
+let hasCtrl = false;
+
+document.addEventListener("keyup", function (e) {
+    if (e.key == "Control") {
+        hasCtrl = false;
+    }
+})
+
 document.addEventListener("keydown", function (e) {
   if (isKbdEnabled) {
     let bannedKbdKeys = [
@@ -49,12 +57,16 @@ document.addEventListener("keydown", function (e) {
     let check = false;
 
     for (kbd of bannedKbdKeys) {
-      if (e.key.startsWith(kbd)) check = true;
+      if (e.key.startsWith(kbd) || hasCtrl) {
+        if (kbd == "Control") {
+            hasCtrl = true;
+        }
+
+        return;
+      }
     }
 
-    if (!check) {
-      vstd += e.key;
-    }
+    vstd += e.key;
 
     document.getElementsByClassName("main")[0].innerText = stdout + vstd;
     window.scrollTo(0, document.body.scrollHeight);
@@ -62,6 +74,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 const kernel = {
+  ver: "0.1.0",
   stdout: function (...args) {
     let argv = args.join(" ");
 
@@ -74,6 +87,22 @@ const kernel = {
     document.getElementsByClassName("main")[0].innerText = stdout;
 
     window.scrollTo(0, document.body.scrollHeight);
+  },
+  playAudio: function (src) {
+    let audio = new Audio();
+    audio.src = src;
+    audio.play();
+  },
+  paste: function (self, e) {
+    let text = e.clipboardData.getData("text/plain");
+    console.log(text);
+
+    if (isKbdEnabled) {
+        vstd += text;
+    
+        document.getElementsByClassName("main")[0].innerText = stdout + vstd;
+        window.scrollTo(0, document.body.scrollHeight);
+    }
   },
   stdin: async function () {
     isKbdEnabled = true;
@@ -89,8 +118,7 @@ const kernel = {
 
     return vsh;
   },
-  ver: "0.1.0",
-  pexec: async function (name, func, env) {
+  pexec: async function (name, func, args) {
     if (typeof func !== "function") {
       throw "Not a process";
     }
@@ -98,8 +126,8 @@ const kernel = {
     pids++;
     processList.push([name, pids]);
 
-    if (env && typeof env == "object") {
-      await func(env);
+    if (args) {
+      await func(args);
     } else {
       await func([]);
     }
