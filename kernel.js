@@ -13,14 +13,6 @@ let isKbdEnabled = false;
 let stdout = "";
 let vstd = "";
 
-let hasCtrl = false;
-
-document.addEventListener("keyup", function (e) {
-  if (e.key == "Control") {
-    hasCtrl = false;
-  }
-});
-
 document.addEventListener("keydown", function (e) {
   if (isKbdEnabled) {
     let bannedKbdKeys = [
@@ -59,14 +51,8 @@ document.addEventListener("keydown", function (e) {
       return;
     }
 
-    let check = false;
-
     for (kbd of bannedKbdKeys) {
       if (e.key.startsWith(kbd) || hasCtrl) {
-        if (kbd == "Control") {
-          hasCtrl = true;
-        }
-
         return;
       }
     }
