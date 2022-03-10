@@ -16,28 +16,20 @@ addEventListener("DOMContentLoaded", async function () {
     
     if (localStorage.getItem("autostart.rc") == null) {
       kernel.stdout("  No autostart.rc found. Creating.\n");
-      localStorage.setItem("autostart.rc", 'btm.sh');
-      kernel.stdout("  Default is set to 'btm.sh', the system shell.\n");
+      localStorage.setItem("autostart.rc", 'setup');
+      kernel.stdout("  Default is set to 'setup', the system setup sequence.\n");
     }
 
     if (localStorage.getItem("fselect_manifest") == null) {
-      kernel.stdout("  Could not find fselect manifests. Creating.\n");
-      localStorage.setItem("fselect_manifest", "[]");
+      kernel.stdout("  Could not find manifest database. Creating.\n");
+      localStorage.setItem("fselect_manifest", '["/setupAssistant/manifest.json"]');
     }
 
     kernel.stdout("Building applications manifest...\n");
     kernel.stdout("  Fetching femOS Base System manifest...\n");
     let manifest = [];
 
-    try {
-      manifest = await axios.get("app/manifest.json");
-      manifest = manifest.data;
-    } catch (e) {
-      kernel.stdout("  Could not fetch femOS Base System manifest.\n");
-      kernel.stdout(e);
-    }
-
-    kernel.stdout("  Fetching fselect manifests...\n");
+    kernel.stdout("  Fetching manifests...\n");
 
     let fselect = JSON.parse(localStorage.getItem("fselect_manifest"));
 
@@ -76,8 +68,6 @@ addEventListener("DOMContentLoaded", async function () {
     kernel.stdout("Applications loaded.\n\n");
 
     let shellIndex = 0;
-
-    console.log(Applications);
 
     for (let i = 0; i < Applications.length; i++) {
       if (Applications[i].name == localStorage.getItem("autostart.rc")) {
