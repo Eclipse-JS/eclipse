@@ -11,6 +11,13 @@ kernel.stdout(
 while (true) {
   kernel.stdout("# ");
   let stdin = await kernel.stdin();
+
+  if (stdin.endsWith("&")) {
+    let tmpStdin = stdin.split("");
+    tmpStdin.pop();
+    stdin = tmpStdin.join("");
+  }
+  
   let args = stdin.split(" ");
   args.shift();
 
@@ -20,7 +27,11 @@ while (true) {
     if (stdin.startsWith(func.name)) {
       isFound = true;
       try {
-        await kernel.pexec(func.name, func.function, args);
+        if (stdin.endsWith("&")) {
+          kernel.pexec(func.name, func.function, args);
+        } else {
+          await kernel.pexec(func.name, func.function, args);
+        }
       } catch (e) {
         kernel.stdout("\n" + func.name + ": segmentation fault (core dumped)");
       }

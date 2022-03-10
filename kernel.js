@@ -67,6 +67,14 @@ document.addEventListener("keydown", function (e) {
       "AudioVolumeUp",
     ];
 
+    if (isCtrl && e.keyCode == "67") {
+      return;
+    }
+
+    if (isCtrl && e.keyCode == "86") {
+      return;
+    }
+
     if (e.key == "Enter") {
       isKbdEnabled = false;
       return;
@@ -75,7 +83,7 @@ document.addEventListener("keydown", function (e) {
     if (e.key == "Backspace") {
       vstd = vstd.slice(0, -1);
       document.getElementsByClassName("main")[0].innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-      window.scrollTo(0, document.body.scrollHeight);
+      document.getElementsByClassName("main")[0].scrollTo(0, document.body.scrollHeight);
       return;
     }
 
@@ -88,7 +96,7 @@ document.addEventListener("keydown", function (e) {
     vstd += e.key;
 
     document.getElementsByClassName("main")[0].innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-    window.scrollTo(0, document.body.scrollHeight);
+    document.getElementsByClassName("main")[0].scrollTo(0, document.body.scrollHeight);
   }
 });
 
@@ -105,7 +113,7 @@ const kernel = {
     stdout += argv;
     document.getElementsByClassName("main")[0].innerHTML = sanitize(stdout).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
 
-    window.scrollTo(0, document.body.scrollHeight);
+    document.getElementsByClassName("main")[0].scrollTo(0, document.body.scrollHeight);
   },
   stdin: async function () {
     isKbdEnabled = true;
@@ -171,7 +179,7 @@ const kernel = {
       vstd += text;
 
       document.getElementsByClassName("main")[0].innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-      window.scrollTo(0, document.body.scrollHeight);
+      document.getElementsByClassName("main")[0].scrollTo(0, document.body.scrollHeight);
     }
   },
   users: {

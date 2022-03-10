@@ -3,5 +3,10 @@
         "name": "fbflicker",
         "version": "0.1.0",
         "path": "wserver/fbflicker.js"
+    },
+    {
+        "name": "wserv",
+        "version": "0.1.0",
+        "path": "wserver/WindowServer.js"
     }
 ]

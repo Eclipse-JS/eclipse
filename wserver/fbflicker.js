@@ -14,5 +14,5 @@ try {
   await sleep(1000);
   kernel.fb.textMode();
 } catch (e) {
-  console.error(e);
+  kernel.stdout(e);
 }

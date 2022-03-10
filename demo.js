@@ -77,6 +77,10 @@ addEventListener("DOMContentLoaded", async function () {
       );
     } catch (e) {
       kernel.stdout("Error running shell:", e, "\n");
+
+      while (true) {
+        await sleep(1000);
+      }
     }
   });
 });
