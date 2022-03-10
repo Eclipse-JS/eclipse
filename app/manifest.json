@@ -2,46 +2,36 @@
     {
         "name": "btm.sh",
         "version": "0.1.0",
-        "path": "btmshell.js"
-    },
-    {
-        "name": "top",
-        "version": "1.0.0",
-        "path": "top.js"
+        "path": "app/btmshell.js"
     },
     {
         "name": "help",
         "version": "1.0.0",
-        "path": "help.js"
-    },
-    {
-        "name": "execjs",
-        "version": "0.1.0",
-        "path": "exec.js"
+        "path": "app/help.js"
     },
     {
         "name": "clear",
         "version": "1.0.0",
-        "path": "clear.js"
+        "path": "app/clear.js"
     },
     {
         "name": "cls",
         "version": "1.0.0",
-        "path": "clear.js"
+        "path": "app/clear.js"
     },
     {
         "name": "echo",
         "version": "1.0.0",
-        "path": "echo.js"
+        "path": "app/echo.js"
     },
     {
         "name": "fetch",
         "version": "1.0.0",
-        "path": "fetch.js"
+        "path": "app/fetch.js"
     },
     {
-        "name": "avd",
-        "version": "1.0.0",
-        "path": "avd.js"
+        "name": "fselect",
+        "version": "0.1.0",
+        "path": "app/fselect.js"
     }
 ]

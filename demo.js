@@ -9,31 +9,55 @@ function sleep(ms) {
 addEventListener("DOMContentLoaded", async function () {
   kernel.initExec(async function () {
     kernel.stdout("femInit v0.0.1\n");
-    kernel.stdout("Fetching applications manifest...\n\n");
-
-    let manifest = {};
+    kernel.stdout("Building applications manifest...\n");
+    kernel.stdout("  Fetching femOS Base System manifest...\n");
+    let manifest = [];
 
     try {
       manifest = await axios.get("app/manifest.json");
+      manifest = manifest.data;
     } catch (e) {
-      kernel.stdout("Could not fetch applications manifest.\n");
+      kernel.stdout("  Could not fetch femOS Base System manifest.\n");
       kernel.stdout(e);
     }
 
-    for await (item of manifest.data) {
-      kernel.stdout("Loading: ", item.name);
+    kernel.stdout("  Fetching fselect manifests...\n");
+
+    if (localStorage.getItem("fselect_manifest") == null) {
+        kernel.stdout("    Could not find fselect manifests. Creating.\n");
+        localStorage.setItem("fselect_manifest", "[]");
+    } else {
+        let fselect = JSON.parse(localStorage.getItem("fselect_manifest"));
+
+        for (repo of fselect) {
+            try {
+               let resp = await axios.get(repo);
+
+               for (app of resp.data) {
+                   manifest.push(app);
+               }
+            } catch (e) {
+                kernel.stdout("    Could not fetch '" + repo + "'\n");
+                console.error(e);
+            }
+        }
+    }
+
+    kernel.stdout("\n");
+
+    for await (item of manifest) {
+      kernel.stdout("Loading:", item.name);
 
       try {
-        let app = await axios.get("app/" + item.path);
-
+        let app = await axios.get(item.path);
         let func = new AsyncFunction("args", app.data);
 
         Applications.push({ name: item.name, function: func });
 
-        kernel.stdout("   [OK]\n");
+        kernel.stdout(" [OK]\n");
       } catch (e) {
         console.error(e);
-        kernel.stdout("   [FAIL]\n");
+        kernel.stdout(" [FAIL]\n");
       }
     }
 
