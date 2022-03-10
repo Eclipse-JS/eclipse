@@ -5,6 +5,11 @@
         "path": "app/btmshell.js"
     },
     {
+        "name": "rc",
+        "version": "0.1.0",
+        "path": "app/rc.js"
+    },
+    {
         "name": "help",
         "version": "1.0.0",
         "path": "app/help.js"

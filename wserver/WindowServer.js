@@ -4,7 +4,10 @@ let fb = kernel.fb.getFB();
 let windows = [];
 let windowsTrackOf = [];
 
-let windowServer = {
+// #303d3d - for window borders
+// #1c1e1f - for desktop background
+
+windowServer = {
   async newWindow(name, callback) {
     windows.push({
       "isActive": false,
@@ -44,22 +47,4 @@ let windowServer = {
   }
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-function rgbToHex(r, g, b) {
-  function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
-  
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
-while (true) {
-  windowServer.setDesktopWallpaper(rgbToHex(getRandomInt(0, 255), getRandomInt(0, 255), getRandomInt(0, 255)));
-  await sleep(1);
-}   
+windowServer.setDesktopWallpaper('#292c2e');

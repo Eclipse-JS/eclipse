@@ -2,6 +2,9 @@ const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 let Applications = [];
 
+// Reserved.
+let windowServer = {};
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -9,6 +12,19 @@ function sleep(ms) {
 addEventListener("DOMContentLoaded", async function () {
   kernel.initExec(async function () {
     kernel.stdout("femInit v0.0.1\n");
+    kernel.stdout("Checking if system config is sane...\n");
+    
+    if (localStorage.getItem("autostart.rc") == null) {
+      kernel.stdout("  No autostart.rc found. Creating.\n");
+      localStorage.setItem("autostart.rc", 'btm.sh');
+      kernel.stdout("  Default is set to 'btm.sh', the system shell.\n");
+    }
+
+    if (localStorage.getItem("fselect_manifest") == null) {
+      kernel.stdout("  Could not find fselect manifests. Creating.\n");
+      localStorage.setItem("fselect_manifest", "[]");
+    }
+
     kernel.stdout("Building applications manifest...\n");
     kernel.stdout("  Fetching femOS Base System manifest...\n");
     let manifest = [];
@@ -23,24 +39,19 @@ addEventListener("DOMContentLoaded", async function () {
 
     kernel.stdout("  Fetching fselect manifests...\n");
 
-    if (localStorage.getItem("fselect_manifest") == null) {
-        kernel.stdout("    Could not find fselect manifests. Creating.\n");
-        localStorage.setItem("fselect_manifest", "[]");
-    } else {
-        let fselect = JSON.parse(localStorage.getItem("fselect_manifest"));
+    let fselect = JSON.parse(localStorage.getItem("fselect_manifest"));
 
-        for (repo of fselect) {
-            try {
-               let resp = await axios.get(repo);
+    for (repo of fselect) {
+      try {
+          let resp = await axios.get(repo);
 
-               for (app of resp.data) {
-                   manifest.push(app);
-               }
-            } catch (e) {
-                kernel.stdout("    Could not fetch '" + repo + "'\n");
-                console.error(e);
-            }
-        }
+          for (app of resp.data) {
+            manifest.push(app);
+           }
+      } catch (e) {
+          kernel.stdout("    Could not fetch '" + repo + "'\n");
+          console.error(e);
+      }
     }
 
     kernel.stdout("\n");
@@ -66,8 +77,13 @@ addEventListener("DOMContentLoaded", async function () {
 
     let shellIndex = 0;
 
+    console.log(Applications);
+
     for (let i = 0; i < Applications.length; i++) {
-      if (Applications.name == "btm.sh") shellIndex = i;
+      if (Applications[i].name == localStorage.getItem("autostart.rc")) {
+        shellIndex = i;
+        break;
+      }
     }
 
     try {

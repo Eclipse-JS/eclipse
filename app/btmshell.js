@@ -12,7 +12,10 @@ while (true) {
   kernel.stdout("# ");
   let stdin = await kernel.stdin();
 
+  let isNotWaiting = false;
+
   if (stdin.endsWith("&")) {
+    isNotWaiting = true;
     let tmpStdin = stdin.split("");
     tmpStdin.pop();
     stdin = tmpStdin.join("");
@@ -27,7 +30,7 @@ while (true) {
     if (stdin.startsWith(func.name)) {
       isFound = true;
       try {
-        if (stdin.endsWith("&")) {
+        if (isNotWaiting) {
           kernel.pexec(func.name, func.function, args);
         } else {
           await kernel.pexec(func.name, func.function, args);
