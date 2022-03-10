@@ -1,5 +1,3 @@
-const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-
 if (args[0] !== undefined) {
   let argv = args.join(" ");
 
@@ -11,7 +9,7 @@ if (args[0] !== undefined) {
 
   kernel.stdout(resp);
 } else {
-  kernel.stdout("execJS v0.1.0\nIn Function mode\n\n");
+  kernel.stdout("execJS v0.1.0\nIn Eval mode\n");
 
   while (true) {
     kernel.stdout("> ");
@@ -24,8 +22,7 @@ if (args[0] !== undefined) {
     let resp = "";
 
     try {
-      let func = new AsyncFunction(stdin);
-      resp = await func();
+      resp = await eval(`JSON.stringify(${stdin})`);
     } catch (e) {
       resp = e;
     }

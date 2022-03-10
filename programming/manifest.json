@@ -8,5 +8,10 @@
         "name": "execjs",
         "version": "0.1.0",
         "path": "programming/exec.js"
+    },
+    {
+        "name": "lexecjs",
+        "version": "0.1.0",
+        "path": "programming/lexec.js"
     }
 ]
