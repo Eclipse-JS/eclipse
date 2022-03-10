@@ -1,7 +1,7 @@
 let motd = "Welcome!\nTo get a list of commands, run 'help'.";
 
 kernel.stdout(
-  "btm.sh v0.0.1\nRunning on femOS " +
+  "btm.sh v0.1.1\nRunning on femOS " +
   kernel.ver +
   " \n\n" +
   motd +

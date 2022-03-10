@@ -93,7 +93,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 const kernel = {
-  ver: "0.1.0",
+  ver: "0.2.1",
   stdout: function (...args) {
     let argv = args.join(" ");
 
