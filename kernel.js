@@ -13,6 +13,30 @@ let isKbdEnabled = false;
 let stdout = "";
 let vstd = "";
 
+let intAppID = 0;
+
+let isCtrl = false;
+let isC = false;
+
+let isCtrlC = false;
+
+// For Ctrl+C support
+
+document.addEventListener("keydown", function (e) {
+  if (e.keyCode == "17") isCtrl = true;
+  if (e.keyCode == "67") isC = true;
+
+  isCtrlC = isCtrl && isC;
+});
+
+document.addEventListener("keyup", function (e) {
+  if (e.keyCode == "17") isCtrl = false;
+  if (e.keyCode == "67") isC = false;
+
+  isCtrlC = isCtrl && isC;
+});
+
+// For stdin support
 document.addEventListener("keydown", function (e) {
   if (isKbdEnabled) {
     let bannedKbdKeys = [
@@ -52,7 +76,7 @@ document.addEventListener("keydown", function (e) {
     }
 
     for (kbd of bannedKbdKeys) {
-      if (e.key.startsWith(kbd) || hasCtrl) {
+      if (e.key.startsWith(kbd)) {
         return;
       }
     }
@@ -190,3 +214,13 @@ const kernel = {
     return processList;
   },
 };
+
+async function stopCodeExec() {
+  while (true) {
+    await sleep(100);
+
+    if (isCtrlC) window.location.reload();
+  }
+}
+
+stopCodeExec();
