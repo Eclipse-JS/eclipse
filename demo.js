@@ -14,8 +14,17 @@ addEventListener("DOMContentLoaded", async function () {
     kernel.stdout("femInit v0.0.1\n");
     kernel.stdout("Checking if system config is sane...\n");
     
+    if (localStorage.getItem("osversion.rc") == null && localStorage.getItem("fselect_manifest") !== null) {
+        kernel.stdout("  OS Version is undefined.\n");
+        kernel.stdout("  Factory resetting...\n");
+        localStorage.clear();
+        window.location.reload();
+        await sleep(5000);
+    }  
+
     if (localStorage.getItem("autostart.rc") == null) {
       kernel.stdout("  No autostart.rc found. Creating.\n");
+
       localStorage.setItem("autostart.rc", 'setup');
       kernel.stdout("  Default is set to 'setup', the system setup sequence.\n");
     }
@@ -25,8 +34,12 @@ addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("fselect_manifest", '["/setupAssistant/manifest.json"]');
     }
 
+    if (localStorage.getItem("osversion.rc") == null) {
+        kernel.stdout("  Could not find osversion.rc. Creating.\n");
+        localStorage.setItem("osversion.rc", '1');
+    }
+
     kernel.stdout("Building applications manifest...\n");
-    kernel.stdout("  Fetching femOS Base System manifest...\n");
     let manifest = [];
 
     kernel.stdout("  Fetching manifests...\n");

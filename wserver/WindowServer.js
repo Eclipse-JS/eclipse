@@ -10,9 +10,9 @@ let windowsTrackOf = [];
 windowServer = {
   async newWindow(name, callback) {
     windows.push({
-      "isActive": false,
-      "windowTitle": name
-    })
+      isActive: false,
+      windowTitle: name,
+    });
 
     windowsTrackOf.push(name);
     await kernel.pexec(name, callback, [name]);
@@ -44,7 +44,11 @@ windowServer = {
     }
 
     windows[windowsTrackOf.indexOf(name)].windowTitle = title;
-  }
-}
+  },
+};
 
-windowServer.setDesktopWallpaper('#292c2e');
+windowServer.setDesktopWallpaper("#292c2e");
+
+while (true) {
+  await sleep(1000);
+}
