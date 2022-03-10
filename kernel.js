@@ -150,6 +150,19 @@ const kernel = {
       avList[avDev.indexOf(src)].play();
     },
   },
+  fb: {
+    textMode: function () {
+      document.getElementsByClassName("main")[0].style.zIndex = "5";
+      document.getElementById("canvas-renderer").style.zIndex = "0";
+    },
+    fbMode: function () {
+      document.getElementsByClassName("main")[0].style.zIndex = "0";
+      document.getElementById("canvas-renderer").style.zIndex = "5";
+    },
+    getFB: function () {
+      return document.getElementById("canvas-renderer").getContext("2d");
+    }
+  },
   paste: function (self, e) {
     let text = e.clipboardData.getData("text/plain");
     console.log(text);
