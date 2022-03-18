@@ -51,7 +51,27 @@ if (stdin == "1") {
   window.location.reload();
   await sleep(5000);
 } else if (stdin == "5") {
-  kernel.stdout("Not implemented!\n");
+  let items = [["Audio & Video utilities", "/av/manifest.json"], ["Demos", "/demos/manifest.json"], ["Programming utilities", "/programming/manifest.json"], ["Window Server", "/wserver/manifest.json"]];
+  let manifest = '["/app/manifest.json", ';
+
+  for (item of items) {
+    kernel.stdout("Would you like " + item[0] + " to be installed? (y/n) ");
+
+    let stdin = await kernel.stdin();
+
+    if (stdin == "y" || stdin == "") {
+      manifest += `"${item[1]}", `
+    }
+  }
+
+  manifest = manifest.slice(0, -2);
+  manifest += "]";
+
+  console.log(manifest);
+
+  kernel.stdout("\n\nPlease wait...\n\nNOTE: If you chose the window server, you need to manually make it start on boot.\nThis can be done by running 'rc startupApp wserv'.")
+  localStorage.setItem("autostart.rc", "btm.sh");
+  localStorage.setItem("fselect_manifest", manifest);
   await sleep(1000);
 
   window.location.reload();
