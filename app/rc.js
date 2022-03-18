@@ -12,7 +12,7 @@ if (args[0] == "help") {
     return;
 } else if (args[0] == "startupApp") {
     if (args[1] == undefined) {
-        kernel.stdout("No arguments specified.\n");
+        kernel.stdout("No value specified!\n");
         kernel.stdout("Usage: rc [command] <args>\n");
         kernel.stdout("To get help, run 'rc help'.");
         return;
