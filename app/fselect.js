@@ -1,4 +1,5 @@
 let arg = args[0];
+let manifestCache = [];
 
 if (args[1] !== undefined) {
   arg += ` ${args[1]}`;
@@ -34,6 +35,7 @@ switch (arg) {
       kernel.stdout("Type 'fselect help' for more information.");
     } else {
       let url = args[2];
+      
 
       if (!url.startsWith("http://") || !url.startsWith("https://")) {
         if (!url.startsWith("/")) {
@@ -56,7 +58,20 @@ switch (arg) {
 
       localStorage.setItem("fselect_manifest", items.join(""));
 
-      kernel.stdout("Added repository '" + url + "' to init.");
+      kernel.stdout("Added repository '" + url + "' to init.\n");
+      kernel.stdout("Updating package lists...");
+
+      for await (item of JSON.parse(localStorage.getItem("fselect_manifest"))) {
+        try {
+          let resp = await axios.get(item);
+          manifestCache.push({ path: item, data: btoa(JSON.stringify(resp.data)) });
+        } catch (e) {
+          kernel.stdout("Could not fetch '" + item + "'\n");
+          console.error(e);
+        }
+      }
+
+      localStorage.setItem("manifestCache.rc", JSON.stringify(manifestCache));
     }
     break;
   case "repo remove":
@@ -82,14 +97,39 @@ switch (arg) {
       if (item != url) {
         items.push(item);
       } else {
-        kernel.stdout("Removed repository '" + url + "' from init.");
+        kernel.stdout("Removed repository '" + url + "' from init.\n");
       }
     }
 
     localStorage.setItem("fselect_manifest", JSON.stringify(items));
+    kernel.stdout("Updating package lists...");
+
+    for await (item of JSON.parse(localStorage.getItem("fselect_manifest"))) {
+      try {
+        let resp = await axios.get(item);
+        manifestCache.push({ path: item, data: btoa(JSON.stringify(resp.data)) });
+      } catch (e) {
+        kernel.stdout("Could not fetch '" + item + "'\n");
+        console.error(e);
+      }
+    }
+
+    localStorage.setItem("manifestCache.rc", JSON.stringify(manifestCache));
     break;
   case "repo update":
-    kernel.stdout("Not implemented!");
+    kernel.stdout("Updating package lists...");
+
+    for await (item of JSON.parse(localStorage.getItem("fselect_manifest"))) {
+      try {
+        let resp = await axios.get(item);
+        manifestCache.push({ path: item, data: btoa(JSON.stringify(resp.data)) });
+      } catch (e) {
+        kernel.stdout("Could not fetch '" + item + "'\n");
+        console.error(e);
+      }
+    }
+
+    localStorage.setItem("manifestCache.rc", JSON.stringify(manifestCache));
     break;
   default:
     kernel.stdout("Error: No command specified.\n");
@@ -97,4 +137,3 @@ switch (arg) {
     kernel.stdout("Type 'fselect help' for more information.");
     break;
 }
-  

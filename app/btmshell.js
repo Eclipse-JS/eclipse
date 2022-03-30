@@ -32,7 +32,7 @@ while (true) {
           await kernel.pexec(func.name, func.function, args);
         }
       } catch (e) {
-        kernel.stdout("\n" + func.name + ": segmentation fault (core dumped)");
+        kernel.stdout("\n" + e);
       }
     }
   }
