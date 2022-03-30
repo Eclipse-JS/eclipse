@@ -48,6 +48,7 @@ document.addEventListener("keydown", function (e) {
       "Alt",
       "WakeUp",
       "Meta",
+      "OS",
       "Page",
       "Arrow",
       "Shift",
