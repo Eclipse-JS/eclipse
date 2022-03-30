@@ -36,8 +36,6 @@ if (args[0] == "repo" && args[1] == "add") {
       }
     }
 
-    kernel.stdout("Adding repository '" + url + "' to init...");
-
     let items = localStorage.getItem("fselect_manifest").toString().split("");
     items.pop();
 
@@ -50,9 +48,30 @@ if (args[0] == "repo" && args[1] == "add") {
     items.push("]");
 
     localStorage.setItem("fselect_manifest", items.join(""));
+
+    kernel.stdout("Added repository '" + url + "' to init.");
   }
 } else if (args[0] == "repo" && args[1] == "remove") {
-  kernel.stdout("Not implemented.");
+  let url = args[2];
+  let items = [];
+
+  if (!url.startsWith("http://") || !url.startsWith("https://")) {
+    if (!url.startsWith("/")) {
+      url = "/" + url + "/manifest.json";
+    } else {
+      url = "https://" + url;
+    }
+  }
+
+  for (item of JSON.parse(localStorage.getItem("fselect_manifest"))) {
+    if (item != url) {
+      items.push(item);
+    } else {
+      kernel.stdout("Removed repository '" + url + "' from init.");
+    }
+  }
+
+  localStorage.setItem("fselect_manifest", JSON.stringify(items));
 } else if (args[0] == "repo" && args[1] == "update") {
   kernel.stdout("Not implemented.");
 } else if (args[0] == "install") {
