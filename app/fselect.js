@@ -1,5 +1,5 @@
 let arg = args[0];
-let manifestCache = [];
+
 
 if (args[1] !== undefined) {
   arg += ` ${args[1]}`;
@@ -21,16 +21,16 @@ switch (arg) {
     break;
   case "pkg install":
     if (args[2] === undefined) {
-      kernel.stdout("Usage: fselect install <app>\n");
+      kernel.stdout("Usage: fselect pkg install <app>\n");
       break;
     }
 
     kernel.stdout("Getting package list...\n");
     
-    let manifest = JSON.parse(localStorage.getItem("manifestCache.rc"));
-    let installedApps = JSON.parse(localStorage.getItem("packages.rc"));
+    var manifest = JSON.parse(localStorage.getItem("manifestCache.rc"));
+    var installedApps = JSON.parse(localStorage.getItem("packages.rc"));
     
-    let app = installedApps.find(app => app.name === args[2]);
+    var app = installedApps.find(app => app.name === args[2]);
     
     if (app === undefined) {
       let isAppInstalled = manifest.find(app => JSON.parse(atob(app.data)).find(apps => apps.name == args[2]));
@@ -64,7 +64,25 @@ switch (arg) {
 
     break;
   case "pkg remove":
-    kernel.stdout("Not implemented!");
+    if (args[2] === undefined) {
+      kernel.stdout("Usage: fselect pkg remove <app>");
+      break;
+    }
+
+    var installedApps = JSON.parse(localStorage.getItem("packages.rc"));
+    var app = installedApps.find(app => app.name === args[2]);
+
+    if (app !== undefined) {
+      kernel.stdout(`Removing ${app.name}...`);
+
+      let localFunc = localStorage.getItem("packages.rc");
+      localFunc = JSON.parse(localFunc);
+
+      localFunc = localFunc.filter(app => app.name !== args[2]);
+
+      localStorage.setItem("packages.rc", JSON.stringify(localFunc));
+    }
+
     break;
   case "pkg search":
     kernel.stdout("Not implemented!");
@@ -84,6 +102,8 @@ switch (arg) {
           url = "https://" + url;
         }
       }
+
+      var manifestCache = [];
 
       let items = localStorage.getItem("fselect_manifest").toString().split("");
       items.pop();
@@ -125,6 +145,8 @@ switch (arg) {
     let url = args[2];
     let items = [];
 
+    var manifestCache = [];
+
     if (!url.startsWith("http://") || !url.startsWith("https://")) {
       if (!url.startsWith("/")) {
         url = "/" + url + "/manifest.json";
@@ -158,6 +180,7 @@ switch (arg) {
     break;
   case "repo update":
     kernel.stdout("Updating package lists...");
+    var manifestCache = [];
 
     for await (item of JSON.parse(localStorage.getItem("fselect_manifest"))) {
       try {
