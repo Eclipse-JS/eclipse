@@ -73,7 +73,7 @@ switch (parseInt(stdin)) {
  
     console.log(manifest);
 
-    kernel.stdout("\n\nPlease wait...\n\nNOTE: If you chose the window server, you need to manually make it start on boot.\nThis can be done by running 'rc startupApp wserv'.")
+    kernel.stdout("\n\nPlease wait...\n\nNOTE: If you chose the window server, you need to manually make it start on boot.\nThis can be done by running 'rc startupApp wserv'.\n")
     localStorage.setItem("autostart.rc", "btm.sh");
     localStorage.setItem("fselect_manifest", manifest);
     
@@ -115,4 +115,4 @@ for await (item of manifestButYourMom) {
 
 localStorage.setItem("packages.rc", JSON.stringify(items));
 
-kernel.stdout("\n");
+kernel.stdout("\nDone! Loading OS...\n");

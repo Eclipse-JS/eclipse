@@ -11,7 +11,7 @@ function sleep(ms) {
 
 addEventListener("DOMContentLoaded", async function () {
   kernel.initExec(async function () {
-    kernel.stdout("femInit v0.0.1\n");
+    kernel.stdout("femInit v0.1.1\n");
     kernel.stdout("Checking if system config is sane...\n");
     
     if (localStorage.getItem("osversion.rc") == null) {
