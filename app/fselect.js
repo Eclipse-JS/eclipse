@@ -6,23 +6,27 @@ if (args[0] == undefined) {
 }
 
 if (args[0] == "help") {
-  kernel.stdout("fselect version 0.1.0 - Adds repositories to init!\n");
+  kernel.stdout("fselect version 0.1.0 - Not a furry package manager.\n");
   kernel.stdout("Usage: fselect <command> [args]\n");
   kernel.stdout("Available commands:\n");
   kernel.stdout("  help - Displays this help message.\n");
-  kernel.stdout("  add <repo> - Adds a repository to init!\n");
-  kernel.stdout("  remove <repo> - Removes a repository from init!\n");
+  kernel.stdout("  repo add <repo> - Adds a repository.\n");
+  kernel.stdout("  repo remove <repo> - Removes a repository.\n");
+  kernel.stdout("  repo update - Updates repository listings.\n");
+  kernel.stdout("  install - Installs app.\n");
+  kernel.stdout("  remove - Removes app.\n");
+  kernel.stdout("  search - Searches for an app.\n");
   kernel.stdout("  manifest-details - List valid approved repositories.");
   return;
 }
 
-if (args[0] == "add") {
-  if (args[1] == undefined) {
+if (args[0] == "repo" && args[1] == "add") {
+  if (args[2] == undefined) {
     kernel.stdout("Error: No repository specified.\n");
     kernel.stdout("Usage: execJS add <repo>\n");
     kernel.stdout("Type 'fselect help' for more information.");
   } else {
-    let url = args[1];
+    let url = args[2];
 
     if (!url.startsWith("http://") || !url.startsWith("https://")) {
       if (!url.startsWith("/")) {
@@ -47,7 +51,15 @@ if (args[0] == "add") {
 
     localStorage.setItem("fselect_manifest", items.join(""));
   }
-} else if (args[0] == "remove") {
+} else if (args[0] == "repo" && args[1] == "remove") {
+  kernel.stdout("Not implemented.");
+} else if (args[0] == "repo" && args[1] == "update") {
+  kernel.stdout("Not implemented.");
+} else if (args[0] == "install") {
+  kernel.stdout("Not implemented.");
+} else if (args[0] == "uninstall") {
+  kernel.stdout("Not implemented.");
+} else if (args[0] == "search") {
   kernel.stdout("Not implemented.");
 } else if (args[0] == "manifest-details") {
   kernel.stdout("Fetching from server...\n\n");
