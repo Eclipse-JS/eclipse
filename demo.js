@@ -14,67 +14,39 @@ addEventListener("DOMContentLoaded", async function () {
     kernel.stdout("femInit v0.0.1\n");
     kernel.stdout("Checking if system config is sane...\n");
     
-    if (localStorage.getItem("osversion.rc") == null && localStorage.getItem("fselect_manifest") !== null) {
-        kernel.stdout("  OS Version is undefined.\n");
-        kernel.stdout("  Factory resetting...\n");
-        localStorage.clear();
-        window.location.reload();
-        await sleep(5000);
+    if (localStorage.getItem("osversion.rc") == null) {
+      kernel.stdout("  Could not find osversion.rc. Creating.\n");
+      localStorage.setItem("osversion.rc", '1');
     }  
 
     if (localStorage.getItem("autostart.rc") == null) {
       kernel.stdout("  No autostart.rc found. Creating.\n");
 
       localStorage.setItem("autostart.rc", 'setup');
-      kernel.stdout("  Default is set to 'setup', the system setup sequence.\n");
     }
 
-    if (localStorage.getItem("fselect_manifest") == null) {
-      kernel.stdout("  Could not find manifest database. Creating.\n");
-      localStorage.setItem("fselect_manifest", '["/setupAssistant/manifest.json"]');
-    }
+    if (localStorage.getItem("fselect_manifest") == null || localStorage.getItem("packages.rc") == null) {
+      kernel.stdout("  Could not find manifest database (or other error). Loading setup...\n");
+      let setup = await axios.get("nmp/setup.js");
+      setup = setup.data;
 
-    if (localStorage.getItem("osversion.rc") == null) {
-        kernel.stdout("  Could not find osversion.rc. Creating.\n");
-        localStorage.setItem("osversion.rc", '1');
-    }
-
-    kernel.stdout("Building applications manifest...\n");
-    let manifest = [];
-
-    kernel.stdout("  Fetching manifests...\n");
-
-    let fselect = JSON.parse(localStorage.getItem("fselect_manifest"));
-
-    for (repo of fselect) {
       try {
-          let resp = await axios.get(repo);
-
-          for (app of resp.data) {
-            manifest.push(app);
-           }
+        await new AsyncFunction("args", setup)();
       } catch (e) {
-          kernel.stdout("    Could not fetch '" + repo + "'\n");
-          console.error(e);
+        kernel.stdout(e);
+        await sleep(5000);
+        window.location.reload();
       }
     }
 
     kernel.stdout("\n");
 
-    for await (item of manifest) {
-      kernel.stdout("Loading:", item.name);
+    let packages = localStorage.getItem("packages.rc");
+    packages = JSON.parse(packages);
 
-      try {
-        let app = await axios.get(item.path);
-        let func = new AsyncFunction("args", app.data);
-
-        Applications.push({ name: item.name, function: func });
-
-        kernel.stdout(" [OK]\n");
-      } catch (e) {
-        console.error(e);
-        kernel.stdout(" [FAIL]\n");
-      }
+    for await (app of packages) {
+      kernel.stdout(`Decompressing package ${app.name}...\n`);
+      Applications.push({ name: app.name, version: app.version, function: new AsyncFunction("args", atob(app.function)) });
     }
 
     kernel.stdout("\n");
