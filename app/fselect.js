@@ -14,18 +14,59 @@ switch (arg) {
     kernel.stdout("  repo add <repo> - Adds a repository.\n");
     kernel.stdout("  repo remove <repo> - Removes a repository.\n");
     kernel.stdout("  repo update - Updates repository listings.\n");
-    kernel.stdout("  install - Installs app.\n");
-    kernel.stdout("  remove - Removes app.\n");
-    kernel.stdout("  search - Searches for an app.\n");
-    kernel.stdout("  repo md - List valid approved repositories.");
+    kernel.stdout("  repo md - List valid approved repositories.\n");
+    kernel.stdout("  pkg install - Installs app.\n");
+    kernel.stdout("  pkg remove - Removes app.\n");
+    kernel.stdout("  pkg search - Searches for an app.");
     break;
-  case "install":
+  case "pkg install":
+    if (args[2] === undefined) {
+      kernel.stdout("Usage: fselect install <app>\n");
+      break;
+    }
+
+    kernel.stdout("Getting package list...\n");
+    
+    let manifest = JSON.parse(localStorage.getItem("manifestCache.rc"));
+    let installedApps = JSON.parse(localStorage.getItem("packages.rc"));
+    
+    let app = installedApps.find(app => app.name === args[2]);
+    
+    if (app === undefined) {
+      let isAppInstalled = manifest.find(app => JSON.parse(atob(app.data)).find(apps => apps.name == args[2]));
+
+      if (isAppInstalled !== undefined) {
+        let appData = JSON.parse(atob(isAppInstalled.data));
+        appData = appData.find(apps => apps.name == args[2]);
+
+        console.log(appData);
+        kernel.stdout(`Installing ${appData.name}...`);
+
+        let js = await axios.get(appData.path);
+        js = js.data;
+
+        let localFunc = localStorage.getItem("packages.rc");
+        localFunc = JSON.parse(localFunc);
+
+        localFunc.push({
+          name: appData.name,
+          version: appData.version,
+          function: btoa(js)
+        });
+
+        localStorage.setItem("packages.rc", JSON.stringify(localFunc));
+      } else {
+        kernel.stdout("Could not find app.\nThis can be caused by broken databases. Try running 'fselect repo update' to update the database.");
+      }
+    } else {
+      kernel.stdout(`App already installed.`);
+    }
+
+    break;
+  case "pkg remove":
     kernel.stdout("Not implemented!");
     break;
-  case "remove":
-    kernel.stdout("Not implemented!");
-    break;
-  case "search":
+  case "pkg search":
     kernel.stdout("Not implemented!");
     break;
   case "repo add":
@@ -35,7 +76,6 @@ switch (arg) {
       kernel.stdout("Type 'fselect help' for more information.");
     } else {
       let url = args[2];
-      
 
       if (!url.startsWith("http://") || !url.startsWith("https://")) {
         if (!url.startsWith("/")) {
@@ -130,6 +170,12 @@ switch (arg) {
     }
 
     localStorage.setItem("manifestCache.rc", JSON.stringify(manifestCache));
+    break;
+  case "repo md":
+    kernel.stdout("Fetching from server...\n\n");
+    let data = await axios.get("manifest_details.txt");
+  
+    kernel.stdout(data.data);
     break;
   default:
     kernel.stdout("Error: No command specified.\n");
