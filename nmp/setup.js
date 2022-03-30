@@ -82,16 +82,18 @@ switch (parseInt(stdin)) {
 
 let items = []; //example pkg: {name: "fselect", version: "0.1.0", function: "base64data"}
 let manifest = JSON.parse(localStorage.getItem("fselect_manifest"));
-let manifestButYourMom = [];
+let manifests = [];
+let manifestCache = [];
 
-kernel.stdout("\nBuilding package list...\n\n");
+kernel.stdout("\nBuilding package lists...\n\n");
 
 for await (item of manifest) {
   try {
     let resp = await axios.get(item);
+    manifestCache.push({ path: item, data: btoa(JSON.stringify(resp.data)) });
 
     for (app of resp.data) {
-      manifestButYourMom.push(app);
+      manifests.push(app);
     }
   } catch (e) {
     kernel.stdout("Could not fetch '" + item + "'\n");
@@ -99,7 +101,9 @@ for await (item of manifest) {
   }
 }
 
-for await (item of manifestButYourMom) {
+localStorage.setItem("manifestCache.rc", JSON.stringify(manifestCache));
+
+for await (item of manifests) {
   kernel.stdout("Installing package", item.name);
 
   try {

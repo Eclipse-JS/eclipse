@@ -66,7 +66,7 @@ switch (arg) {
       kernel.stdout("Type 'fselect help' for more information.");
       break;
     }
-    
+
     let url = args[2];
     let items = [];
 
@@ -97,3 +97,4 @@ switch (arg) {
     kernel.stdout("Type 'fselect help' for more information.");
     break;
 }
+  
