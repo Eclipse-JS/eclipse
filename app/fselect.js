@@ -85,7 +85,24 @@ switch (arg) {
 
     break;
   case "pkg search":
-    kernel.stdout("Not implemented!");
+    if (args[2] === undefined) {
+      kernel.stdout("Usage: fselect pkg search <app>");
+      break;
+    }
+
+    var manifest = JSON.parse(localStorage.getItem("manifestCache.rc"));
+    let isAppInstalled = manifest.find(app => JSON.parse(atob(app.data)).find(apps => apps.name == args[2]));
+
+    if (isAppInstalled !== undefined) {
+      let appData = JSON.parse(atob(isAppInstalled.data));
+      appData = appData.find(apps => apps.name == args[2]);
+      
+      kernel.stdout(appData.name + "\n");
+      kernel.stdout("  Version: " + appData.version);
+    } else {
+      kernel.stdout("Package not found!");
+    }
+
     break;
   case "repo add":
     if (args[2] == undefined) {
