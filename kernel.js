@@ -53,14 +53,14 @@ const kernel = {
   fb: {
     textMode: function () {
       document.getElementsByClassName("main")[0].style.zIndex = "5";
-      document.getElementById("canvas-renderer").style.zIndex = "0";
+      document.getElementById("html-renderer").style.zIndex = "0";
     },
-    fbMode: function () {
+    wmMode: function () {
       document.getElementsByClassName("main")[0].style.zIndex = "0";
-      document.getElementById("canvas-renderer").style.zIndex = "5";
+      document.getElementById("html-renderer").style.zIndex = "5";
     },
-    getFB: function () {
-      return document.getElementById("canvas-renderer").getContext("2d");
+    getWMObject: function () {
+      return document.getElementById("html-renderer");
     }
   },
   paste: function (self, e) {

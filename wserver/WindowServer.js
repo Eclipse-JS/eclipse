@@ -1,5 +1,5 @@
-kernel.fb.fbMode();
-let fb = kernel.fb.getFB();
+kernel.fb.wmMode();
+let fb = kernel.fb.getWMObject();
 
 let windows = [];
 let windowsTrackOf = [];
@@ -21,8 +21,7 @@ windowServer = {
     return;
   },
   setDesktopWallpaper(hex) {
-    fb.fillStyle = hex;
-    fb.fillRect(0, 0, screen.width, screen.height);
+    fb.backgroundColor = hex;
   },
   getWinID(name) {
     if (windowsTrackOf.indexOf(name) == -1) {
