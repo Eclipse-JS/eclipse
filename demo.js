@@ -109,7 +109,7 @@ addEventListener("DOMContentLoaded", async function () {
   KernelLocal.stdin = async function () {
     isKbdEnabled = true;
 
-    while (isKbdEnabled !== false) {
+    while (isKbdEnabled) {
       await sleep(100);
     }
 
@@ -205,8 +205,15 @@ addEventListener("DOMContentLoaded", async function () {
     packages = JSON.parse(packages);
 
     for await (app of packages) {
-      kernel.stdout(`Decompressing package ${app.name}...\n`);
-      Applications.push({ name: app.name, version: app.version, function: new AsyncFunction("args", atob(app.function)) });
+      kernel.stdout(`Decompressing package ${app.name}...`);
+      try {
+        Applications.push({ name: app.name, version: app.version, function: new AsyncFunction("args", atob(app.function)) });
+      } catch (e) {
+        kernel.stdout(": FAIL");
+        console.error(e);
+      }
+
+      kernel.stdout("\n");
     }
 
     kernel.stdout("\nApplications loaded.\n\n");

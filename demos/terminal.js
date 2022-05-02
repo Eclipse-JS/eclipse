@@ -1,4 +1,5 @@
 let Kernel = kernel;
+let UUID = "";
 
 if (!windowServer.newWindow) {
     kernel.stdout("WindowServer is not running.");
@@ -9,17 +10,12 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-let stdout = "";
-
-/*
 let isKbdEnabled = false;
 let stdout = "";
-let stdoutHTMl = "";
-
 let vstd = "";
 
 document.addEventListener("keydown", function (e) {
-    if (isKbdEnabled) {
+    if (isKbdEnabled && windowServer.isFocused(UUID)) {
       let bannedKbdKeys = [
         "Control",
         "Alt",
@@ -45,14 +41,6 @@ document.addEventListener("keydown", function (e) {
         "AudioVolumeUp",
       ];
   
-      if (isCtrl && e.keyCode == "67") {
-        return;
-      }
-  
-      if (isCtrl && e.keyCode == "86") {
-        return;
-      }
-  
       if (e.key == "Enter") {
         isKbdEnabled = false;
         return;
@@ -60,7 +48,8 @@ document.addEventListener("keydown", function (e) {
   
       if (e.key == "Backspace") {
         vstd = vstd.slice(0, -1);
-        stdoutHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+        document.getElementById(UUID).innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+        document.getElementById(UUID).scrollTo(0, document.getElementById(UUID).scrollHeight);
         return;
       }
   
@@ -72,12 +61,14 @@ document.addEventListener("keydown", function (e) {
   
       vstd += e.key;
   
-      stdoutHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+      document.getElementById(UUID).innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+      document.getElementById(UUID).scrollTo(0, document.getElementById(UUID).scrollHeight);
     }
 });
-*/
 
 await windowServer.newWindow("terminal", async function main(uuid) {
+    UUID = uuid;
+  
     let elem = document.getElementById(uuid);
     let kernel = Kernel;
 
@@ -100,7 +91,18 @@ await windowServer.newWindow("terminal", async function main(uuid) {
     }
     
     kernel.stdin = async function () {
-        return "top";
+      isKbdEnabled = true;
+
+      while (isKbdEnabled) {
+        await sleep(100);
+      }
+
+      let vsh = vstd;
+      vstd = "";
+
+      kernel.stdout(vsh, "\n");
+
+      return vsh;
     }
 
     for (i of Applications) {

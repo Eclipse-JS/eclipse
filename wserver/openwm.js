@@ -19,12 +19,8 @@ if (typeof windowServer.newWindow !== "function") {
 
 windowServer.setDesktopWallpaper("#000000");
 
-for (i of Applications) {
-    if (i.name == "terminal") {
-        try {
-            await windowServer.newWindow(i.name, i.function);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-}
+let hasStarted = false;
+
+let terminal = Applications.find(app => { return app.name == "terminal" })
+
+await windowServer.newWindow(terminal.name, terminal.function, {});

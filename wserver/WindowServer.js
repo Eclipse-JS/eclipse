@@ -4,9 +4,25 @@ let fb = kernel.fb.getWMObject();
 let windows = [];
 let windowsTrackOf = [];
 
+let focusedWindowUUID = "";
+
+document.addEventListener('mousemove', e => {
+  try {
+    focusedWindowUUID = document.elementFromPoint(e.clientX, e.clientY).id;
+  } catch (e) {
+    alert(e);
+  }
+}, {passive: true})
+
 windowServer = {
-  async newWindow(name, callback) {
+  async newWindow(name, callback, Options) {
+    let options = Options || {};
+
     let windowUUID = "";
+
+    if (typeof options !== "undefined" && typeof options !== "object") {
+      throw("Provided options are not an object");
+    }
 
     // Crypto is not in some browsers (and only for https), so we try catch it
     try {
@@ -38,8 +54,9 @@ windowServer = {
     windowElement.className = "window";
     windowElement.id = windowUUID;
 
+    if (!options.noBorder) windowElement.style.border = "1px solid #303d3d";
     windowElement.style.backgroundColor = "#1c1e1f";
-    windowElement.style.border = "1px solid #303d3d";
+    
     windowElement.style.position = "absolute";
 
     windowElement.style.top = "1px";
@@ -56,8 +73,10 @@ windowServer = {
 
     windows.push({
       isActive: false,
+      isFocused: false,
       windowTitle: name,
-      uuid: windowUUID
+      uuid: windowUUID,
+      options: options
     });
 
     windowsTrackOf.push(name);
@@ -70,12 +89,12 @@ windowServer = {
   setDesktopWallpaper(hex) {
     fb.style.backgroundColor = hex;
   },
-  getWinID(name) {
-    if (windowsTrackOf.indexOf(name) == -1) {
-      return null;
+  isFocused(uuid) {
+    for (i of windows) {
+      if (i.uuid == uuid && i.isFocused) return true;
     }
 
-    return windowsTrackOf.indexOf(name);
+    return false;
   },
   getWinDetails(name) {
     if (windowsTrackOf.indexOf(name) == -1) {
@@ -94,5 +113,15 @@ windowServer = {
 };
 
 while (true) {
-  await sleep(1000);
+  await sleep(100);
+
+  for (i in windows) {
+    if (windows[i].uuid == focusedWindowUUID) {
+      windows[i].isFocused = true;
+      if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #303d3d";
+    } else {
+      windows[i].isFocused = false;
+      if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #141a1a";
+    }
+  }
 }
