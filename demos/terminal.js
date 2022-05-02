@@ -10,61 +10,32 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-let isKbdEnabled = false;
 let stdout = "";
-let vstd = "";
 
-document.addEventListener("keydown", function (e) {
-    if (isKbdEnabled && windowServer.isFocused(UUID)) {
-      let bannedKbdKeys = [
-        "Control",
-        "Alt",
-        "WakeUp",
-        "Meta",
-        "OS",
-        "Page",
-        "Arrow",
-        "Shift",
-        "Escape",
-        "CapsLock",
-        "Tab",
-        "Home",
-        "End",
-        "Insert",
-        "Delete",
-        "Unidentified",
-        "F1",
-        "F2",
-        "F0",
-        "ContextMenu",
-        "AudioVolumeDown",
-        "AudioVolumeUp",
-      ];
-  
-      if (e.key == "Enter") {
-        isKbdEnabled = false;
-        return;
-      }
-  
-      if (e.key == "Backspace") {
-        vstd = vstd.slice(0, -1);
-        document.getElementById(UUID).innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-        document.getElementById(UUID).scrollTo(0, document.getElementById(UUID).scrollHeight);
-        return;
-      }
-  
-      for (kbd of bannedKbdKeys) {
-        if (e.key.startsWith(kbd)) {
-          return;
-        }
-      }
-  
-      vstd += e.key;
-  
-      document.getElementById(UUID).innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-      document.getElementById(UUID).scrollTo(0, document.getElementById(UUID).scrollHeight);
-    }
-});
+let bannedKbdKeys = [
+  "Control",
+  "Alt",
+  "WakeUp",
+  "Meta",
+  "OS",
+  "Page",
+  "Arrow",
+  "Shift",
+  "Escape",
+  "CapsLock",
+  "Tab",
+  "Home",
+  "End",
+  "Insert",
+  "Delete",
+  "Unidentified",
+  "F1",
+  "F2",
+  "F0",
+  "ContextMenu",
+  "AudioVolumeDown",
+  "AudioVolumeUp",
+];
 
 await windowServer.newWindow("terminal", async function main(uuid) {
     UUID = uuid;
@@ -91,18 +62,29 @@ await windowServer.newWindow("terminal", async function main(uuid) {
     }
     
     kernel.stdin = async function () {
-      isKbdEnabled = true;
+      let vstd = "";
 
-      while (isKbdEnabled) {
-        await sleep(100);
+      while (!vstd.endsWith("\n")) {
+        let invalid = false;
+        let input = await windowServer.getKeyboardData(UUID);
+
+        console.log(input)
+
+        for (i of bannedKbdKeys) if (input.startsWith(i)) invalid = true;
+
+        if (!invalid && input == "Backspace") {
+          vstd = vstd.slice(0, -1);
+        } else if (!invalid) {
+          vstd += input;
+        }
+
+        elem.innerHTML = sanitize(stdout + vstd).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+        elem.scrollTo(0, elem.scrollHeight);
       }
 
-      let vsh = vstd;
-      vstd = "";
+      kernel.stdout(vstd);
 
-      kernel.stdout(vsh, "\n");
-
-      return vsh;
+      return vstd.replaceAll("\n", "");
     }
 
     for (i of Applications) {

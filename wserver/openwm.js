@@ -23,4 +23,25 @@ let hasStarted = false;
 
 let terminal = Applications.find(app => { return app.name == "terminal" })
 
-await windowServer.newWindow(terminal.name, terminal.function, {});
+kernel.stdout(" - Running init tasks...\n");
+
+if (localStorage.getItem("openwm_init.cfg") !== null) {
+    let init = localStorage.getItem("openwm_init.cfg");
+    init = init.split(";");
+
+    for (i of init) {
+        kernel.stdout(` - Running init task: ${i}...`);
+        try {
+            let app = Applications.find(app => { return app.name == i });
+
+            if (app !== undefined) {
+                windowServer.newWindow(app.name, app.function, {});
+            }
+        } catch (e) {
+            kernel.stdout(": FAIL");
+            console.error(e);
+        }
+
+        kernel.stdout("\n");
+    }
+}
