@@ -10,7 +10,7 @@ document.addEventListener('mousemove', e => {
   try {
     focusedWindowUUID = document.elementFromPoint(e.clientX, e.clientY).id;
   } catch (e) {
-    alert(e);
+    console.warn(e);
   }
 }, {passive: true})
 
@@ -110,6 +110,33 @@ windowServer = {
 
     windows[windowsTrackOf.indexOf(name)].windowTitle = title;
   },
+  async getKeyboardData(UUID) {
+    while (!windowServer.isFocused(UUID)) {
+      await sleep(1000); 
+    }
+    
+    let keyboardData = "";
+
+    async function getKeyboardData(e) {
+      if (e.key == "Enter") {
+        keyboardData += "\n";
+      } else if (e.key == "Meta" || e.key == "OS") {
+        keyboardData += "Meta";
+      } else if (e.key !== "Shift") {
+        keyboardData += e.key;
+      }
+    }
+
+    document.addEventListener("keydown", getKeyboardData);
+
+    while (keyboardData == "") {
+      await sleep(20);
+    }
+
+    document.removeEventListener("keydown", getKeyboardData);
+
+    return keyboardData;
+  }
 };
 
 while (true) {
