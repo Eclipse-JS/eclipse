@@ -138,6 +138,53 @@ addEventListener("DOMContentLoaded", async function () {
       localStorage.setItem("autostart.rc", 'setup');
     }
 
+    if (localStorage.getItem("nuke.rc") != null) {
+      kernel.stdout("  ☢️ Nuke mode on. Force upgrading packages...\n");
+      kernel.stdout("     - Removing all packages...\n");
+     
+      localStorage.removeItem("packages.rc");
+
+      // Code stolen from nmp/setup.js
+      let manifest = JSON.parse(localStorage.getItem("fselect_manifest"));
+      let manifests = [];
+      
+      let items = [];
+
+      kernel.stdout("     - Updating package mirrors...\n");
+
+      for await (item of manifest) {
+        try {
+          let resp = await axios.get(item);
+          let manifestCache = [];
+          
+          manifestCache.push({ path: item, data: btoa(JSON.stringify(resp.data)) });
+      
+          for (app of resp.data) {
+            manifests.push(app);
+          }
+        } catch (e) {
+          kernel.stdout("Could not fetch '" + item + "'\n");
+          console.error(e);
+        }
+      }
+
+      for await (item of manifests) {
+        kernel.stdout("     - Installing package", item.name);
+      
+        try {
+          let app = await axios.get(item.path);
+          items.push({ name: item.name, version: item.version, function: btoa(app.data) });
+      
+          kernel.stdout(": Done.\n");
+        } catch (e) {
+          console.error(e);
+          kernel.stdout(": Failed.\n");
+        }
+      }
+      
+      localStorage.setItem("packages.rc", JSON.stringify(items));      
+    }
+
     if (localStorage.getItem("fselect_manifest") == null || localStorage.getItem("packages.rc") == null) {
       kernel.stdout("  Could not find manifest database (or other error). Loading setup...\n");
       let setup = await axios.get("nmp/setup.js");
