@@ -1,3 +1,10 @@
+// isStatic - window stays in place if true
+// noBorder - no border if true
+// FIXME: implement alwaysOnTop and alwaysOnBottom
+
+// unfocused: z-index: 5;
+// focused: z-index: 10;
+
 kernel.fb.wmMode();
 let fb = kernel.fb.getWMObject();
 
@@ -5,14 +12,57 @@ let windows = [];
 let windowsTrackOf = [];
 
 let focusedWindowUUID = "";
+let mouseStats = { idUnder: "", isDown: false, which: 0, x: 0, y: 0 };
 
 document.addEventListener('mousemove', e => {
   try {
-    focusedWindowUUID = document.elementFromPoint(e.clientX, e.clientY).id;
+    focusedWindowUUID = document.elementFromPoint(e.clientX, e.clientY).id; 
+    mouseStats.idUnder = document.elementFromPoint(e.clientX, e.clientY).id;
+
+    mouseStats.x = e.clientX;
+    mouseStats.y = e.clientY;
   } catch (e) {
-    console.warn(e);
+    //console.warn(e);
   }
-}, {passive: true})
+}, {passive: true});
+
+// Window movement
+document.addEventListener("keydown", e => {
+  if (e.key == "Control" && mouseStats.isDown && mouseStats.which == 1) {
+    let isStatic = false;
+
+    try {
+      isStatic = windows.find(window => window.uuid == mouseStats.idUnder).config.isStatic;
+    } catch (e) { }
+
+    if (mouseStats.idUnder == "html-renderer" || isStatic) return;
+
+    document.getElementById(mouseStats.idUnder).style.top = mouseStats.y - 120 + "px";
+    document.getElementById(mouseStats.idUnder).style.left = mouseStats.x - 120 + "px";
+  } else if (e.key == "Control" && mouseStats.isDown && mouseStats.which == 3) {
+    /*
+    let isStatic = false;
+
+    try {
+      isStatic = windows.find(window => window.uuid == mouseStats.idUnder).config.isStatic;
+    } catch (e) { }
+
+    if (mouseStats.idUnder == "html-renderer" || isStatic) return;
+
+    document.getElementById(mouseStats.idUnder).style.width = parseInt(document.getElementById(mouseStats.idUnder).style.width) + mouseStats.y + "px";
+    document.getElementById(mouseStats.idUnder).style.height = parseInt(document.getElementById(mouseStats.idUnder).style.height) + mouseStats.x + "px";
+    */
+  }
+})
+
+document.addEventListener("mousedown", e => {
+  mouseStats.isDown = true;
+  mouseStats.which = e.which;
+});
+
+document.addEventListener("mouseup", e => {
+  mouseStats.isDown = false;
+})
 
 windowServer = {
   async newWindow(name, callback, Options) {
@@ -112,9 +162,9 @@ windowServer = {
   },
   async getKeyboardData(UUID) {
     while (!windowServer.isFocused(UUID)) {
-      await sleep(1000); 
+      await sleep(30); 
     }
-    
+
     let keyboardData = "";
 
     async function getKeyboardData(e) {
@@ -145,9 +195,11 @@ while (true) {
   for (i in windows) {
     if (windows[i].uuid == focusedWindowUUID) {
       windows[i].isFocused = true;
+      document.getElementById(windows[i].uuid).style.zIndex = "10";
       if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #303d3d";
     } else {
       windows[i].isFocused = false;
+      document.getElementById(windows[i].uuid).style.zIndex = "5";
       if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #141a1a";
     }
   }

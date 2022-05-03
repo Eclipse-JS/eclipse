@@ -68,7 +68,7 @@ await windowServer.newWindow("terminal", async function main(uuid) {
         let invalid = false;
         let input = await windowServer.getKeyboardData(UUID);
 
-        console.log(input)
+        //console.log(input)
 
         for (i of bannedKbdKeys) if (input.startsWith(i)) invalid = true;
 
