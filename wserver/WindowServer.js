@@ -21,9 +21,7 @@ document.addEventListener('mousemove', e => {
 
     mouseStats.x = e.clientX;
     mouseStats.y = e.clientY;
-  } catch (e) {
-    //console.warn(e);
-  }
+  } catch (e) { }
 }, {passive: true});
 
 // Window movement
@@ -32,27 +30,16 @@ document.addEventListener("keydown", e => {
     let isStatic = false;
 
     try {
-      isStatic = windows.find(window => window.uuid == mouseStats.idUnder).config.isStatic;
+      isStatic = windows.find(window => window.uuid == mouseStats.idUnder).options.isStatic;
     } catch (e) { }
 
     if (mouseStats.idUnder == "html-renderer" || isStatic) return;
+
+    document.getElementById(mouseStats.idUnder).style.userSelect = "none";
 
     document.getElementById(mouseStats.idUnder).style.top = mouseStats.y - 120 + "px";
     document.getElementById(mouseStats.idUnder).style.left = mouseStats.x - 120 + "px";
-  } else if (e.key == "Control" && mouseStats.isDown && mouseStats.which == 3) {
-    /*
-    let isStatic = false;
-
-    try {
-      isStatic = windows.find(window => window.uuid == mouseStats.idUnder).config.isStatic;
-    } catch (e) { }
-
-    if (mouseStats.idUnder == "html-renderer" || isStatic) return;
-
-    document.getElementById(mouseStats.idUnder).style.width = parseInt(document.getElementById(mouseStats.idUnder).style.width) + mouseStats.y + "px";
-    document.getElementById(mouseStats.idUnder).style.height = parseInt(document.getElementById(mouseStats.idUnder).style.height) + mouseStats.x + "px";
-    */
-  }
+  } else if (e.key == "Control" && mouseStats.isDown && mouseStats.which == 3) { }
 })
 
 document.addEventListener("mousedown", e => {
@@ -62,6 +49,7 @@ document.addEventListener("mousedown", e => {
 
 document.addEventListener("mouseup", e => {
   mouseStats.isDown = false;
+  document.getElementById(mouseStats.idUnder).style.userSelect = "auto";
 })
 
 windowServer = {
@@ -109,10 +97,10 @@ windowServer = {
     
     windowElement.style.position = "absolute";
 
-    windowElement.style.top = "1px";
-    windowElement.style.left = "1px";
-    windowElement.style.width = "640px";
-    windowElement.style.height = "360px";
+    if (options.top == undefined) { windowElement.style.top = "1px" } else { windowElement.style.top = options.top };
+    if (options.left == undefined) { windowElement.style.left = "1px" } else { windowElement.style.left = options.left };
+    if (options.width == undefined) { windowElement.style.width = "640px" } else { windowElement.style.width = options.width };
+    if (options.height == undefined) { windowElement.style.height = "360px"; } else { windowElement.style.height = options.height };
 
     windowElement.style.color = "#ffffff";
     windowElement.style.fontFamily = "monospace";

@@ -8,5 +8,10 @@
     "name": "openwm",
     "version": "0.1.0",
     "path": "wserver/openwm.js"
+  }, 
+  {
+    "name": "nepo",
+    "version": "0.1.0",
+    "path": "wserver/nepo.js"
   }
 ]

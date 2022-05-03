@@ -23,6 +23,11 @@ let hasStarted = false;
 
 let terminal = Applications.find(app => { return app.name == "terminal" })
 
+kernel.stdout(" - Starting panel...\n");
+
+let nepo = Applications.find(app => { return app.name == "nepo" });
+kernel.pexec(nepo.name, nepo.function);
+
 kernel.stdout(" - Running init tasks...\n");
 
 if (localStorage.getItem("openwm_init.cfg") !== null) {
@@ -35,7 +40,7 @@ if (localStorage.getItem("openwm_init.cfg") !== null) {
             let app = Applications.find(app => { return app.name == i });
 
             if (app !== undefined) {
-                windowServer.newWindow(app.name, app.function, {});
+                kernel.pexec(app.name, app.function);
             }
         } catch (e) {
             kernel.stdout(": FAIL");
@@ -45,3 +50,4 @@ if (localStorage.getItem("openwm_init.cfg") !== null) {
         kernel.stdout("\n");
     }
 }
+
