@@ -43,6 +43,8 @@ await windowServer.newWindow("terminal", async function main(uuid) {
     let elem = document.getElementById(uuid);
     let kernel = Kernel;
 
+    elem.title = "Terminal";
+
     elem.innerHTML = sanitize(stdout).replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
     elem.scrollTo(0, elem.scrollHeight);
 

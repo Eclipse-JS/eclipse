@@ -10,10 +10,9 @@ function sleep(ms) {
 await windowServer.newWindow("nepo", async function main(uuid) {
     let elem = document.getElementById(uuid);
 
-    elem.innerHTML = "Hello World!";
-
     while (true) {
-        await sleep(100);
+        elem.innerHTML = windowServer.panelUtilities.getBelowWindowTitle();
+        await sleep(20);
     }
 }, {
     "isStatic": true,

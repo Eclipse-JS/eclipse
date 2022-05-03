@@ -8,5 +8,10 @@
         "name": "terminal",
         "version": "0.1.0",
         "path": "demos/terminal.js"
+    },
+    {
+        "name": "DOOM",
+        "version": "0.1.0",
+        "path": "demos/DOOM.js"
     }
 ]

@@ -108,6 +108,8 @@ windowServer = {
     windowElement.style.fontFamily = "monospace";
     
     windowElement.style.overflow = "hidden";
+
+    windowElement.title = name;
     
     fb.appendChild(windowElement);
 
@@ -143,12 +145,10 @@ windowServer = {
 
     return windows[windowsTrackOf.indexOf(name)];
   },
-  setWindowTitle(name, title) {
-    if (windowsTrackOf.indexOf(name) == -1) {
-      throw "Window does not exist";
-    }
+  setWindowTitle(uuid, title) {
+    if (document.getElementById(uuid) == null) throw "Window does not exist!";
 
-    windows[windowsTrackOf.indexOf(name)].windowTitle = title;
+    document.getElementById(uuid).title = title;
   },
   async getKeyboardData(UUID) {
     while (!windowServer.isFocused(UUID)) {
@@ -176,6 +176,15 @@ windowServer = {
     document.removeEventListener("keydown", getKeyboardData);
 
     return keyboardData;
+  },
+  panelUtilities: {
+    getBelowWindowTitle() {
+      try {
+        return document.getElementById(mouseStats.idUnder).title;
+      } catch (e) {
+        return "";
+      }
+    }
   }
 };
 
