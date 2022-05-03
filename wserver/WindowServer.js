@@ -1,6 +1,8 @@
 // isStatic - window stays in place if true
 // noBorder - no border if true
-// FIXME: implement alwaysOnTop and alwaysOnBottom
+
+// alwaysOnTop - window stays on top if true
+// alwaysOnBottom - window stays on bottom if true
 
 // unfocused: z-index: 5;
 // focused: z-index: 10;
@@ -182,12 +184,28 @@ while (true) {
 
   for (i in windows) {
     if (windows[i].uuid == focusedWindowUUID) {
+      if (windows[i].options.alwaysOnTop) {
+        document.getElementById(windows[i].uuid).style.zIndex = "11";
+      } else if (windows[i].options.alawaysOnBottom) {
+        document.getElementById(windows[i].uuid).style.zIndex = "4";
+      } else {
+        document.getElementById(windows[i].uuid).style.zIndex = "10";
+      }
+
       windows[i].isFocused = true;
-      document.getElementById(windows[i].uuid).style.zIndex = "10";
+      
       if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #303d3d";
     } else {
+      if (windows[i].options.alwaysOnTop) {
+        document.getElementById(windows[i].uuid).style.zIndex = "11";
+      } else if (windows[i].options.alawaysOnBottom) {
+        document.getElementById(windows[i].uuid).style.zIndex = "4";
+      } else {
+        document.getElementById(windows[i].uuid).style.zIndex = "5";
+      }
+
       windows[i].isFocused = false;
-      document.getElementById(windows[i].uuid).style.zIndex = "5";
+
       if (!windows[i].options.noBorder) document.getElementById(windows[i].uuid).style.border = "1px solid #141a1a";
     }
   }
