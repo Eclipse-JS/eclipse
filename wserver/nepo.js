@@ -9,9 +9,17 @@ function sleep(ms) {
 
 await windowServer.newWindow("nepo", async function main(uuid) {
     let elem = document.getElementById(uuid);
+    let Titlebar = document.createElement("h20");
+    Titlebar.style.textDecoration = "bold";
+    Titlebar.style.top = "5px";
+    Titlebar.style.width = "100%";
+    Titlebar.style.position = "absolute";
+    Titlebar.style.textAlign = "center";
 
     while (true) {
-        elem.innerHTML = windowServer.panelUtilities.getBelowWindowTitle();
+        elem.innerHTML = "";
+        Titlebar.innerHTML = windowServer.panelUtilities.getBelowWindowTitle();
+        elem.appendChild(Titlebar);
         await sleep(20);
     }
 }, {

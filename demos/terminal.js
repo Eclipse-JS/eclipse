@@ -82,7 +82,7 @@ await windowServer.newWindow("terminal", async function main(uuid) {
         elem.scrollTo(0, elem.scrollHeight);
       }
 
-      kernel.stdout(vstd);
+      stdout += vstd;
 
       return vstd.replaceAll("\n", "");
     }
