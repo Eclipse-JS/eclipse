@@ -128,8 +128,15 @@ windowServer = {
     document.getElementById(windowUUID).remove();
     return;
   },
-  setDesktopWallpaper(hex) {
-    fb.style.backgroundColor = hex;
+  wallpaper: {
+    setColor(hex) {
+      fb.style.backgroundColor = hex;
+    },
+    setImageURL(url) {
+      fb.style.backgroundRepeat = "no-repeat";
+      fb.style.backgroundSize = "cover";
+      fb.style.backgroundImage = "url(" + url + ")";
+    }
   },
   isFocused(uuid) {
     for (i of windows) {

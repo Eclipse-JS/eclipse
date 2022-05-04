@@ -17,7 +17,7 @@ if (typeof windowServer.newWindow !== "function") {
   return;
 }
 
-windowServer.setDesktopWallpaper("#000000");
+windowServer.wallpaper.setImageURL("/wserver/src/wallpaper.png");
 
 let hasStarted = false;
 
