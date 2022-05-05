@@ -1,10 +1,5 @@
 [
     {
-        "name": "wexampleclient",
-        "version": "0.1.0",
-        "path": "demos/WindowClient.js"
-    },
-    {
         "name": "terminal",
         "version": "0.1.0",
         "path": "demos/terminal.js"
