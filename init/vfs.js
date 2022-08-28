@@ -42,7 +42,7 @@ VFS = {
 
     const fileExists = fileSystem.filter(d => d.type == "file" && d.directory == folders && d.name == fileName);
 
-    if (!fileExists) {
+    if (fileExists.length == 0) {
       throw "File does not exist!";
     }
 
@@ -135,7 +135,7 @@ VFS = {
     const folderExists = fileSystem.filter(d => d.type == "directory" && d.name == folders);
     const fileExists = fileSystem.filter(d => d.type == "file" && d.directory == folders && d.name == fileName);
 
-    return folderExists.length > 0 && fileExists.length > 0;
+    return folderExists.length != 0 || fileExists.length != 0;
   },
   sync() {
     localStorage.setItem("vfs", JSON.stringify(fileSystem));
