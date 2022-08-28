@@ -1,4 +1,0 @@
-app - Base System, cannot remove
-av - Audio and Video utilities (ex. avd)
-programming - Programming utilities (ex. fetch, jsexec)
-wserver - WIP Window Server

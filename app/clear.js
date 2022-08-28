@@ -1,1 +1,0 @@
-kernel.stdout("jsKernelReq$cls");
