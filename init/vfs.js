@@ -111,8 +111,8 @@ VFS = {
 
     const folderExists = fileSystem.filter(d => d.type == "directory" && d.name == folders);
     const fileExists = fileSystem.filter(d => d.type == "file" && d.directory == folders && d.name == fileName);
-
-    return !folderExists && !fileExists;
+    
+    return !folderExists || !fileExists;
   },
   sync() {
     localStorage.setItem("vfs", JSON.stringify(fileSystem));
