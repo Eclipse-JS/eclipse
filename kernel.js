@@ -75,7 +75,7 @@ function generateFakeDocument(mask) {
           await func();
         } catch (e) {
           if (pid == 0) {
-            panic("Attempted to kill init!", "KernelSpace", e);
+            panic("Attempted to kill init!", "Userspace Process: " + name, e);
           } else {
             console.error(e);
           }
@@ -99,7 +99,7 @@ function generateFakeDocument(mask) {
           document.getElementById("framebuffer").height = window.innerHeight;
         }
 
-        return document.getElementById("framebuffer");
+        return document.getElementById("framebuffer").getContext("2d");
       }
     }
   }

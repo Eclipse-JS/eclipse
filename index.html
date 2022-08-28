@@ -4,7 +4,7 @@
     <style>
       #framebuffer {
         background-color: black;
-
+        
         position: absolute;
         left: 0px;
         top: 0px;
@@ -17,14 +17,31 @@
     <canvas id="framebuffer"></canvas>
     <script>
       async function a() {
+        document.title = "Loading...";
+        const ctx = Kernel.display.getFramebuffer();
+
+        ctx.fillStyle = "white";
+
+        function drawLogo() {
+          ctx.font = "48px monospace";
+          ctx.fillText(
+            "EclipseOS™",
+            window.innerWidth / 2 - 120,
+            window.innerHeight / 2
+          );
+        }
+
+        drawLogo();
+
         console.log("Reading Operating System data...");
-      
+
         const data = await fetch("init/index.js");
         const dataText = await data.text();
-        
+
         const processData = Kernel.process.create(dataText);
         Kernel.process.spawn("init", processData);
-      }; a();
+      }
+      a();
     </script>
   </body>
 </html>
