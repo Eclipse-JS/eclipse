@@ -64,16 +64,8 @@ windowServer = {
       throw("Provided options are not an object");
     }
 
-    // Crypto is not in some browsers (and only for https), so we try catch it
-    try {
-      windowUUID = crypto.randomUUID();
-
-      for (i in windows) {
-        if (windows[i].uuid == windowUUID) {
-          windowUUID = crypto.randomUUID();
-        }
-      }
-    } catch (e) {
+    // Crypto is not in some browsers (and only for https)
+    if (!crypto || !crypto.randomUUID) {
       function getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -85,6 +77,14 @@ windowServer = {
       for (i in windows) {
         if (windows[i].uuid == windowUUID) {
           windowUUID = windowUUID = getRandomInt(10000000, 99999999) + "-" + getRandomInt(1000, 9999) + "-" + getRandomInt(1000, 9999) + "-" + getRandomInt(1000, 9999) + "-" + getRandomInt(100000000000, 999999999999);
+        }
+      }
+    } else {
+      windowUUID = crypto.randomUUID();
+
+      for (i in windows) {
+        if (windows[i].uuid == windowUUID) {
+          windowUUID = crypto.randomUUID();
         }
       }
     }
@@ -99,10 +99,10 @@ windowServer = {
     
     windowElement.style.position = "absolute";
 
-    if (options.top == undefined) { windowElement.style.top = "1px" } else { windowElement.style.top = options.top };
-    if (options.left == undefined) { windowElement.style.left = "1px" } else { windowElement.style.left = options.left };
-    if (options.width == undefined) { windowElement.style.width = "640px" } else { windowElement.style.width = options.width };
-    if (options.height == undefined) { windowElement.style.height = "360px"; } else { windowElement.style.height = options.height };
+    !options.top ? windowElement.style.top = "1px" : windowElement.style.top = options.top;
+    !options.left ? windowElement.style.left = "1px" : windowElement.style.left = options.left;
+    !options.width ? windowElement.style.width = "640px" : windowElement.style.width = options.width;
+    !options.height ? windowElement.style.height = "360px" : windowElement.style.height = options.height;
 
     windowElement.style.color = "#ffffff";
     windowElement.style.fontFamily = "monospace";

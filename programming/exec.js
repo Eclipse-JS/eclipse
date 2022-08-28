@@ -25,7 +25,7 @@ if (args[0] !== undefined) {
 
     try {
       let func = new AsyncFunction(stdin);
-      resp = await func();
+      resp = JSON.stringify(await func());
     } catch (e) {
       resp = e;
     }
