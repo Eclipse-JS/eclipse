@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <script src="kernel.js"></script>
+    <style>
+      #framebuffer {
+        background-color: black;
+
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="framebuffer"></canvas>
+    <script>
+      async function a() {
+        console.log("Reading Operating System data...");
+      
+        const data = await fetch("init/index.js");
+        const dataText = await data.text();
+        
+        const processData = Kernel.process.create(dataText);
+        Kernel.process.spawn("init", processData);
+      }; a();
+    </script>
+  </body>
+</html>
