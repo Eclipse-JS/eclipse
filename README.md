@@ -1,4 +1,4 @@
-# femOS
+# EclipseOS
 Operating system written in JavaScript
 ## Running
 Git clone this repo:
