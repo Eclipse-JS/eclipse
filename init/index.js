@@ -13,7 +13,15 @@ async function execJS(name, path) {
 }
 
 console.log("Loading VFS Libraries...");
-await execJS("initvfs", "init/vfs.js");
+
+if (localStorage.getItem("preboot_vfs")) {
+  const binData = localStorage.getItem("preboot_vfs");
+
+  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
+  await Kernel.process.spawn("initvfs", process);
+} else {
+  await execJS("initvfs", "init/vfs.js");
+}
 
 if (VFS.existsSync("/bin/sys", "file")) {
   console.log("Found local copy of Sys");

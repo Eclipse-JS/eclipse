@@ -68,7 +68,7 @@ function fillText(text, count) {
 
 function redraw(textData) {
   const maxLines = Math.round((window.innerHeight/fontSize)/1.5);
-  const text = textData.split("\n");
+  const text = textData.split("\n").map(item => item === undefined || item == "" ? ' ' : item);
 
   while (text.length > maxLines) text.shift();
 

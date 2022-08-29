@@ -35,7 +35,12 @@ fillText("Downloading packages:", 2);
 const data = JSON.parse(await fetchTextData("repos/main/packages.json"));
 Sys.loadPercent(20);
 
-let indexes = 2;
+fillText(" - VFS", 3);
+const vfs = "UWU;;\n\n" + await fetchTextData("init/vfs.js");
+
+localStorage.setItem("preboot_vfs", vfs);
+
+let indexes = 3;
 
 for (const index of Object.keys(data)) {
   indexes++;
