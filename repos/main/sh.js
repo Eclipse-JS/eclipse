@@ -4,9 +4,10 @@ const input = args.shift();
 let ENV = "/bin/";
 
 const VFS = Kernel.extensions.get("Vfs");
+const net = Kernel.extensions.get("libnet");
 
 while (true) {
-  input.stdout("> ");
+  input.stdout(`<NULL>@${net.getHostname()}$ `);
   const command = await input.stdin();
 
   if (command.trim() == "") continue;

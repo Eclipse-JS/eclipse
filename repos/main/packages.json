@@ -4,6 +4,10 @@
     "desc": "EclipseOS Coreutils"
   },
   "packages": {
+    "net": {
+      "ver": "0.1.0",
+      "path": "libnet.js"
+    },
     "pkg": {
       "ver": "0.1.0",
       "path": "pkg.js"

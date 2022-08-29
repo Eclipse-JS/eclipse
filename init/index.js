@@ -51,6 +51,7 @@ if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
 } else {
   console.log("Loading programs...");
   const initPrgms = VFS.read("/etc/init.d/init.conf").split("\n");
+  const onloadProgram = VFS.read("/etc/init.d/initcmd.txt");
 
   for (i of initPrgms) {
     try {
@@ -62,6 +63,11 @@ if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
       console.error("Failed to execute '" + i + "'.");
     }
   }
+  
+  const binData = VFS.read(onloadProgram);
+
+  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
+  await Kernel.process.spawn(i, process);
 }
 
 while (true) {

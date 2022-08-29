@@ -56,7 +56,8 @@ for (const index of Object.keys(data.packages)) {
 fillText("Configuring packages...", indexes+2);
 if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
-VFS.write("/etc/init.d/init.conf", "/bin/ttysh");
+VFS.write("/etc/init.d/init.conf", "/bin/net");
+VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
 VFS.write("/etc/ttysh.conf", "shell=/bin/sh");
 
 fillText("Rebooting system...", indexes+3);
