@@ -1,38 +1,41 @@
 function wipeVFS() {
   localStorage.setItem("vfs", JSON.stringify([{type: "folder", name: "/"}]));
-  localStorage.setItem("vfs_ver", "gbvfsR2")
+  localStorage.setItem("vfs_ver", "gbvfsR3")
   return JSON.stringify([{type: "folder", name: "/"}]);
 }
 
 let fileSystem = !localStorage.getItem("vfs") ? wipeVFS() : localStorage.getItem("vfs");
 fileSystem = JSON.parse(fileSystem);
 
-// https://www.codegrepper.com/code-examples/javascript/string+to+hex+javascript
-function hexToAscii(str1) {
-	var hex  = str1.toString();
-	var str = '';
-
-	for (var n = 0; n < hex.length; n += 2) {
-		str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
-	}
-
-	return str;
+function toBinary(string) {
+  const codeUnits = new Uint16Array(string.length);
+  for (let i = 0; i < codeUnits.length; i++) {
+    codeUnits[i] = string.charCodeAt(i);
+  }
+  const charCodes = new Uint8Array(codeUnits.buffer);
+  let result = '';
+  for (let i = 0; i < charCodes.byteLength; i++) {
+    result += String.fromCharCode(charCodes[i]);
+  }
+  return result;
 }
 
-function asciiToHex(str) {
-	var arr1 = [];
-
-	for (var n = 0, l = str.length; n < l; n++) {
-		var hex = Number(str.charCodeAt(n)).toString(16);
-		arr1.push(hex);
-	}
-
-	return arr1.join('');
+function fromBinary(binary) {
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  const charCodes = new Uint16Array(bytes.buffer);
+  let result = '';
+  for (let i = 0; i < charCodes.length; i++) {
+    result += String.fromCharCode(charCodes[i]);
+  }
+  return result;
 }
 
 VFS = {
   version() {
-    return "gbvfsR2" // GarBage Virtual File System
+    return "gbvfsR3" // GarBage Virtual File System
   },
   read(rawPath) {
     const path = rawPath.split("/").filter(word => word.trim().length > 0);
@@ -46,7 +49,7 @@ VFS = {
       throw "File does not exist!";
     }
 
-    return hexToAscii(fileExists[0].contents);
+    return fromBinary(atob(fileExists[0].contents));
   },
   write(rawPath, contents) {
     const path = rawPath.split("/").filter(word => word.trim().length > 0);
@@ -69,7 +72,7 @@ VFS = {
       type: "file",
       name: fileName,
       directory: folders,
-      contents: asciiToHex(JSON.stringify(contents))
+      contents: btoa(toBinary(contents))
     });
 
     this.sync();
@@ -126,16 +129,18 @@ VFS = {
 
     return folderExists ? "folder" : "file";
   },
-  existsSync(rawPath) {
+  existsSync(rawPath, fileOrFolder) {
     const path = rawPath.split("/").filter(word => word.trim().length > 0);
 
-    const fileName = path.pop();
+    const fileName = fileOrFolder == "file" ? path.pop() : path; // This is not used anyway, just a stupid workaround
     const folders = "/" + path.join("/");
 
     const folderExists = fileSystem.filter(d => d.type == "directory" && d.name == folders);
     const fileExists = fileSystem.filter(d => d.type == "file" && d.directory == folders && d.name == fileName);
 
-    return folderExists.length != 0 || fileExists.length != 0;
+    console.log(fileExists, folders);
+
+    return fileOrFolder == "file" ? fileExists.length != 0 : folderExists.length != 0;
   },
   sync() {
     localStorage.setItem("vfs", JSON.stringify(fileSystem));
