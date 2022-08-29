@@ -1,0 +1,1 @@
+EclipseOS Coreutils (and package manager + tty based terminal)
