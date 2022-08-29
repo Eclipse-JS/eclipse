@@ -31,39 +31,29 @@ if (!VFS.existsSync("/bin", "folder")) VFS.mkdir("/bin");
 Sys.drawLogo();
 Sys.loadPercent(15);
 
-fillText("Downloading packages: ", 2);
+fillText("Downloading packages:", 2);
 const data = JSON.parse(await fetchTextData("repos/main/packages.json"));
 Sys.loadPercent(20);
 
-fillText(" - Init dependencies", 3);
+let indexes = 2;
 
-// UWU;; with 2 new lines is the header for the JavaScript executables
-const sysData = "UWU;;\n\n" + await fetchTextData("/init/sys.js");
+for (const index of Object.keys(data)) {
+  indexes++;
+  fillText(" - " + index, indexes);
 
-VFS.write("/bin/sys", sysData);
+  const script = "UWU;;\n\n" + await fetchTextData("repos/main/" + data[index].path);
+  VFS.write("/bin/" + index, script);
 
-fillText(" - Command line", 4);
-const sh = "UWU;;\n\n" + await fetchTextData("repos/main/" + data.sh.path);
-const ttysh = "UWU;;\n\n" + await fetchTextData("repos/main/" + data.ttysh.path);
+  const percent = ((indexes-2)/Object.keys(data).length)*100;
 
-VFS.write("/bin/sh", sh);
-VFS.write("/bin/ttysh", ttysh);
+  Sys.loadPercent(percent);
+}
 
-Sys.loadPercent(30);
-
-fillText(" - Package manager", 5);
-
-const packageManager = "UWU;;\n\n" + await fetchTextData("repos/main/" + data.pkg.path);
-VFS.write("/bin/pkg", packageManager);
-Sys.loadPercent(45);
-
-fillText("Configuring packages...", 6);
+fillText("Configuring packages...", indexes+2);
 if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
 VFS.write("/etc/init.d/init.conf", "/bin/ttysh");
 VFS.write("/etc/ttysh.conf", "shell=/bin/sh");
 
-Sys.loadPercent(50);
-
-fillText("Rebooting system...", 8);
+fillText("Rebooting system...", indexes+3);
 window.location.reload();
