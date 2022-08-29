@@ -1,7 +1,7 @@
 function wipeVFS() {
-  localStorage.setItem("vfs", JSON.stringify([{type: "folder", name: "/"}]));
-  localStorage.setItem("vfs_ver", "gbvfsR3")
-  return JSON.stringify([{type: "folder", name: "/"}]);
+  localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/"}]));
+  localStorage.setItem("vfs_ver", "gbvfsR3");
+  return JSON.stringify([{type: "directory", name: "/"}]);
 }
 
 let fileSystem = !localStorage.getItem("vfs") ? wipeVFS() : localStorage.getItem("vfs");
@@ -109,10 +109,12 @@ VFS = {
     let matches = [];
 
     for (i of fileSystem) {
-      if (i.directory == path) {
+      if (i.type == "file" && i.directory == folders) {
         matches.push(i.directory + "/" + i.name);
       }
     }
+
+    return matches;
   },
   getType(rawPath) {
     const path = rawPath.split("/").filter(word => word.trim().length > 0);

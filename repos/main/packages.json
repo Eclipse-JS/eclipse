@@ -10,5 +10,17 @@
   "sh": {
     "ver": "0.1.0",
     "path": "sh.js"
+  },
+  "echo": {
+    "ver": "0.1.0",
+    "path": "echo.js"
+  },
+  "ls": {
+    "ver": "0.1.0",
+    "path": "ls.js"
+  },
+  "cat": {
+    "ver": "0.1.0",
+    "path": "cat.js"
   }
 }

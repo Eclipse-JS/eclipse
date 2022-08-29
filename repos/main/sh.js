@@ -23,7 +23,7 @@ while (true) {
       const binData = VFS.read(validPath);
 
       const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-      await Kernel.process.spawn(validPath, process, [input, ...command.split(" ").slice(0, 1)]);
+      await Kernel.process.spawn(validPath, process, [input, ...command.split(" ").slice(1)]);
     } catch (e) {
       console.error(e);
       input.stdout(command.split(" ")[0] + ": Exception raised.\n");
@@ -38,7 +38,7 @@ while (true) {
       const binData = VFS.read(command.split(" ")[0]);
 
       const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-      await Kernel.process.spawn(validPath, process, [input, ...command.split(" ").slice(0, 1)]);
+      await Kernel.process.spawn(validPath, process, [input, ...command.split(" ").slice(1)]);
     } catch (e) {
       console.error(e);
       input.stdout(command.split(" ")[0] + ": Exception raised.\n");
