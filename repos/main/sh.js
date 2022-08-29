@@ -3,6 +3,8 @@ const input = args.shift();
 
 let ENV = "/bin/";
 
+const VFS = Kernel.extensions.get("Vfs");
+
 while (true) {
   input.stdout("> ");
   const command = await input.stdin();

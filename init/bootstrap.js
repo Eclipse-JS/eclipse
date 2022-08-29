@@ -1,6 +1,5 @@
-if (!VFS) {
-  throw "No filesystem found!";
-}
+const VFS = Kernel.extensions.get("Vfs");
+const Sys = Kernel.extensions.get("sys");
 
 async function fetchTextData(url) {
   const data = await fetch(url);

@@ -1,9 +1,11 @@
 const ctx = Kernel.display.getFramebuffer();
 
-Sys = {
+const Sys = {
   loadPercent: loadPercent,
   drawLogo: drawLogo
 }
+
+Kernel.extensions.load("sys", Sys);
 
 function loadPercent(percent) {
   ctx.fillStyle = "black";

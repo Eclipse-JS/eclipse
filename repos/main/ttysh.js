@@ -1,3 +1,5 @@
+const VFS = Kernel.extensions.get("Vfs");
+
 let bannedKbdKeys = [
   "Control",
   "Alt",

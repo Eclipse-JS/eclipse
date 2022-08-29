@@ -33,7 +33,7 @@ function fromBinary(binary) {
   return result;
 }
 
-VFS = {
+const VFS = {
   version() {
     return "gbvfsR3" // GarBage Virtual File System
   },
@@ -145,7 +145,9 @@ VFS = {
   sync() {
     localStorage.setItem("vfs", JSON.stringify(fileSystem));
   }
-}
+};
+
+Kernel.extensions.load("Vfs", VFS);
 
 if (localStorage.getItem("vfs_ver") != VFS.version()) {
   console.error("Incompatible version, wiping drive...");

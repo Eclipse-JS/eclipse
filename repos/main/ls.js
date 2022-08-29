@@ -1,6 +1,8 @@
 const args = argv;
 const input = args.shift();
 
+const VFS = Kernel.extensions.get("Vfs");
+
 const path = !args[0] ? "/" : args[0];
 
 if (!VFS.existsSync(path, "folder")) {

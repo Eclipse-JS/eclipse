@@ -36,6 +36,8 @@ function generateFakeDocument(mask) {
 }
 
 {
+  const extensions = [];
+
   const processTree = [];
   let processCount = 0;
 
@@ -55,6 +57,27 @@ function generateFakeDocument(mask) {
   }
 
   Kernel = {
+    extensions: {
+      load: function(name, data) {
+        const find = extensions.find(val => val.name == name);
+        
+        if (typeof find == "object" && find.length != 0) {
+          throw "Extension already loaded!";
+        }
+
+        extensions.push({
+          name: name,
+          data: data
+        })
+      },
+      get: function(name) {
+        if (extensions.find(val => val.name == name).length == 0) {
+          throw "Extension not loaded!";
+        }
+
+        return extensions.find(val => val.name == name).data;
+      }
+    },
     process: {
       create(funcStr) {
         const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
