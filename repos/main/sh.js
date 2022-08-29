@@ -1,4 +1,5 @@
-const input = argv;
+const args = argv;
+const input = args.shift();
 
 let ENV = "/bin/";
 
