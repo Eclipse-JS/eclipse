@@ -70,12 +70,12 @@ function redraw(textData) {
   const maxLines = Math.round((window.innerHeight/fontSize)/1.5);
   const text = textData.split("\n");
 
-  while (text.length > maxLines+1) text.shift();
+  while (text.length > maxLines) text.shift();
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-  for (var i = 1; i < maxLines; i++) {
+  for (var i = 1; i < maxLines+1; i++) {
     if (!text[i-1]) break;
 
     fillText(text[i-1], i);
