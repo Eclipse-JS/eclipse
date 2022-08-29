@@ -1,26 +1,40 @@
 {
-  "pkg": {
-    "ver": "0.1.0",
-    "path": "pkg.js"
+  "about": {
+    "name": "Coreutils",
+    "desc": "EclipseOS Coreutils"
   },
-  "ttysh": {
-    "ver": "0.1.0",
-    "path": "ttysh.js"
-  },
-  "sh": {
-    "ver": "0.1.0",
-    "path": "sh.js"
-  },
-  "echo": {
-    "ver": "0.1.0",
-    "path": "echo.js"
-  },
-  "ls": {
-    "ver": "0.1.0",
-    "path": "ls.js"
-  },
-  "cat": {
-    "ver": "0.1.0",
-    "path": "cat.js"
+  "packages": {
+    "pkg": {
+      "ver": "0.1.0",
+      "path": "pkg.js"
+    },
+    "ttysh": {
+      "ver": "0.1.0",
+      "path": "ttysh.js"
+    },
+    "sh": {
+      "ver": "0.1.0",
+      "path": "sh.js"
+    },
+    "echo": {
+      "ver": "0.1.0",
+      "path": "echo.js"
+    },
+    "ls": {
+      "ver": "0.1.0",
+      "path": "ls.js"
+    },
+    "cat": {
+      "ver": "0.1.0",
+      "path": "cat.js"
+    },
+    "clear": {
+      "ver": "1.0.0",
+      "path": "clear.js"
+    },
+    "cls": {
+      "ver": "1.0.0",
+      "path": "clear.js"
+    }   
   }
 }

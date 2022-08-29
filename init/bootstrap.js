@@ -42,14 +42,14 @@ localStorage.setItem("preboot_vfs", vfs);
 
 let indexes = 3;
 
-for (const index of Object.keys(data)) {
+for (const index of Object.keys(data.packages)) {
   indexes++;
   fillText(" - " + index, indexes);
 
-  const script = "UWU;;\n\n" + await fetchTextData("repos/main/" + data[index].path);
+  const script = "UWU;;\n\n" + await fetchTextData("repos/main/" + data.packages[index].path);
   VFS.write("/bin/" + index, script);
 
-  const percent = ((indexes-2)/Object.keys(data).length)*100;
+  const percent = ((indexes-2)/Object.keys(data.packages).length)*100;
 
   Sys.loadPercent(percent);
 }
