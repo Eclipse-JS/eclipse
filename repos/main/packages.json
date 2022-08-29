@@ -1,0 +1,14 @@
+{
+  "pkg": {
+    "ver": "0.1.0",
+    "path": "pkg.js"
+  },
+  "ttysh": {
+    "ver": "0.1.0",
+    "path": "ttysh.js"
+  },
+  "sh": {
+    "ver": "0.1.0",
+    "path": "sh.js"
+  }
+}

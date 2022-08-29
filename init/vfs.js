@@ -138,8 +138,6 @@ VFS = {
     const folderExists = fileSystem.filter(d => d.type == "directory" && d.name == folders);
     const fileExists = fileSystem.filter(d => d.type == "file" && d.directory == folders && d.name == fileName);
 
-    console.log(fileExists, folders);
-
     return fileOrFolder == "file" ? fileExists.length != 0 : folderExists.length != 0;
   },
   sync() {

@@ -59,9 +59,9 @@ function generateFakeDocument(mask) {
       create(funcStr) {
         const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-        return AsyncFunction(funcStr);
+        return AsyncFunction("argv", funcStr);
       },
-      async spawn(name, func) {
+      async spawn(name, func, argv) {
         const pid = processCount;
 
         processTree.push({
@@ -72,7 +72,7 @@ function generateFakeDocument(mask) {
         processCount++;
 
         try {
-          await func();
+          await func(argv);
         } catch (e) {
           if (pid == 0) {
             panic("Attempted to kill init!", "Userspace Process: " + name, e);

@@ -12,23 +12,44 @@ async function execJS(name, path) {
   Kernel.process.spawn(name, processData); 
 }
 
-console.log("Loading booter...");
-await execJS("booter", "init/sys.js");
+console.log("Loading VFS Libraries...");
+await execJS("initvfs", "init/vfs.js");
+
+if (VFS.existsSync("/bin/sys", "file")) {
+  console.log("Found local copy of Sys");
+
+  const binData = VFS.read("/bin/sys");
+
+  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
+  await Kernel.process.spawn("sys", process);
+} else {
+  console.log("Loading booter...");
+  await execJS("booter", "init/sys.js");
+}
 
 Sys.drawLogo();
-Sys.loadPercent(5);
-
-console.log("Loading VFS Libraries...");
-
-await execJS("initvfs", "init/vfs.js");
 Sys.loadPercent(10);
 
 console.log("Loading binaries...");
 
-if (!VFS.existsSync("/bin")) {
+if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
   console.log("No binaries found! Loading liboostrap...");
 
   await execJS("bootstrap", "init/bootstrap.js");
+} else {
+  console.log("Loading programs...");
+  const initPrgms = VFS.read("/etc/init.d/init.conf").split("\n");
+
+  for (i of initPrgms) {
+    try {
+      const binData = VFS.read(i);
+
+      const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
+      await Kernel.process.spawn(i, process);
+    } catch (e) {
+      console.error("Failed to execute '" + i + "'.");
+    }
+  }
 }
 
 while (true) {
