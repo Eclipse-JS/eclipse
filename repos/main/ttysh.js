@@ -67,8 +67,10 @@ function fillText(text, count) {
 }
 
 function redraw(textData) {
-  const maxLines = Math.round(window.innerHeight/fontSize);
+  const maxLines = Math.round((window.innerHeight/fontSize)/1.5);
   const text = textData.split("\n");
+
+  while (text.length > maxLines+1) text.shift();
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
