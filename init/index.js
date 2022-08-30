@@ -37,8 +37,10 @@ if (VFS.existsSync("/bin/sys", "file")) {
   await execJS("booter", "init/sys.js");
 }
 
+// FIXME: Move all of these to files on hard disk
 await execJS("hashcat", "init/hashcat.js");
 await execJS("users", "init/users.js");
+await execJS("sec", "init/security.js");
 
 const Sys = Kernel.extensions.get("sys");
 
