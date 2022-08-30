@@ -1,6 +1,6 @@
 function wipeVFS() {
   localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/"}]));
-  localStorage.setItem("vfs_ver", "gbvfsR3");
+  localStorage.setItem("vfs_ver", "gbvfsR4");
   return JSON.stringify([{type: "directory", name: "/"}]);
 }
 
@@ -36,7 +36,7 @@ function fromBinary(binary) {
 Kernel.extensions.load("Vfs", function(userData) {
   const VFS = {
     version() {
-      return "gbvfsR3" // GarBage Virtual File System
+      return "gbvfsR4" // GarBage Virtual File System
     },
     read(rawPath) {
       const path = rawPath.split("/").filter(word => word.trim().length > 0);
