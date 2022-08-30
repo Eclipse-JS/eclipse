@@ -6,13 +6,14 @@ Kernel.extensions.set("genkernel", function generateCustomKernel(username) {
 
   let newKernel = {
     extensions: {
-      load: function(name, data) {},
-      get: function (name) {}
+      load(name, data) {},
+      get(name) {}
     },
     process: {
       create(funcStr) {},
       async spawn(name, func, argv) {}
-    }
+    },
+    async createUser(username, password) {}
   }
 
   newKernel.display = Kernel.display;
