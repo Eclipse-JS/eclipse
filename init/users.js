@@ -5,9 +5,9 @@ const hash = Kernel.extensions.get("hashcat");
 // Need seperate one for kernelspace, for security.
 
 Kernel.extensions.load("users", {
-  addUser(user, groups, password, permLevel) {
+  async addUser(user, groups, permLevel, password) {
     const profiles = vfs.existsSync("/etc/passwd", "file") ? vfs.read("/etc/passwd").split("\n") : [];
-    profiles.push(`${user}:${groups.join(",")} ${permLevel} ${hash.sha512(password)}`);
+    profiles.push(`${user}:${groups.join(",")} ${permLevel} ${await hash.sha512(password)}`);
 
     vfs.write("/etc/passwd", profiles.join("\n"));
   },

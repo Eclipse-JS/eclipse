@@ -37,6 +37,9 @@ if (VFS.existsSync("/bin/sys", "file")) {
   await execJS("booter", "init/sys.js");
 }
 
+await execJS("hashcat", "init/hashcat.js");
+await execJS("users", "init/users.js");
+
 const Sys = Kernel.extensions.get("sys");
 
 Sys.drawLogo();

@@ -61,7 +61,7 @@ VFS.write("/etc/init.d/init.conf", "/bin/net");
 VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
 VFS.write("/etc/ttysh.conf", "shell=/bin/sh");
 
-users.addUser("root", ["root"], 0, "toor");
+await users.addUser("root", ["root"], 0, "toor");
 
 fillText("Rebooting system...", indexes+3);
 window.location.reload();
