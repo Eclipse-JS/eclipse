@@ -1,49 +1,9 @@
-function mask() {
-  let Document = {};
-
-  Document.getElementById = document.getElementById;
-  Document.getElementById = document.getElementById;
-  Document.getElementsByClassName = document.getElementsByClassName;
-  Document.getElementsByTagName = document.getElementsByTagName;
-  Document.getElementsByTagNameNS = document.getElementsByTagNameNS;
-  Document.appendChild = document.appendChild;
-  Document.append = document.append;
-
-  document.getElementById = null;
-  document.getElementsByClassName = null;
-  document.getElementsByTagName = null;
-  document.getElementsByTagNameNS = null;
-  document.append = null;
-  document.appendChild = null;
-
-  return Document;
-}
-
-function generateFakeDocument(mask) {
-  let newMask = {};
-
-  for (const i of Object.keys(mask)) {
-    newMask[i] = function(...args) {
-      document[i] = mask[i];
-      const data = document[i](...args);
-      document[i] = null;
-
-      return data;
-    }
-  }
-
-  return newMask;
-}
-
 {
   const extensions = [];
 
   const processTree = [];
   let processCount = 0;
-
-  const documentMask = mask();
-  const document = generateFakeDocument(documentMask);
-
+  
   function panic(error, atLocation, trace) {
     console.error("panic! nocpu");
     console.error(`  ${error} @ ${atLocation}`);
@@ -52,7 +12,7 @@ function generateFakeDocument(mask) {
     if (trace) console.error("  Error:", trace);
 
     setTimeout(function() {
-      //window.location.reload()
+      window.location.reload()
     }, 5000);
   }
 

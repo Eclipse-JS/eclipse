@@ -34,7 +34,7 @@ let textfb = "";
 let inputfb = "";
 let inputIsActive = false;
 
-document.addEventListener("keydown", function(e) {
+Kernel.proxies.addEventListener("keydown", function(e) {
   if (!inputIsActive) return;
 
   if (e.key == "Enter") {

@@ -29,7 +29,10 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
     },
     process: {
       create(funcStr) {
-        return Kernel.process.create(funcStr);
+        const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+
+        if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", funcStr);
+        return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
       },
       async spawn(name, func, argv) {
         return await Kernel.process.spawn(name, func, argv, newKernel);
@@ -59,6 +62,11 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
         }
       },
       getCurrentInfo() { return account; }
+    },
+    proxies: {
+      addEventListener: function(...args) {
+        return document.addEventListener(...args);
+      }
     }
   }
 
