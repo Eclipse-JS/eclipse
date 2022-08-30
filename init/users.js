@@ -12,7 +12,13 @@ Kernel.extensions.load("users", {
     vfs.write("/etc/passwd", profiles.join("\n"));
   },
   parseUser(username) {
-    const profile = vfs.read("/etc/passwd").split("\n").find(i => i.split(":")[0] == username);
+    const profiles = vfs.read("/etc/passwd").split("\n");
+    const profile = profiles.find(i => i.split(":")[0] == username);
+
+    if (!profile) {
+      return null;
+    }
+
     const profileSplit = profile.split(" ");
 
     const groups = profileSplit[0].split(":")[1].split(",");

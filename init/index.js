@@ -37,15 +37,21 @@ if (VFS.existsSync("/bin/sys", "file")) {
   await execJS("booter", "init/sys.js");
 }
 
-// FIXME: Move all of these to files on hard disk
-await execJS("hashcat", "init/hashcat.js");
-await execJS("users", "init/users.js");
-await execJS("sec", "init/security.js");
-
 const Sys = Kernel.extensions.get("sys");
 
 Sys.drawLogo();
 Sys.loadPercent(10);
+
+// FIXME: Move all of these to files on hard disk
+// Loads security sandboxing.
+
+await execJS("hashcat", "init/hashcat.js");
+await execJS("users", "init/users.js");
+await execJS("sec", "init/security.js");
+
+const security = Kernel.extensions.get("genkernel");
+
+Sys.loadPercent(20);
 
 console.log("Loading binaries...");
 
@@ -71,8 +77,10 @@ if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
   
   const binData = VFS.read(onloadProgram);
 
+  const newKernel = await security("anon");
+
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn(i, process);
+  await Kernel.process.spawn(i, process, [], newKernel);
 }
 
 while (true) {
