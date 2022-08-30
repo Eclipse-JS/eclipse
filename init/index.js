@@ -1,49 +1,23 @@
 document.title = "EclipseOS";
+console.log("Init_stage0: Loading user libraries...");
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function execJS(name, path) {
+async function read(path) {
   const data = await fetch(path);
   const dataText = await data.text();
 
-  const processData = Kernel.process.create(dataText);
+  return dataText;
+}
+
+async function execJS(name, path) {
+  const data = await read(path);
+
+  const processData = Kernel.process.create(data);
   Kernel.process.spawn(name, processData); 
 }
-
-console.log("Loading VFS Libraries...");
-
-if (localStorage.getItem("preboot_vfs")) {
-  const binData = localStorage.getItem("preboot_vfs");
-
-  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn("initvfs", process);
-} else {
-  await execJS("initvfs", "init/vfs.js");
-}
-
-const VFS = Kernel.extensions.get("Vfs");
-
-if (VFS.existsSync("/bin/sys", "file")) {
-  console.log("Found local copy of Sys");
-
-  const binData = VFS.read("/bin/sys");
-
-  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn("sys", process);
-} else {
-  console.log("Loading booter...");
-  await execJS("booter", "init/sys.js");
-}
-
-const Sys = Kernel.extensions.get("sys");
-
-Sys.drawLogo();
-Sys.loadPercent(10);
-
-// FIXME: Move all of these to files on hard disk
-// Loads security sandboxing.
 
 await execJS("hashcat", "init/hashcat.js");
 await execJS("users", "init/users.js");
@@ -51,38 +25,15 @@ await execJS("sec", "init/security.js");
 
 const security = Kernel.extensions.get("genkernel");
 
-Sys.loadPercent(20);
-
-console.log("Loading binaries...");
-
-if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
-  console.log("No binaries found! Loading liboostrap...");
-
-  await execJS("bootstrap", "init/bootstrap.js");
+if (typeof localStorage.getItem("/etc/passwd") != "string") {
+  console.error("init_stage0 ERR! Cannot load sanboxing!");
+  await execJS("init", "init/init.js");
 } else {
-  console.log("Loading programs...");
-  const initPrgms = VFS.read("/etc/init.d/init.conf").split("\n");
-  const onloadProgram = VFS.read("/etc/init.d/initcmd.txt");
+  console.log("init_stage0: Loading init with sandboxing enabled...");
+  const newKernel = await security("root");
 
-  for (i of initPrgms) {
-    try {
-      const binData = VFS.read(i);
+  const file = await read("init/init.js");
+  const process = Kernel.process.create(file);
 
-      const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-      await Kernel.process.spawn(i, process);
-    } catch (e) {
-      console.error("Failed to execute '" + i + "'.");
-    }
-  }
-  
-  const binData = VFS.read(onloadProgram);
-
-  const newKernel = await security("anon");
-
-  const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn(i, process, [], newKernel);
-}
-
-while (true) {
-  await sleep(1000);
+  await Kernel.process.spawn("init", process, [], newKernel);
 }

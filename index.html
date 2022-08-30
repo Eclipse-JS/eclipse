@@ -39,7 +39,7 @@
         const dataText = await data.text();
 
         const processData = Kernel.process.create(dataText);
-        Kernel.process.spawn("init", processData);
+        Kernel.process.spawn("init_stage0", processData);
       }
       a();
     </script>

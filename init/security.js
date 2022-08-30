@@ -12,12 +12,14 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
 
   let newKernel = {
     extensions: {
-      load(name, data) {
+      load(name, rawData, isGenFunction) {
         if (account.permLevel != 0) {
           throw "You must have permission level 0!";
         }
 
-        return Kernel.extensions.load(name, data);
+        const data = isGenFunction ? rawData(account) : rawData;
+
+        return Kernel.extensions.load(name, data, false);
       },
       get(name) {
         if (name == "genkernel") return;
@@ -42,7 +44,7 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
           throw "Invalid user";
         }
   
-        if (newProfile.permLevel < account.permLevel) {
+        if (account.permLevel == 0) {
           account = newProfile;
           return true;
         } else {

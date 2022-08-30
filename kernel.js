@@ -52,18 +52,20 @@ function generateFakeDocument(mask) {
     if (trace) console.error("  Error:", trace);
 
     setTimeout(function() {
-      window.location.reload()
+      //window.location.reload()
     }, 5000);
   }
 
   Kernel = {
     extensions: {
-      load: function(name, data) {
+      load: function(name, rawData, isGenFunction) {
         const find = extensions.find(val => val.name == name);
         
         if (typeof find == "object" && find.length != 0) {
           throw "Extension already loaded!";
         }
+
+        const data = isGenFunction ? rawData() : rawData;
 
         extensions.push({
           name: name,

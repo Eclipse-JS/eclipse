@@ -147,7 +147,9 @@ const VFS = {
   }
 };
 
-Kernel.extensions.load("Vfs", VFS);
+Kernel.extensions.load("Vfs", function() {
+  return VFS;
+}, true);
 
 if (localStorage.getItem("vfs_ver") != VFS.version()) {
   console.error("Incompatible version, wiping drive...");

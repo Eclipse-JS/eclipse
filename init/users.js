@@ -1,4 +1,3 @@
-const vfs = Kernel.extensions.get("Vfs");
 const hash = Kernel.extensions.get("hashcat");
 
 // Userspace user parsing library.
@@ -6,13 +5,13 @@ const hash = Kernel.extensions.get("hashcat");
 
 Kernel.extensions.load("users", {
   async addUser(user, groups, permLevel, password) {
-    const profiles = vfs.existsSync("/etc/passwd", "file") ? vfs.read("/etc/passwd").split("\n") : [];
+    const profiles = typeof localStorage.getItem("/etc/passwd") == "string" ? localStorage.getItem("/etc/passwd").split("\n") : [];
     profiles.push(`${user}:${groups.join(",")} ${permLevel} ${await hash.sha512(password)}`);
 
-    vfs.write("/etc/passwd", profiles.join("\n"));
+    localStorage.setItem("/etc/passwd", profiles.join("\n"));
   },
   parseUser(username) {
-    const profiles = vfs.read("/etc/passwd").split("\n");
+    const profiles = localStorage.getItem("/etc/passwd").split("\n");
     const profile = profiles.find(i => i.split(":")[0] == username);
 
     if (!profile) {
