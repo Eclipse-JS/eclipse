@@ -5,8 +5,6 @@ const hash = Kernel.extensions.get("hashcat");
 console.log("Security: Preparing...");
 
 Kernel.extensions.load("genkernel", async function generateCustomKernel(username) {
-  console.log("Security: Making kernel for '" + username + "'...");
-
   let account = await users.parseUser(username);
   account.username = username;
 
@@ -33,7 +31,7 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
         return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
       },
       async spawn(name, func, argv) {
-        return await Kernel.process.spawn(name, func, argv, newKernel);
+        await Kernel.process.spawn(name, func, argv, Object.create(newKernel));
       }
     },
     accounts: {
