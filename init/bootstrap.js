@@ -1,5 +1,6 @@
 const VFS = Kernel.extensions.get("Vfs");
 const Sys = Kernel.extensions.get("sys");
+const users = Kernel.extensions.get("users");
 
 async function fetchTextData(url) {
   const data = await fetch(url);
@@ -59,6 +60,8 @@ if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 VFS.write("/etc/init.d/init.conf", "/bin/net");
 VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
 VFS.write("/etc/ttysh.conf", "shell=/bin/sh");
+
+users.addUser("root", ["root"], 0, "toor");
 
 fillText("Rebooting system...", indexes+3);
 window.location.reload();
