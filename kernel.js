@@ -3,7 +3,7 @@
 
   const processTree = [];
   let processCount = 0;
-  
+
   function panic(error, atLocation, trace) {
     console.error("panic! nocpu");
     console.error(`  ${error} @ ${atLocation}`);
@@ -18,26 +18,32 @@
 
   Kernel = {
     extensions: {
-      load: function(name, rawData, isGenFunction) {
+      load: function(name, data, isGenFunction) {
         const find = extensions.find(val => val.name == name);
         
         if (typeof find == "object" && find.length != 0) {
           throw "Extension already loaded!";
         }
 
-        const data = isGenFunction ? rawData() : rawData;
-
         extensions.push({
           name: name,
-          data: data
+          data: data,
+          isGenFunction: isGenFunction ? true : false
         })
       },
-      get: function(name) {
+      get: function(name, ...params) {
         if (extensions.find(val => val.name == name).length == 0) {
           throw "Extension not loaded!";
         }
 
-        return extensions.find(val => val.name == name).data;
+        const extFind = extensions.find(val => val.name == name);
+
+        if (extFind.isGenFunction) {
+          const data = extFind.data(...params);
+          return data;
+        } else {
+          return extFind.data;
+        }
       }
     },
     process: {

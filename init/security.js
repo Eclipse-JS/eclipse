@@ -12,19 +12,17 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
 
   let newKernel = {
     extensions: {
-      load(name, rawData, isGenFunction) {
+      load(name, data, isGenFunction) {
         if (account.permLevel != 0) {
           throw "You must have permission level 0!";
         }
 
-        const data = isGenFunction ? rawData(account) : rawData;
-
-        return Kernel.extensions.load(name, data, false);
+        return Kernel.extensions.load(name, data, isGenFunction);
       },
       get(name) {
         if (name == "genkernel") return;
 
-        return Kernel.extensions.get(name);
+        return Kernel.extensions.get(name, function(){ return account; });
       }
     },
     process: {
