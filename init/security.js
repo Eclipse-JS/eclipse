@@ -6,7 +6,7 @@ console.log("Security: Preparing...");
 
 function genKernel(localAccount) {
   let account = localAccount;
-  
+
   let newKernel = {
     extensions: {
       load(name, data, isGenFunction) {
@@ -46,9 +46,9 @@ function genKernel(localAccount) {
           account = newProfile;
           return true;
         } else {
-          const hash = await hash.sha512(password);
+          const hashed = await hash.sha512(password);
   
-          if (hash == newProfile.hashedPassword) {
+          if (hashed == newProfile.hashedPassword) {
             account = newProfile;
             return true;
           } else {

@@ -59,9 +59,10 @@ if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
 VFS.write("/etc/init.d/init.conf", "/bin/net");
 VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
-VFS.write("/etc/ttysh.conf", "shell=/bin/sh");
+VFS.write("/etc/ttysh.conf", "shell=/bin/login");
 
 await users.addUser("anon", ["anon"], 1, "anonymous");
+await users.addUser("nobody", ["nobody"], 1, "browhatrudoinglmao");
 
 fillText("Rebooting system...", indexes+3);
 window.location.reload();

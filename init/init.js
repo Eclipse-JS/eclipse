@@ -65,8 +65,8 @@ if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
   
   const binData = VFS.read(onloadProgram);
 
-  console.log("Init: Goodbye! De-escelating to '%s'...", "anon");
-  await Kernel.accounts.elevate("anon");
+  console.log("Init: Goodbye! De-escelating to '%s'...", "nobody");
+  await Kernel.accounts.elevate("nobody");
 
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
   await Kernel.process.spawn(i, process, []);

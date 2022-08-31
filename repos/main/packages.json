@@ -4,6 +4,18 @@
     "desc": "EclipseOS Coreutils"
   },
   "packages": {
+    "ttysh": {
+      "ver": "0.1.0",
+      "path": "ttysh.js"
+    },
+    "login": {
+      "ver": "0.1.0",
+      "path": "login.js"
+    },
+    "sh": {
+      "ver": "0.1.0",
+      "path": "sh.js"
+    },
     "net": {
       "ver": "0.1.0",
       "path": "libnet.js"
@@ -11,14 +23,6 @@
     "pkg": {
       "ver": "0.1.0",
       "path": "pkg.js"
-    },
-    "ttysh": {
-      "ver": "0.1.0",
-      "path": "ttysh.js"
-    },
-    "sh": {
-      "ver": "0.1.0",
-      "path": "sh.js"
     },
     "echo": {
       "ver": "0.1.0",
