@@ -4,7 +4,9 @@ const hash = Kernel.extensions.get("hashcat");
 // Implements virtual kernels.
 console.log("Security: Preparing...");
 
-function genKernel(account) {
+function genKernel(localAccount) {
+  let account = localAccount;
+  
   let newKernel = {
     extensions: {
       load(name, data, isGenFunction) {
