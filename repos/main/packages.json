@@ -16,6 +16,10 @@
       "ver": "0.1.0",
       "path": "sh.js"
     },
+    "sudo": {
+      "ver": "0.1.0",
+      "path": "sudo.js"
+    },
     "net": {
       "ver": "0.1.0",
       "path": "libnet.js"
