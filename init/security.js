@@ -4,10 +4,7 @@ const hash = Kernel.extensions.get("hashcat");
 // Implements virtual kernels.
 console.log("Security: Preparing...");
 
-Kernel.extensions.load("genkernel", async function generateCustomKernel(username) {
-  let account = await users.parseUser(username);
-  account.username = username;
-
+function genKernel(account) {
   let newKernel = {
     extensions: {
       load(name, data, isGenFunction) {
@@ -31,7 +28,7 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
         return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
       },
       async spawn(name, func, argv) {
-        await Kernel.process.spawn(name, func, argv, Object.create(newKernel));
+        await Kernel.process.spawn(name, func, argv, genKernel(account));
       }
     },
     accounts: {
@@ -68,4 +65,11 @@ Kernel.extensions.load("genkernel", async function generateCustomKernel(username
 
   newKernel.display = Kernel.display;
   return newKernel;
+}
+
+Kernel.extensions.load("genkernel", async function generateCustomKernel(username) {
+  let account = await users.parseUser(username);
+  account.username = username;
+
+  return genKernel(account);
 });
