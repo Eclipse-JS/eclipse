@@ -1,5 +1,5 @@
 function wipeVFS() {
-  localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/"}]));
+  localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/", owner: "root"}]));
   localStorage.setItem("vfs_ver", "gbvfsR4");
   return JSON.stringify([{type: "directory", name: "/"}]);
 }
