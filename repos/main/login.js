@@ -3,6 +3,12 @@ const VFS = Kernel.extensions.get("Vfs");
 const args = argv;
 const input = args.shift();
 
+if (VFS.existsSync("/etc/motd", "file")) {
+  const file = VFS.read("/etc/motd");
+
+  input.stdout(file);
+}
+
 input.stdout("Welcome to EclipseOS! :3\nBuild: git\n\n");
 
 let isCorrect = false;
