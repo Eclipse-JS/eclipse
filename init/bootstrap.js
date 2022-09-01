@@ -77,6 +77,3 @@ The root password is toor. ;-)
 
 await users.addUser("anon", ["anon"], 1, "anonymous");
 await users.addUser("nobody", ["nobody"], 1, "browhatrudoinglmao");
-
-fillText("Rebooting system...", indexes+3);
-window.location.reload();
