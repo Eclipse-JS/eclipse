@@ -7,7 +7,7 @@ async function execJS(name, path) {
   const dataText = await data.text();
 
   const processData = Kernel.process.create(dataText);
-  await giKernel.process.spawn(name, processData); 
+  await Kernel.process.spawn(name, processData); 
 }
 
 console.log("Loading VFS Libraries...");
