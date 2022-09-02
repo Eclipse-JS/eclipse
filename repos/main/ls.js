@@ -11,4 +11,4 @@ if (!VFS.existsSync(path, "folder")) {
 }
 
 const contents = VFS.readDir(path);
-input.stdout(contents.join(" ") + "\n");
+input.stdout(contents.map((i) => i.replace(path.endsWith("/") ? path : path + "/", "")).join(" ") + "\n");
