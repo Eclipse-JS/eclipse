@@ -16,6 +16,10 @@
     }, 5000);
   }
 
+  function assert(test, msg) {
+    if (!test) panic("Assertion failed!! " + msg, "KernelSpace::Anonymous");
+  }
+
   Kernel = {
     extensions: {
       load: function(name, data, isGenFunction) {
@@ -81,9 +85,7 @@
     },
     display: {
       getFramebuffer() {
-        if (!document.getElementById("framebuffer")) {
-          panic("No framebuffer. wtf?", "KernelSpace::display::getFrameBuffer")
-        }
+        assert(document.getElementById("framebuffer"), "No framebuffer detected!");
 
         if (document.getElementById("framebuffer").width != screen.availWidth || document.getElementById("framebuffer").height != screen.availHeight) {
           document.getElementById("framebuffer").width = window.innerWidth;
