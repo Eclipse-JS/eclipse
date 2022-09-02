@@ -21,17 +21,13 @@
         const ctx = Kernel.display.getFramebuffer();
 
         ctx.fillStyle = "white";
-
-        function drawLogo() {
-          ctx.font = "48px monospace";
-          ctx.fillText(
-            "EclipseOS",
-            window.innerWidth / 2 - 100,
-            window.innerHeight / 2
-          );
-        }
-
-        drawLogo();
+        ctx.font = "48px monospace";
+        
+        ctx.fillText(
+          "EclipseOS",
+          window.innerWidth / 2 - 100,
+          window.innerHeight / 2
+        );
 
         console.log("Reading Operating System data...");
 
