@@ -1,0 +1,7 @@
+{
+  "coreutils": {
+    "displayName": "Coreutils",
+    "description": "Coreutils for EclipseOS",
+    "path": "main/packages.json"
+  }
+}
