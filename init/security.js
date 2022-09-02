@@ -7,6 +7,14 @@ console.log("Security: Preparing...");
 function genKernel(localAccount) {
   let account = localAccount;
 
+  function genFunc(funcRaw) {
+    const funcStr = typeof funcRaw != "string" ? funcRaw.toString() : funcRaw;
+    const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
+  
+    if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", funcStr);
+    return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
+  }
+
   let newKernel = {
     extensions: {
       load(name, data, isGenFunction) {
@@ -30,12 +38,11 @@ function genKernel(localAccount) {
     },
     process: {
       create(funcStr) {
-        const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-
-        if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", funcStr);
-        return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
+        return funcStr;
       },
-      async spawn(name, func, argv) {
+      async spawn(name, funcStr, argv) {
+        const func = genFunc(funcStr);
+
         await Kernel.process.spawn(name, func, argv, genKernel(account));
       }
     },
