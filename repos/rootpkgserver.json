@@ -1,7 +1,11 @@
 {
-  "coreutils": {
-    "displayName": "Coreutils",
-    "description": "Coreutils for EclipseOS",
-    "path": "main/packages.json"
-  }
+  "identifier": "mainRepo",
+  "contents": [
+    {
+      "displayName": "Coreutils",
+      "name": "coreutils",
+      "description": "Coreutils for EclipseOS",
+      "path": "main/packages.json"
+    }
+  ]
 }
