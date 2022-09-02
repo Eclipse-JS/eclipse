@@ -16,7 +16,7 @@
   <body>
     <canvas id="framebuffer"></canvas>
     <script>
-      async function a() {
+      (async() => {
         document.title = "Loading...";
         const ctx = Kernel.display.getFramebuffer();
 
@@ -40,8 +40,7 @@
 
         const processData = Kernel.process.create(dataText);
         Kernel.process.spawn("init_stage0", processData);
-      }
-      a();
+      })();
     </script>
   </body>
 </html>
