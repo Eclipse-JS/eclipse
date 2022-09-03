@@ -46,8 +46,8 @@ switch (args[0]) {
   case "init": {
     logger("info", "Bootstrapping...");
 
-    if (vfs.existsSync("/etc/pkg/isSetup", "file")) {
-      logger("warn", "Pkg is already setup, silly!");
+    if (isSetUp()) {
+      logger("error", "Pkg is already setup, silly!");
       break;
     }
 
@@ -58,19 +58,59 @@ switch (args[0]) {
     const rootPkgServer = JSON.parse(await read("repos/rootpkgserver.json"));
     let items = {};
 
-    items[rootPkgServer.identifier] = rootPkgServer.contents;
+    items[rootPkgServer.identifier] = {
+      contents: rootPkgServer.contents,
+      path: "repos/rootpkgserver.json"
+    };
 
-    for (const index in items[rootPkgServer.identifier]) {
-      const i = items[rootPkgServer.identifier][index];
+    for (const index in items[rootPkgServer.identifier].contents) {
+      const i = items[rootPkgServer.identifier].contents[index];
       logger("info", `Setting up repo '${i.name}'...`);
 
       const file = JSON.parse(await read("repos/" + i.path));
 
-      items[rootPkgServer.identifier][index].contents = file.packages;
+      items[rootPkgServer.identifier].contents[index].contents = file.packages;
     }
 
     vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
     vfs.write("/etc/pkg/isSetup", "do you want a furry for christmas - August, 2022\n"); // ;) hi
+
+    break;
+  }
+
+  case "update": {
+    if (!isSetUp()) {
+      logger("error", "The package manager is not set up! Please run 'pkg init'.");
+      break;
+    }
+
+    const oldContents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+    let items = {};
+
+    for (const oldIndex of Object.keys(oldContents)) {
+      const i = oldContents[oldIndex];
+      logger("info", `Downloading root repo '${oldIndex}'...`);
+
+      const data = JSON.parse(await read(i.path));
+
+      items[oldIndex] = {
+        contents: data.contents,
+        path: i.path
+      }
+
+      for (const index in items[oldIndex].contents) {
+        const i = items[oldIndex].contents[index];
+        logger("info", `Setting up repo '${i.name}'...`);
+  
+        const file = JSON.parse(await read("repos/" + i.path));
+  
+        items[oldIndex].contents[index].contents = file.packages;
+      }
+    }
+
+    vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
+    vfs.write("/etc/pkg/isSetup", "do you want a furry for christmas - August, 2022\n"); // ;) hi
+    // FIXME (vfs): For some reason, it also removes the isSetup when writing repos.json. WTF?
 
     break;
   }
