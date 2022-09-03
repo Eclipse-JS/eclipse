@@ -74,7 +74,7 @@ Kernel.extensions.load("Vfs", function(userData) {
           throw "No permission!";
         }
 
-        fileSystem.splice(fileSystem.indexOf(i));
+        fileSystem.splice(fileSystem.indexOf(i), 1);
       }
   
       fileSystem.push({
