@@ -109,8 +109,6 @@ switch (args[0]) {
     }
 
     vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
-    vfs.write("/etc/pkg/isSetup", "do you want a furry for christmas - August, 2022\n"); // ;) hi
-    // FIXME (vfs): For some reason, it also removes the isSetup when writing repos.json. WTF?
 
     break;
   }
@@ -167,7 +165,7 @@ switch (args[0]) {
       break;
     }
 
-    const cache = vfs.existsSync("/etc/vfs/caches.json", "file") ? JSON.parse(vfs.read("/etc/vfs/caches.json")) : [];
+    const cache = vfs.existsSync("/etc/pkg/caches.json", "file") ? JSON.parse(vfs.read("/etc/pkg/caches.json")) : [];
 
     const pkgCacheData = cache.filter(item => item.pkgName == args[1]);
 
