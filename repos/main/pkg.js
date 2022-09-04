@@ -24,7 +24,19 @@ function help() {
   const cmds = [
   {
     name: "init",
-    desc: "Initialize package manager"
+    desc: "Initialize package manager (First load only)"
+  },
+  {
+    name: "update",
+    desc: "Updates package lists"
+  },
+  {
+    name: "add-repo",
+    desc: "Adds repo"
+  },
+  {
+    name: "install",
+    desc: "Installs package"
   }
   ]
 
@@ -91,26 +103,60 @@ switch (args[0]) {
       const i = oldContents[oldIndex];
       logger("info", `Downloading root repo '${oldIndex}'...`);
 
-      const data = JSON.parse(await read(i.path));
+      try {
+        const data = JSON.parse(await read(i.path));
 
-      items[oldIndex] = {
-        contents: data.contents,
-        path: i.path
-      }
+        items[oldIndex] = {
+          contents: data.contents,
+          path: i.path
+        }
 
-      for (const index in items[oldIndex].contents) {
-        const i = items[oldIndex].contents[index];
-        logger("info", `Setting up repo '${i.name}'...`);
+        for (const index in items[oldIndex].contents) {
+          const i = items[oldIndex].contents[index];
+          logger("info", `Setting up repo '${i.name}'...`);
   
-        const file = JSON.parse(await read("repos/" + i.path));
+          const file = JSON.parse(await read("repos/" + i.path));
   
-        items[oldIndex].contents[index].contents = file.packages;
+          items[oldIndex].contents[index].contents = file.packages;
+        }
+      } catch (e) {
+        logger("error", `Failed to download root repo '${oldIndex}'.`);
       }
     }
 
     vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
 
     break;
+  }
+
+  case "add-repo": {
+    if (!isSetUp()) {
+      logger("error", "The package manager is not set up! Please run 'pkg init'.");
+      break;
+    }
+
+    logger("info", "Attempting to add repo...");
+
+    const path = args[1];
+    let testRead;
+
+    try {
+      testRead = JSON.parse(await read(path));
+    } catch (e) {
+      logger("error", "Failed to add repo! Repo may not exist or may be in invalid format.");
+      break;
+    }
+
+    let contents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+
+    contents[testRead.identifier] = {
+      contents: testRead.contents,
+      path: path
+    }
+
+    vfs.write("/etc/pkg/repos.json", JSON.stringify(contents));
+
+    logger("info", `Added repo ${testRead.identifier}. Please run 'pkg update' after, or else.`);
   }
 
   case "install": {
