@@ -54,7 +54,7 @@
       create(funcStr) {
         const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-        return AsyncFunction("argv", "Kernel", funcStr);
+        return AsyncFunction("argv", "Kernel", "pid", funcStr);
       },
       async spawn(name, func, argv, kernel) {
         const pid = processCount;
@@ -67,7 +67,7 @@
         processCount++;
 
         try {
-          await func(argv, typeof kernel == "object" ? kernel : Kernel);
+          await func(argv, typeof kernel == "object" ? kernel : Kernel, pid);
         } catch (e) {
           if (pid == 0) {
             panic("Attempted to kill init!", "Userspace Process: " + name, e);
@@ -76,11 +76,17 @@
           }
         }
 
-        delete processTree[processTree.indexOf({name: name, id: pid})];
+        processTree.splice(processTree.indexOf({name: name, id: pid}), 1);
 
         if (pid == 0) {
           panic("Attempted to kill init!", "KernelSpace")
         }
+      },
+      getTree() {
+        return processTree;
+      },
+      getPID() {
+        return processCount;
       }
     },
     display: {
