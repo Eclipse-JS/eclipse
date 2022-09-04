@@ -1,7 +1,7 @@
 {
   "projects": [
     {
-      "path": "./index.html",
+      "path": "./src/DOM/index.html",
       "out": "./out/index.html",
       "type": "static"
     },
