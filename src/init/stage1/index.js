@@ -15,7 +15,7 @@ async function execJS(name, path) {
   const data = await read(path);
 
   const processData = Kernel.process.create(data);
-  Kernel.process.spawn(name, processData); 
+  await Kernel.process.spawn(name, processData); 
 }
 
 console.log("Loading VFS Libraries...");
