@@ -1,6 +1,8 @@
 # EclipseOS
 Operating system written in JavaScript
 ## Running
+Install `qbuild` [here](https://github.com/greysoh/qbuild).  
+  
 Git clone this repo:
 ```
 git clone https://github.com/greysoh/jskernel.git

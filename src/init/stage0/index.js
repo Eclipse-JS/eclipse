@@ -1,3 +1,5 @@
+qb.enableRegularRequire();
+
 document.title = "EclipseOS";
 console.log("Init_stage0: Loading user libraries...");
 

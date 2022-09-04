@@ -1,0 +1,48 @@
+{
+  "projects": [
+    {
+      "path": "./index.html",
+      "out": "./out/index.html",
+      "type": "static"
+    },
+    {
+      "path": "./src/kernel/index.js",
+      "out": "./out/kernel.js"
+    },
+    {
+      "path": "./src/init/stage0/index.js",
+      "out": "./out/init/index.js"
+    },
+    {
+      "path": "./src/init/stage1/index.js",
+      "out": "./out/init/init.js"
+    },
+    {
+      "path": "./src/init/bootstrap/index.js",
+      "out": "./out/init/bootstrap.js"
+    },
+    {
+      "path": "./src/init/staticy/hashcat.js",
+      "out": "./out/init/hashcat.js",
+      "type": "static"
+    },
+    {
+      "path": "./src/init/staticy/sys.js",
+      "out": "./out/init/sys.js",
+      "type": "static"
+    },
+    {
+      "path": "./src/init/staticy/users.js",
+      "out": "./out/init/users.js",
+      "type": "static"
+    },
+    {
+      "path": "./src/userspace/filesystem/index.js",
+      "out": "./out/init/vfs.js"
+    },
+    {
+      "path": "./src/userspace/security/index.js",
+      "out": "./out/init/security.js"
+    }
+  ]
+}
