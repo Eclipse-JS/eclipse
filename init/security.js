@@ -112,9 +112,7 @@ function genKernel(localAccount) {
       getCurrentInfo() { return account; }
     },
     proxies: {
-      addEventListener: function(...args) {
-        return document.addEventListener(...args);
-      }
+      addEventListener: (...args) => document.addEventListener(...args)
     }
   }
 
