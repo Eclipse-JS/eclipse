@@ -6,6 +6,12 @@
       "name": "coreutils",
       "description": "Coreutils for EclipseOS",
       "path": "main/packages.json"
+    },
+    {
+      "displayName": "Demos",
+      "name": "demos",
+      "description": "Some epic demos",
+      "path": "demos/packages.json"
     }
   ]
 }
