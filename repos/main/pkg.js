@@ -170,8 +170,14 @@ switch (args[0]) {
     const pkgCacheData = cache.filter(item => item.pkgName == args[1]);
 
     if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
-      logger("error", "Package is already installed, with no updates!");
-      break;
+      logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
+      
+      input.stdout("> ");
+      const choice = await input.stdin();
+
+      if (!choice.toLowerCase().startsWith("y")) {
+        break;
+      }
     }
 
     for (const data in pkgCacheData) {
