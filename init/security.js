@@ -4,7 +4,6 @@ const hash = Kernel.extensions.get("hashcat");
 // Implements virtual kernels.
 console.log("Security: Preparing...");
 
-const killList = []; // Hit list for all the PIDs.
 const processTreeExtras = [];
 
 function genKernel(localAccount) {
@@ -44,7 +43,6 @@ function genKernel(localAccount) {
     },
     process: {
       create: (funcStr) => funcStr,
-      getKillList: () => killList,
       getTree() {
         const tree = Kernel.process.getTree();
         let newTree = tree.map(i => {
@@ -71,25 +69,8 @@ function genKernel(localAccount) {
         return newTree;
       },
       async spawn(name, funcStr, argv) {
-        const backdoor = `{
-          async function d() {
-            while (true) {
-              const killList = Kernel.process.getKillList();
-  
-              if (killList.includes(pid)) {
-                throw "ForceQuit";
-              }
-              await new Promise(r => setTimeout(r, 500));
-            }
-          }
-
-          d()
-        }
-        
-        `; // Used to enable .kill();
-
         const pid = Kernel.process.getPID(); // Hack to get pid
-        const func = genFunc(backdoor + funcStr);
+        const func = genFunc(funcStr);
 
         const item = {
           name: name,
@@ -102,20 +83,6 @@ function genKernel(localAccount) {
         await Kernel.process.spawn(name, func, argv, genKernel(account));
 
         processTreeExtras.splice(processTreeExtras.indexOf(item), 1);
-      },
-      kill(pid) {
-        const tree = this.getTree();
-        const find = tree.find(i => i.id == pid);
-
-        if (!find) {
-          throw "Process ID does not exist!";
-        }
-
-        if (find.username != account.username && account.permLevel != 0) {
-          throw "No permission!";
-        }
-
-        killList.push(pid);
       }
     },
     accounts: {
