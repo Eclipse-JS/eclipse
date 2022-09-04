@@ -152,6 +152,9 @@ switch (args[0]) {
 
             break;
           }
+
+          // Gotta do this redundantly as there is nested for loops.
+          if (data.found) break;
         }
 
         if (data.found) break;
