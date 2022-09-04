@@ -31,7 +31,7 @@ switch (args[0]) {
   }
 
   default: {
-    input.stdout("Did not specify vuln!");
+    input.stdout("Did not specify vuln!\n");
     break;
   }
 }
