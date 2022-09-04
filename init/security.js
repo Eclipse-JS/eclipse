@@ -8,11 +8,14 @@ function genKernel(localAccount) {
   let account = localAccount;
 
   function genFunc(funcRaw) {
+    let allBanned = ["self"];
+    let notElevatedBanned = ["localStorage", "document", "self"];
+
     const funcStr = typeof funcRaw != "string" ? funcRaw.toString() : funcRaw;
     const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
   
-    if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", funcStr);
-    return AsyncFunction("argv", "Kernel", "localStorage", "document", funcStr);
+    if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", ...allBanned, funcStr);
+    return AsyncFunction("argv", "Kernel", ...notElevatedBanned, ...allBanned, funcStr);
   }
 
   let newKernel = {
