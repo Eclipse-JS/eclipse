@@ -33,4 +33,4 @@ input.stdout("\n");
 const binData = VFS.read("/bin/sh");
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-await Kernel.process.spawn(i, process, [input]);
+await Kernel.process.spawn("/bin/sh", process, [input]);
