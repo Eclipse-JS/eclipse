@@ -28,7 +28,7 @@ switch (args[0]) {
 
       await postExec();
     } catch (e) {
-      input.stdout("Exploit has been patched!\n\nDebugging: " + JSON.stringify(e));
+      input.stdout(`Exploit has been patched!\n\nDebugging: ${e}\n`);
     }
     break;
   }
