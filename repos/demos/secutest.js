@@ -20,13 +20,16 @@ switch (args[0]) {
   case "self": {
     input.stdout("Attempting to pwn using self...\n");
 
-    const elem = self.document.createElement("script");
-    elem.innerText = payload;
+    try {
+      const elem = self.document.createElement("script");
+      elem.innerText = payload;
 
-    self.document.body.appendChild(elem);
+      self.document.body.appendChild(elem);
 
-    await postExec();
-    
+      await postExec();
+    } catch (e) {
+      input.stdout("Exploit has been patched!\n\nDebugging: " + JSON.stringify(e));
+    }
     break;
   }
 
