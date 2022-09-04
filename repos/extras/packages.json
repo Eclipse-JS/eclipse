@@ -1,0 +1,8 @@
+{
+  "packages": {
+    "nuke": {
+      "ver": "0.1.0",
+      "path": "nuke.js"
+    }
+  }
+}

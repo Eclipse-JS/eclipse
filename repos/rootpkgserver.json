@@ -12,6 +12,12 @@
       "name": "demos",
       "description": "Some epic demos",
       "path": "demos/packages.json"
+    },
+    {
+      "displayName": "Extras",
+      "name": "extras",
+      "description": "Mainly used to wipe the OS",
+      "path": "extras/packages.json"
     }
   ]
 }
