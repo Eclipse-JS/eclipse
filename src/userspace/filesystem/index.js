@@ -9,39 +9,41 @@ function wipeVFS() {
 let fileSystem = !localStorage.getItem("vfs") ? wipeVFS() : localStorage.getItem("vfs");
 fileSystem = JSON.parse(fileSystem);
 
-require("./binaries.js");
+let activeBackend = "gbrfs";
+
+require("./selectBackends.js");
 
 Kernel.extensions.load("Vfs", function(userData) {
+  const backendData = fsMap.find(i => i.name == activeBackend);
+
+  if (!backendData) {
+    throw "VFS Panic!! Cannot find eligible filesystem.";
+  }
+
+  const backend = backendData.func(userData, true);
+
   const VFS = {
-    version: () => "gbvfsR4",
-    read(rawPath) {
-      require("./vfs/read.js")
-    },
-    write(rawPath, contents) {
-      require("./vfs/write.js")
-    },
-    mkdir(rawPath) {
-      require("./vfs/mkdir.js")
-    },
-    readDir(rawPath) {
-      require("./vfs/readDir.js")
-    },
-    getType(rawPath) {
-      require("./vfs/getType.js")
-    },
-    existsSync(rawPath, fileOrFolder) {
-      require("./vfs/existsSync.js")
-    },
-    sync() {
-      localStorage.setItem("vfs", JSON.stringify(fileSystem));
+    version: () => backend.version(),
+    read: (rawPath) => backend.read(rawPath),
+    write: (rawPath, contents) => backend.write(rawPath, contents),
+    mkdir: (rawPath) => backend.mkdir(rawPath),
+    readDir: (rawPath) => backend.readDir(rawPath),
+    getType: (rawPath) => backend.getType(rawPath),
+    existsSync: (rawPath, fileOrFolder) => backend.existsSync(rawPath, fileOrFolder),
+    sync: () => backend.sync(),
+    changeBackend: (name) => {
+      if (userData.permLevel != 0) {
+        throw new Error("No permission!");
+      }
+  
+      const newBackend = fsMap.find(i => i.name == name);
+      if (!newBackend) {
+        throw new Error("Filesystem backend does not exist!");
+      }
+  
+      activeBackend = name;
     }
   };
-
-  if (localStorage.getItem("vfs_ver") != VFS.version()) {
-    console.error("Incompatible version, wiping drive...");
-    localStorage.clear();
-    window.location.reload();
-  }
 
   return VFS;
 }, true);
