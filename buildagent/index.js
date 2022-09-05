@@ -1,6 +1,12 @@
 const fs = require("fs")
 const compile = require("@creamy-dev/qbuild");
 
+console.log("Removing old directories...\n");
+
+if (fs.existsSync("../out")) {
+  fs.rmSync("../out", { recursive: true, force: true });
+}
+
 console.log("Compiling kernel...\n");
 
 const mainProj = JSON.parse(fs.readFileSync("../build.json", "utf-8"));
@@ -18,6 +24,7 @@ for (const i of mainProj.projects) {
   
   const fixMyCode = "." + i.out;
   const dirPath = fixMyCode.split("/");
+
   dirPath.pop();
 
   try {
@@ -35,20 +42,20 @@ for (const i of mainProj.projects) {
 
 
 console.log("\nBuilding repo lists...\n");
-fs.mkdirSync("../repo_out");
+fs.mkdirSync("../out/repos");
 
 console.log("Reading './repos/rootpkgserver.json'...");
 const file = fs.readFileSync("../repos/rootpkgserver.json", "utf-8");
-console.log("Copying file './repos/rootpkgserver.json' -> './repo_out/rootpkgserver.json'...");
-fs.writeFileSync("../repo_out/rootpkgserver.json", file);
+console.log("Copying file './repos/rootpkgserver.json' -> '../out/repos/rootpkgserver.json'...");
+fs.writeFileSync("../out/repos/rootpkgserver.json", file);
 
 for (const contents of JSON.parse(file).contents) {
   const rootDir = "../repos/" + contents.path.replace("packages.json", ""); // Evil hack
-  const destDir = "../repo_out/" + contents.path.replace("packages.json", "");
+  const destDir = "../out/repos/" + contents.path.replace("packages.json", "");
 
   console.log("Fetching and copying '%s' -> '%s'...", rootDir + "packages.json", destDir + "packages.json");
 
-  const folder = ("../repo_out/" + contents.path).split("/");
+  const folder = ("../out/repos/" + contents.path).split("/");
   folder.pop();
 
   fs.mkdirSync(folder.join("/"), { recursive: true });
@@ -56,7 +63,7 @@ for (const contents of JSON.parse(file).contents) {
   const file = fs.readFileSync("../repos/" + contents.path, "utf-8");
   const fileParsed = JSON.parse(file);
 
-  fs.writeFileSync("../repo_out/" + contents.path, file);
+  fs.writeFileSync("../out/repos/" + contents.path, file);
 
   let reformedFile = {packages:{}};
 

@@ -4,7 +4,7 @@
   "description": "EclipseOS",
   "main": "",
   "scripts": {
-    "build": "rm -rf *out && cd buildagent && node index.js && cd .. && mkdir out/repos && cp -r repo_out/* out/repos/",
+    "build": "cd buildagent && node index.js",
     "start": "cd out && python3 -m http.server"
   },
   "repository": {
