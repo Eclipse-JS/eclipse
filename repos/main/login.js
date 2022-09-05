@@ -8,7 +8,7 @@ console.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
 const attempt = await Kernel.accounts.elevate("nobody");
 
 if (!attempt) {
-  input.stdout("Failed to de-elevate for security! Aborting...");
+  input.stdout("Failed to de-elevate for security! Aborting...\n");
   return;
 }
 
