@@ -3,6 +3,15 @@ const VFS = Kernel.extensions.get("Vfs");
 const args = argv;
 const input = args.shift();
 
+// De-escelate
+console.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
+const attempt = await Kernel.accounts.elevate("nobody");
+
+if (!attempt) {
+  input.stdout("Failed to de-elevate for security! Aborting...");
+  return;
+}
+
 if (VFS.existsSync("/etc/motd", "file")) {
   const file = VFS.read("/etc/motd");
 

@@ -49,8 +49,5 @@ for (i of initPrgms) {
   
 const binData = VFS.read(onloadProgram);
 
-console.log("Init: Goodbye! De-escelating to '%s'...", "nobody");
-await Kernel.accounts.elevate("nobody");
-
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
 await Kernel.process.spawn(onloadProgram, process, []);
