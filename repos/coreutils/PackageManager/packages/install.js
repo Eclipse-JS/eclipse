@@ -82,10 +82,10 @@ corePkg.pop();
 const url = rootPkg.join("/") + "/" + corePkg.join("/") + "/" + data.pkgData.path;
 const appData = "UWU;;\n\n" + await read(url);
 
-vfs.write(`/bin/${data.pkgData.path.replace(".js", "")}`, appData);
+vfs.write(`/bin/${args[1]}`, appData);
 
 const itemData = {
-  pkgName: data.pkgData.path.replace(".js", ""),
+  pkgName: args[1],
   rootPkg: data.rootPkg,
   corePkg: data.corePkg,
   pkgData: data.pkgData
