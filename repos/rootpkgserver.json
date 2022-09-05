@@ -5,6 +5,12 @@
       "displayName": "Coreutils",
       "name": "coreutils",
       "description": "Coreutils for EclipseOS",
+      "path": "coreutils/packages.json"
+    },
+    {
+      "displayName": "Main",
+      "name": "mainrepo",
+      "description": "Extra applications that are kinda important (ctws, etc.)",
       "path": "main/packages.json"
     },
     {

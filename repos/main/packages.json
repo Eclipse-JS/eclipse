@@ -1,58 +1,11 @@
 {
-  "about": {
-    "name": "Coreutils",
-    "desc": "EclipseOS Coreutils"
-  },
   "packages": {
-    "ttysh": {
-      "ver": "0.1.0",
-      "path": "ttysh.js",
+    "ctws": {
+      "ver": "0.0.1",
+      "path": "ctws.js",
       "compilerOpts": {
-        "src": "tty/index.js"
+        "src": "CuteWindowServer/index.js"
       }
-    },
-    "login": {
-      "ver": "0.1.0",
-      "path": "login.js"
-    },
-    "sh": {
-      "ver": "0.1.0",
-      "path": "sh.js"
-    },
-    "sudo": {
-      "ver": "0.1.0",
-      "path": "sudo.js"
-    },
-    "net": {
-      "ver": "0.1.0",
-      "path": "libnet.js"
-    },
-    "pkg": {
-      "ver": "0.1.0",
-      "path": "pkg.js",
-      "compilerOpts": {
-        "src": "PackageManager/index.js"
-      }
-    },
-    "echo": {
-      "ver": "0.1.0",
-      "path": "echo.js"
-    },
-    "ls": {
-      "ver": "0.1.0",
-      "path": "ls.js"
-    },
-    "cat": {
-      "ver": "0.1.0",
-      "path": "cat.js"
-    },
-    "clear": {
-      "ver": "1.0.0",
-      "path": "clear.js"
-    },
-    "cls": {
-      "ver": "1.0.0",
-      "path": "clear.js"
-    }   
+    }
   }
 }
