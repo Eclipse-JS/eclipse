@@ -1,3 +1,5 @@
+qb.enableRegularRequire();
+
 const args = argv;
 const input = args.shift();
 
@@ -18,18 +20,7 @@ async function postExec() {
 
 switch (args[0]) {
   case "self": {
-    input.stdout("Attempting to pwn using self...\n");
-
-    try {
-      const elem = self.document.createElement("script");
-      elem.innerText = payload;
-
-      self.document.body.appendChild(elem);
-
-      await postExec();
-    } catch (e) {
-      input.stdout(`Exploit has been patched!\n\nDebugging: ${e}\n`);
-    }
+    require("./exploits/self.js");
     break;
   }
 

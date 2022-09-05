@@ -2,7 +2,10 @@
   "packages": {
     "secutest": {
       "ver": "0.1.0",
-      "path": "secutest.js"
+      "path": "secutest.js",
+      "compilerOpts": {
+        "src": "secutest/index.js"
+      }
     }
   }
 }

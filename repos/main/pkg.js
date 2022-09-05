@@ -19,7 +19,6 @@ async function read(path) {
   return dataText;
 }
 
-
 function help() {
   const cmds = [
   {

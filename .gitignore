@@ -1,2 +1,6 @@
 qbuild*
-out
+*out
+
+buildagent/node_modules
+buildagent/package-lock.json
+buildagent/yarn.lock
