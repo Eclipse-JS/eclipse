@@ -6,7 +6,10 @@
   "packages": {
     "ttysh": {
       "ver": "0.1.0",
-      "path": "ttysh.js"
+      "path": "ttysh.js",
+      "compilerOpts": {
+        "src": "tty/index.js"
+      }
     },
     "login": {
       "ver": "0.1.0",
@@ -26,7 +29,10 @@
     },
     "pkg": {
       "ver": "0.1.0",
-      "path": "pkg.js"
+      "path": "pkg.js",
+      "compilerOpts": {
+        "src": "PackageManager/index.js"
+      }
     },
     "echo": {
       "ver": "0.1.0",

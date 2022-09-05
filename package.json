@@ -5,7 +5,9 @@
   "main": "",
   "scripts": {
     "build": "cd buildagent && node index.js",
-    "start": "cd out && python3 -m http.server"
+    "start-server": "cd out && python -m http.server",
+
+    "start": "npm run build && npm run start-server"
   },
   "repository": {
     "type": "git",
