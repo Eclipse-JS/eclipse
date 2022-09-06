@@ -30,7 +30,7 @@ Sys.drawLogo();
 Sys.loadPercent(15);
 
 fillText("Downloading packages:", 2);
-const data = JSON.parse(await fetchTextData("repos/main/packages.json"));
+const data = JSON.parse(await fetchTextData("repos/coreutils/packages.json"));
 Sys.loadPercent(20);
 
 fillText(" - VFS", 3);
