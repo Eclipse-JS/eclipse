@@ -1,6 +1,13 @@
 qb.enableRegularRequire();
 
 let hasStarted = false;
+let hasWMStarted = false;
+
+let windows = [];
+
+let wmConf = {};
+
+const fbFPSLock = 60; // 60fps
 
 require("./ckernel.js")
 
@@ -23,11 +30,18 @@ const framebuffer = cKernel.display.getFramebuffer();
 hasStarted = true;
 logf(" [ok]\n");
 
-debugger;
-
 log("INFO: Attempting to allocate 256x256 framebuffer...");
 generateCanvas(256, 256);
+log("INFO: Attempting to load Kernel Extension into kernel...");
+
+cKernel.extensions.load("WindowServer", function() {
+  require("./IPCLayer/index.js")
+}, true);
+
+const fbTime = calcFPS(fbFPSLock);
+
+// Repaint all windows every said ms
 
 while (true) {
-  await new Promise(r => setTimeout(r, 5000));
+  await new Promise(r => setTimeout(r, fbTime));
 }

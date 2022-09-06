@@ -1,7 +1,8 @@
 qb.enableRegularRequire();
 
 // Main functions
-require("./functions/logger.js")
-require("./functions/checkIfRoot.js")
+require("./Functions/logger.js")
+require("./Functions/checkIfRoot.js")
+require("./Functions/caculateFPS.js")
 
-require("./functions/generateCanvas.js")
+require("./Functions/generateCanvas.js")
