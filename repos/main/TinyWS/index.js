@@ -40,8 +40,33 @@ cKernel.extensions.load("WindowServer", function() {
 
 const fbTime = calcFPS(fbFPSLock);
 
-// Repaint all windows every said ms
-
 while (true) {
+  // Repaint all windows every (by default) 60ms -- I don't have any better ideas
+  // FIXME (won't fix myself, yet): Make dynamic system for repainting all windows only when items get updated
+
+  // Hacky solution to get root element - Should be fine as we are running as root
+  const rootElem = document.getElementById("framebuffer");
+
+  const newFB = generateCanvas(rootElem.width, rootElem.height);
+  const fbContext = newFB.getContext('2d');
+
+  for (const i of windows) {
+    const canvas = i.fetchCanvas();
+
+    function convertCSSStyleToJS(item) {
+      if (item.endsWith("px")) {
+        return parseFloat(item.replace("px", ""));
+      }
+
+      return;
+    }
+
+    // Write to screen
+    fbContext.drawImage(canvas, convertCSSStyleToJS(canvas.style.top), convertCSSStyleToJS(canvas.style.left));
+  }
+
+  // It *should* take up the entire screen, if not, something's wrong with your display. (or submit an issue)
+  if (!isCanvasBlank(newFB)) framebuffer.drawImage(newFB, 0, 0); 
+
   await new Promise(r => setTimeout(r, fbTime));
 }

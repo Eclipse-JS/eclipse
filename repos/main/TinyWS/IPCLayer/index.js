@@ -1,3 +1,5 @@
+qb.enableRegularRequire();
+
 return {
   hasWMStarted: hasWMStarted,
   registerWM: function(name, outputWrapper) {
@@ -6,15 +8,18 @@ return {
     }
 
     function inputWrapper(input) {
-      require("./WindowManagerIPC/inputWrapper.js");
+      require("./inputWrapper.js");
     }
 
     wmConf.name = name;
     wmConf.outputWrapper = outputWrapper;
 
+    hasWMStarted = true;
+    this.hasWMStarted = true;
+
     return inputWrapper;
   },
-  createWindow(width, height, callback) {
+  async createWindow(width, height, callback) {
     if (!this.hasWMStarted) {
       throw new Error("Window Manager not registered yet!");
     }
@@ -23,8 +28,10 @@ return {
     canvas.style.top = "300px";
     canvas.style.left = "300px";
 
+    // We use a custom uuid implementation because crypto is only on HTTPS. :(
+
     const item = {
-      uuid: crypto.randomUUID(),
+      uuid: uuidv4(),
       fetchCanvas: () => canvas
     };
 
@@ -33,11 +40,11 @@ return {
     // Needed for when we implement titlebars
     const resp = wmConf.outputWrapper({
       event: "WindowCreate",
-      uuid: uuid,
+      uuid: item.uuid,
     });
 
     try {
-      callback(item.canvas);
+      await callback(item.fetchCanvas());
     } catch (e) {
       console.error(e);
     }
@@ -46,7 +53,7 @@ return {
     
     wmConf.outputWrapper({
       event: "WindowClose",
-      uuid: uuid
+      uuid: item.uuid
     });
   }
 };
