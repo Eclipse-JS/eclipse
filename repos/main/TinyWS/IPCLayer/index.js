@@ -7,17 +7,18 @@ return {
       throw new Error("Window Manager already registered!");
     }
 
-    function inputWrapper(input) {
-      require("./inputWrapper.js");
+    return {
+      loadWM: function(callback) {
+        wmConf.name = name;
+        wmConf.outputWrapper = callback;
+    
+        hasWMStarted = true;
+        this.hasWMStarted = true;    
+      },
+      inputWrapper: function inputWrapper(input) {
+        require("./inputWrapper.js");
+      }
     }
-
-    wmConf.name = name;
-    wmConf.outputWrapper = outputWrapper;
-
-    hasWMStarted = true;
-    this.hasWMStarted = true;
-
-    return inputWrapper;
   },
   async createWindow(width, height, callback) {
     if (!this.hasWMStarted) {
@@ -35,13 +36,28 @@ return {
       fetchCanvas: () => canvas
     };
 
-    windows.push(item);
-
     // Needed for when we implement titlebars
     const resp = wmConf.outputWrapper({
       event: "WindowCreate",
       uuid: item.uuid,
+      details: {
+        fetchWindowSize: () => {
+          const fetchedItem = item.fetchCanvas();
+
+          return {
+            xy: [fetchedItem.style.top, fetchedItem.style.left],
+            wh: [fetchedItem.width, fetchedItem.height]
+          }
+        },
+        fetchWindowTitle: () => item.fetchCanvas().title
+      }
     });
+
+    if (resp instanceof HTMLCanvasElement) {
+      item.outerCanvas = resp;
+    }
+
+    windows.push(item);
 
     try {
       await callback(item.fetchCanvas());

@@ -13,6 +13,7 @@ if (!wsLoad) return 1;
 
 console.log("WM: Attempting to start IPC with the Window Server...");
 const ws = Kernel.extensions.get("WindowServer");
+const ui = Kernel.extensions.get("LibDawn");
 
 if (ws.hasWMStarted) {
   console.log("WM<FATAL>: Another Window Manager is already running!");
@@ -21,10 +22,9 @@ if (ws.hasWMStarted) {
 
 console.log("WM: Attempting to register a Window Manager...");
 
-ws.registerWM("ProjectDusk", function(data) {
-  console.log(data);
-});
+const wmData = ws.registerWM("ProjectDusk");
 
+wmData.loadWM(require("./Callback/index.js"));
 createTestWindow();
 
 while (true) {

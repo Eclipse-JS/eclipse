@@ -26,6 +26,7 @@ Kernel.extensions.load("LibDawn", {
       const themesFilter = themes.find(i => i.DawnUI.name == theme);
 
       return themesFilter;
-    }
+    },
+    getDefaultTheme: () => getDefaultTheme()
   }
 })

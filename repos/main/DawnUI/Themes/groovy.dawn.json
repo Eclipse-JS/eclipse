@@ -18,9 +18,6 @@
           "background-color": "#32302f",
           "foreground-color": "#282828"
         }
-      },
-      "duskUI": {
-        "text-center": true
       }
     }
   }

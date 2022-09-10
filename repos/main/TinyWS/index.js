@@ -66,6 +66,12 @@ while (true) {
 
     // Write to screen
     fbContext.drawImage(canvas, convertCSSStyleToJS(canvas.style.top), convertCSSStyleToJS(canvas.style.left));
+
+    if (i.outerCanvas) {
+      const height = i.outerCanvas.disableConversion ? convertCSSStyleToJS(canvas.style.left) : convertCSSStyleToJS(canvas.style.left) - i.outerCanvas.height;
+
+      fbContext.drawImage(i.outerCanvas, convertCSSStyleToJS(canvas.style.top), height);
+    }
   }
 
   framebuffer.drawImage(newFB, 0, 0);
