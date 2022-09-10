@@ -7,6 +7,13 @@
         "src": "TinyWS/index.js"
       }
     },
+    "dawn": {
+      "ver": "0.0.1",
+      "path": "dawnui.js",
+      "compilerOpts": {
+        "src": "DawnUI/index.js"
+      }
+    },
     "dusk": {
       "ver": "0.0.1",
       "path": "dusk.js",
