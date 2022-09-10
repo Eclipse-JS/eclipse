@@ -12,6 +12,11 @@ async function createTestWindow() {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
+    ctx.fillStyle = "black";
+    ctx.font = "16px Arial";
+    
+    ctx.fillText("Hello, EclipseOS!", 0, 16);
+
     while (true) {
       await new Promise(r => setTimeout(r, 5000));
     }
