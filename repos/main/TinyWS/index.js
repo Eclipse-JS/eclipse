@@ -50,6 +50,9 @@ while (true) {
   const newFB = generateCanvas(rootElem.width, rootElem.height);
   const fbContext = newFB.getContext('2d');
 
+  fbContext.fillStyle = "black";
+  fbContext.fillRect(0, 0, rootElem.width, rootElem.height);
+
   for (const i of windows) {
     const canvas = i.fetchCanvas();
 
@@ -65,13 +68,7 @@ while (true) {
     fbContext.drawImage(canvas, convertCSSStyleToJS(canvas.style.top), convertCSSStyleToJS(canvas.style.left));
   }
 
-  // It *should* take up the entire screen, if not, something's wrong with your display. (or submit an issue)
-  if (isCanvasBlank(newFB)) {
-    framebuffer.fillStyle = "black";
-    framebuffer.fillRect(0, 0, rootElem.width, rootElem.height);
-  } else {
-    framebuffer.drawImage(newFB, 0, 0);
-  }
+  framebuffer.drawImage(newFB, 0, 0);
 
   await new Promise(r => setTimeout(r, fbTime));
 }

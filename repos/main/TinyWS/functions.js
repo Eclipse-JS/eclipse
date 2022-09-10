@@ -9,5 +9,5 @@ require("./Functions/caculateFPS.js")
 require("./Functions/uuidV4.js")
 
 // Canvas-related functions
-require('./Functions/isCanvasEmpty.js')
+//equire('./Functions/isCanvasEmpty.js')
 require("./Functions/generateCanvas.js")
