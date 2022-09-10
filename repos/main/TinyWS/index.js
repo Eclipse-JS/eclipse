@@ -66,7 +66,12 @@ while (true) {
   }
 
   // It *should* take up the entire screen, if not, something's wrong with your display. (or submit an issue)
-  if (!isCanvasBlank(newFB)) framebuffer.drawImage(newFB, 0, 0); 
+  if (isCanvasBlank(newFB)) {
+    framebuffer.fillStyle = "black";
+    framebuffer.fillRect(0, 0, rootElem.width, rootElem.height);
+  } else {
+    framebuffer.drawImage(newFB, 0, 0);
+  }
 
   await new Promise(r => setTimeout(r, fbTime));
 }

@@ -6,6 +6,13 @@
       "compilerOpts": {
         "src": "TinyWS/index.js"
       }
+    },
+    "dusk": {
+      "ver": "0.0.1",
+      "path": "dusk.js",
+      "compilerOpts": {
+        "src": "Dusk/index.js"
+      }
     }
   }
 }
