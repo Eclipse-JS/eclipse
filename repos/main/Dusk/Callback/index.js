@@ -7,6 +7,14 @@ function duskCallback(e) {
       uuid: e.uuid,
       wh: widthAndHeight
     })
+  } else if (e.event == "WindowUpdate") {
+    const widthAndHeight = e.details.fetchWindowSize().wh;
+    const title = e.details.fetchWindowTitle();
+
+    windows.push({
+      uuid: e.uuid,
+      wh: widthAndHeight
+    })
 
     const genCanvas = wmData.inputWrapper({
       event: "FetchRequest",

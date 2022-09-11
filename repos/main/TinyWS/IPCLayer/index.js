@@ -37,8 +37,24 @@ return {
     };
 
     // Needed for when we implement titlebars
-    const resp = wmConf.outputWrapper({
+    wmConf.outputWrapper({
       event: "WindowCreate",
+      uuid: item.uuid,
+      details: {
+        fetchWindowSize: () => {
+          const fetchedItem = item.fetchCanvas();
+
+          return {
+            xy: [fetchedItem.style.top, fetchedItem.style.left],
+            wh: [fetchedItem.width, fetchedItem.height]
+          }
+        },
+        fetchWindowTitle: () => item.fetchCanvas().title
+      }
+    });
+
+    const resp = wmConf.outputWrapper({
+      event: "WindowUpdate",
       uuid: item.uuid,
       details: {
         fetchWindowSize: () => {
@@ -59,8 +75,34 @@ return {
 
     windows.push(item);
 
+    function update() {
+      const window = windows[windows.indexOf(item)];
+      
+      const newCanvas = wmConf.outputWrapper({
+        event: "WindowUpdate",
+        uuid: item.uuid,
+        details: {
+          fetchWindowSize: () => {
+            const fetchedItem = item.fetchCanvas();
+  
+            return {
+              xy: [fetchedItem.style.top, fetchedItem.style.left],
+              wh: [fetchedItem.width, fetchedItem.height]
+            }
+          },
+          fetchWindowTitle: () => item.fetchCanvas().title
+        }
+      });
+
+      if (newCanvas instanceof HTMLCanvasElement) {
+        window.outerCanvas = newCanvas;
+      }
+      
+      windows.splice(windows.indexOf(item), 1, window);
+    }
+
     try {
-      await callback(item.fetchCanvas());
+      await callback(item.fetchCanvas(), update);
     } catch (e) {
       console.error(e);
     }
