@@ -12,7 +12,7 @@ Kernel.proxies.addEventListener("mousemove", function(e) {
     event: "MoveWindow",
     uuid: mvUUID,
     top: e.clientX - startPos[0] < 0 ? 0 : e.clientX - startPos[0],
-    left: e.clientY - startPos[1] < 0 ? 0 : e.clientY - startPos[1]
+    left: e.clientY - startPos[1] < barSize ? barSize : e.clientY - startPos[1]
   })
 });
 
