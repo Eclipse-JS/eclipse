@@ -1,5 +1,9 @@
 qb.enableRegularRequire();
 
+if (localStorage["panic.log"]) {
+  console.error(`Recovering from panic!\n\n${localStorage["panic.log"]}`);
+}
+
 {
   const extensions = [];
 
@@ -7,15 +11,15 @@ qb.enableRegularRequire();
   let processCount = 0;
 
   function panic(error, atLocation, trace) {
-    console.error("panic! nocpu");
-    console.error(`  ${error} @ ${atLocation}`);
-    console.error(`  Rebooting in 5 seconds...`);
+    let file = `panic! nocpu!\n  ${error} @ ${atLocation}\n`
 
-    if (trace) console.error("  Error:", trace);
+    if (trace) file += "  Error:" + trace;
 
-    setTimeout(function() {
-      window.location.reload()
-    }, 5000);
+    file += "\n\nPlease report this panic to https://github.com/Eclipse-JS/eclipse!";
+
+    localStorage.setItem("panic.log", file);
+
+    window.location.reload();
   }
 
   function assert(test, msg) {
@@ -23,6 +27,10 @@ qb.enableRegularRequire();
   }
 
   Kernel = {
+    kernelLevel: {
+      panic: panic,
+      assert: assert
+    }, 
     extensions: {
       load: function(name, data, isGenFunction) {
         require("./extensions/load.js")

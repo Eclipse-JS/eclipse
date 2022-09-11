@@ -45,5 +45,14 @@ Kernel.extensions.load("Vfs", function(userData) {
     }
   };
 
+  if (localStorage.getItem("panic.log")) {
+    if (!VFS.existsSync("/etc", "directory")) {
+      VFS.mkdir("/etc");
+    }
+
+    VFS.write("/etc/panic.log", localStorage.getItem("panic.log"));
+    localStorage.removeItem("panic.log");
+  }
+
   return VFS;
 }, true);
