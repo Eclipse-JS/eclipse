@@ -1,5 +1,23 @@
 qb.enableRegularRequire();
 
+function outputDetails(event, item) {
+  return wmConf.outputWrapper({
+    event: event,
+    uuid: item.uuid,
+    details: {
+      fetchWindowSize: () => {
+        const fetchedItem = item.fetchCanvas();
+
+        return {
+          xy: [fetchedItem.style.top, fetchedItem.style.left],
+          wh: [fetchedItem.width, fetchedItem.height]
+        }
+      },
+      fetchWindowTitle: () => item.fetchCanvas().title
+    }
+  });
+}
+
 return {
   hasWMStarted: hasWMStarted,
   registerWM: function(name, outputWrapper) {
@@ -37,37 +55,9 @@ return {
     };
 
     // Needed for when we implement titlebars
-    wmConf.outputWrapper({
-      event: "WindowCreate",
-      uuid: item.uuid,
-      details: {
-        fetchWindowSize: () => {
-          const fetchedItem = item.fetchCanvas();
+    outputDetails("WindowCreate", item);
 
-          return {
-            xy: [fetchedItem.style.top, fetchedItem.style.left],
-            wh: [fetchedItem.width, fetchedItem.height]
-          }
-        },
-        fetchWindowTitle: () => item.fetchCanvas().title
-      }
-    });
-
-    const resp = wmConf.outputWrapper({
-      event: "WindowUpdate",
-      uuid: item.uuid,
-      details: {
-        fetchWindowSize: () => {
-          const fetchedItem = item.fetchCanvas();
-
-          return {
-            xy: [fetchedItem.style.top, fetchedItem.style.left],
-            wh: [fetchedItem.width, fetchedItem.height]
-          }
-        },
-        fetchWindowTitle: () => item.fetchCanvas().title
-      }
-    });
+    const resp = outputDetails("WindowUpdate", item);
 
     if (resp instanceof HTMLCanvasElement) {
       item.outerCanvas = resp;
@@ -78,21 +68,7 @@ return {
     function update() {
       const window = windows[windows.indexOf(item)];
       
-      const newCanvas = wmConf.outputWrapper({
-        event: "WindowUpdate",
-        uuid: item.uuid,
-        details: {
-          fetchWindowSize: () => {
-            const fetchedItem = item.fetchCanvas();
-  
-            return {
-              xy: [fetchedItem.style.top, fetchedItem.style.left],
-              wh: [fetchedItem.width, fetchedItem.height]
-            }
-          },
-          fetchWindowTitle: () => item.fetchCanvas().title
-        }
-      });
+      const newCanvas = outputDetails("WindowUpdate", item);
 
       if (newCanvas instanceof HTMLCanvasElement) {
         window.outerCanvas = newCanvas;
