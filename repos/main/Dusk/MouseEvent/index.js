@@ -1,6 +1,8 @@
 let mvUUID = null;
 let enableMove = false;
 
+let startPos = [0, 0];
+
 const barSize = 27;
 
 Kernel.proxies.addEventListener("mousemove", function(e) {
@@ -9,8 +11,8 @@ Kernel.proxies.addEventListener("mousemove", function(e) {
   wmData.inputWrapper({
     event: "MoveWindow",
     uuid: mvUUID,
-    top: e.clientX < 0 ? 0 : e.clientX + 10,
-    left: e.clientY - barSize < 0 ? 10 : e.clientY + barSize + 10
+    top: e.clientX - startPos[0] < 0 ? 0 : e.clientX - startPos[0],
+    left: e.clientY - startPos[1] < 0 ? 0 : e.clientY - startPos[1]
   })
 });
 
@@ -40,6 +42,8 @@ Kernel.proxies.addEventListener("mousedown", function(e) {
       && 
       (pos[1] >= fixedPos[1] - barSize && pos[1] <= fixedPos[1])
     ) {
+      startPos = [pos[0]-fixedPos[0], pos[1]-fixedPos[1]];
+
       mvUUID = uuid;
       enableMove = true;
     }
