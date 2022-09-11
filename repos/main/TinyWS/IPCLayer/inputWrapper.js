@@ -16,4 +16,16 @@ if (input.event == "FetchRequest") {
       wh: [canvas.width, canvas.height]
     }
   }
+} else if (input.event == "MoveWindow") {
+  const find = windows.find(i => i.uuid == input.uuid);
+
+  if (!find) {
+    return { error: "ENOTFOUND" };
+  } else {
+    const canvas = find.fetchCanvas();
+    canvas.style.top = input.top;
+    canvas.style.left = input.left;
+    
+    return { success: "NoSkill" };
+  }
 }

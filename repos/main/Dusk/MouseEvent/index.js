@@ -1,8 +1,20 @@
-Kernel.proxies.addEventListener("mousemove", function(e) {
+let mvUUID = null;
+let enableMove = false;
 
+const barSize = 27;
+
+Kernel.proxies.addEventListener("mousemove", function(e) {
+  if (!enableMove) return;
+
+  wmData.inputWrapper({
+    event: "MoveWindow",
+    uuid: mvUUID,
+    top: e.clientX < 0 ? 0 : e.clientX + 10,
+    left: e.clientY - barSize < 0 ? 10 : e.clientY + barSize + 10
+  })
 });
 
-Kernel.proxies.addEventListener("click", function(e) {
+Kernel.proxies.addEventListener("mousedown", function(e) {
   const pos = [e.clientX, e.clientY];
 
   for (const i of windows) {
@@ -20,8 +32,6 @@ Kernel.proxies.addEventListener("click", function(e) {
 
     const fixedPos = [parseInt(resp.xy[0].replace("px", "")), parseInt(resp.xy[1].replace("px", ""))];
 
-    const barSize = 27;
-
     // Checks if the mouse is inside the bar.
     // Causes my head to hurt every time I read this code.
 
@@ -30,7 +40,13 @@ Kernel.proxies.addEventListener("click", function(e) {
       && 
       (pos[1] >= fixedPos[1] - barSize && pos[1] <= fixedPos[1])
     ) {
-      console.log("%s: mouse is inside top bar", uuid);
+      mvUUID = uuid;
+      enableMove = true;
     }
   }
+})
+
+Kernel.proxies.addEventListener("mouseup", function() {
+  enableMove = false;
+  mvUUID = null;
 })
