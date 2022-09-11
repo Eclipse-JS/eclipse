@@ -3,6 +3,11 @@ function duskCallback(e) {
     const widthAndHeight = e.details.fetchWindowSize().wh;
     const title = e.details.fetchWindowTitle();
 
+    windows.push({
+      uuid: e.uuid,
+      wh: widthAndHeight
+    })
+
     const genCanvas = wmData.inputWrapper({
       event: "FetchRequest",
       subevent: "genCanvas"
@@ -25,5 +30,7 @@ function duskCallback(e) {
     ctx.fillText(title ? title : "Window", 4, height-8);
 
     return canvas;
+  } else if (e.event == "WindowClose") {
+    windows.slice(windows.indexOf(windows.find(i => i.uuid == e.uuid)));
   }
 }

@@ -3,6 +3,8 @@ qb.enableRegularRequire();
 const args = argv;
 const input = args.shift();
 
+const windows = [];
+
 input.stdout("WM: Dusk is starting up...\n");
 input.stdout("WM: Attempting to negotiate deals with the Window Server...\n");
 
@@ -26,6 +28,8 @@ const wmData = ws.registerWM("ProjectDusk");
 
 wmData.loadWM(require("./Callback/index.js"));
 createTestWindow();
+
+require("./MouseEvent/index.js");
 
 while (true) {
   await new Promise(r => setTimeout(r, 5000));
