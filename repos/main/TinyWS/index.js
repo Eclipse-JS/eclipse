@@ -7,7 +7,7 @@ let windows = [];
 
 let wmConf = {};
 
-const fbFPSLock = 60; // 60fps
+const fbFPSLock = 15; // Should be about ~80fps
 
 require("./ckernel.js")
 
@@ -38,7 +38,7 @@ cKernel.extensions.load("WindowServer", function() {
   require("./IPCLayer/index.js")
 }, true);
 
-const fbTime = calcFPS(fbFPSLock);
+//const fbTime = calcFPS(fbFPSLock);
 
 while (true) {
   // Repaint all windows every (by default) 60ms -- I don't have any better ideas
@@ -76,5 +76,5 @@ while (true) {
 
   framebuffer.drawImage(newFB, 0, 0);
 
-  await new Promise(r => setTimeout(r, fbTime));
+  await new Promise(r => setTimeout(r, fbFPSLock));
 }
