@@ -32,4 +32,26 @@ switch (input.event) {
       return { success: "NoSkill" };
     }
   }
+
+  case "SetFocusedWindowUUID": {
+    if (!input.uuid) return false;
+
+    const window = windows.find(i => i.uuid == input.uuid);
+    if (!window) return false;
+    
+    if (focusedUUID) {
+      const oldWindow = windows.find(i => i.uuid == focusedUUID);
+      outputDetails("WindowUpdate", oldWindow);
+    }
+
+    focusedUUID = input.uuid;
+
+    outputDetails("WindowUpdate", window);
+
+    return true;
+  }
+
+  case "FetchFocusedUUID": {
+    return focusedUUID;
+  }
 }

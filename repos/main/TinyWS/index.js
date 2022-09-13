@@ -3,6 +3,8 @@ qb.enableRegularRequire();
 let hasStarted = false;
 let hasWMStarted = false;
 
+let focusedUUID = null;
+
 let windows = [];
 
 let wmConf = {};
