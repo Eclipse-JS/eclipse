@@ -19,7 +19,9 @@ Kernel.proxies.addEventListener("mousemove", function(e) {
 Kernel.proxies.addEventListener("mousedown", function(e) {
   const pos = [e.clientX, e.clientY];
 
-  for (const i of windows) {
+  for (const i of wmData.inputWrapper({ event: "FetchAllWindows" })) {
+    if (!i) continue; // FIXME (TinyWS): Mapped array can sometimes contain undefined contents.
+
     const uuid = i.uuid;
 
     const resp = wmData.inputWrapper({
@@ -43,6 +45,11 @@ Kernel.proxies.addEventListener("mousedown", function(e) {
       (pos[1] >= fixedPos[1] - barSize && pos[1] <= fixedPos[1])
     ) {
       startPos = [pos[0]-fixedPos[0], pos[1]-fixedPos[1]];
+
+      // FIXME (please!): Right now, I'm a lazy bum, and so I don't want to implement more checks to see if you click in the window right now.
+      // TLDR: You can only click on the top bar to focus the windows, right now.
+
+      if (!i.focused) wmData.inputWrapper({ event: "SetFocusedWindowUUID", uuid: uuid });
 
       mvUUID = uuid;
       enableMove = true;

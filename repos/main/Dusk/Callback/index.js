@@ -1,20 +1,13 @@
 function duskCallback(e) {
-  if (e.event == "WindowCreate") {
+  if (e.event == "WindowUpdate") {
     const widthAndHeight = e.details.fetchWindowSize().wh;
     const title = e.details.fetchWindowTitle();
 
-    windows.push({
-      uuid: e.uuid,
-      wh: widthAndHeight
+    const focusedUUID = wmData.inputWrapper({
+      event: "FetchFocusedUUID"
     })
-  } else if (e.event == "WindowUpdate") {
-    const widthAndHeight = e.details.fetchWindowSize().wh;
-    const title = e.details.fetchWindowTitle();
-
-    windows.push({
-      uuid: e.uuid,
-      wh: widthAndHeight
-    })
+    
+    const isFocused = e.uuid == focusedUUID;
 
     const genCanvas = wmData.inputWrapper({
       event: "FetchRequest",
@@ -29,16 +22,14 @@ function duskCallback(e) {
     const theme = ui.themes.getTheme(ui.themes.getDefaultTheme());
 
     ctx.fillStyle = theme.styles.general.background["background-color"];
-    console.log(0, 0, widthAndHeight[0], height);
-    
     ctx.fillRect(0, 0, widthAndHeight[0], height);
 
-    ctx.fillStyle = theme.styles.general.accents.white["background-color"];
+    const color = isFocused ? "background-color" : "foreground-color";
+
+    ctx.fillStyle = theme.styles.general.accents.white[color];
     ctx.font = '15px system-ui';
     ctx.fillText(title ? title : "Window", 4, height-8);
 
     return canvas;
-  } else if (e.event == "WindowClose") {
-    windows.slice(windows.indexOf(windows.find(i => i.uuid == e.uuid)));
   }
 }

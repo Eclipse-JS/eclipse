@@ -55,7 +55,22 @@ while (true) {
   fbContext.fillStyle = "black";
   fbContext.fillRect(0, 0, rootElem.width, rootElem.height);
 
-  for (const i of windows) {
+  let danglingItem;
+
+  const newArray = windows.map(function(i) {
+    if (i.uuid == focusedUUID) {
+      danglingItem = i;
+      return;
+    }
+
+    return i;
+  });
+
+  if (danglingItem) newArray.push(danglingItem);
+
+  for (const i of newArray) {
+    if (!i) continue;
+
     const canvas = i.fetchCanvas();
 
     function convertCSSStyleToJS(item) {
