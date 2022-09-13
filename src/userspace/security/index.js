@@ -38,7 +38,13 @@ function genKernel(localAccount) {
       getCurrentInfo() { return account; }
     },
     proxies: {
-      addEventListener: (...args) => document.addEventListener(...args)
+      addEventListener(...args) {
+        if (account.permLevel != 0) {
+          throw "No permission!";
+        }
+
+        document.addEventListener(...args);
+      }
     }
   }
 
