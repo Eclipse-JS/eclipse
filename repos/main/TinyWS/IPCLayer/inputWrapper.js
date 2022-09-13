@@ -33,7 +33,6 @@ switch (input.event) {
     });
 
     if (focused) newWindows.push(focused);
-    console.log(newWindows);
 
     return newWindows;
   }
