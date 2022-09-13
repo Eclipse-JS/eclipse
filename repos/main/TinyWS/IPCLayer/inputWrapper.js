@@ -19,6 +19,24 @@ switch (input.event) {
     }
   }
 
+  case "FetchAllWindows": {
+    let focused;
+
+    const newWindows = windows.map(function(i) {
+      if (i.uuid == focusedUUID) {
+        focused = i;
+        focused.focused = true;
+        return;
+      }
+      
+      return { uuid: i.uuid, focused: false };
+    });
+
+    if (focused) newWindows.push(focused);
+
+    return newWindows;
+  }
+
   case "MoveWindow": {
     const find = windows.find(i => i.uuid == input.uuid);
 
