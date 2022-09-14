@@ -2,7 +2,6 @@ qb.enableRegularRequire();
 
 const VFS = Kernel.extensions.get("Vfs");
 const Sys = Kernel.extensions.get("sys");
-const users = Kernel.extensions.get("users");
 
 async function fetchTextData(url) {
   const data = await fetch(url);
@@ -46,6 +45,3 @@ fillText("Configuring packages...", indexes+2);
 if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
 require("./initCfg.js");
-
-await users.addUser("anon", ["anon"], 1, "anonymous");
-await users.addUser("nobody", ["nobody"], 1, "browhatrudoinglmao");

@@ -15,6 +15,10 @@
       "ver": "0.1.0",
       "path": "login.js"
     },
+    "setup": {
+      "ver": "0.1.0",
+      "path": "setup.js"
+    },
     "sh": {
       "ver": "0.1.0",
       "path": "sh.js"

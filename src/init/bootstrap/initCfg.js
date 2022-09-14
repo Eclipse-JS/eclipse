@@ -1,6 +1,6 @@
 VFS.write("/etc/init.d/init.conf", "/bin/net");
 VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
-VFS.write("/etc/ttysh.conf", "shell=/bin/login");
+VFS.write("/etc/ttysh.conf", "shell=/bin/setup");
 
 VFS.write("/etc/motd", `
 _______      _ _                   _____    _    
