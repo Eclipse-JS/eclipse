@@ -19,7 +19,7 @@ function returnEvt(uuid) {
       callbacks.push({
         event: name,
         uuid: uuid,
-        callback: uuid
+        callback: callback
       })
     }
   }
