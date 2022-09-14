@@ -1,5 +1,7 @@
 qb.enableRegularRequire();
 
+require("./eventProxy.js");
+
 function outputDetails(event, item) {
   return wmConf.outputWrapper({
     event: event,
@@ -78,7 +80,7 @@ return {
     }
 
     try {
-      await callback(item.fetchCanvas(), update);
+      await callback(item.fetchCanvas(), update, returnEvt(item.uuid));
     } catch (e) {
       console.error(e);
     }
