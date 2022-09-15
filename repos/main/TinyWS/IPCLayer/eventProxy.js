@@ -1,4 +1,4 @@
-const validItems = ["keypress"];
+const validItems = ["keypress", "keydown", "keyup"];
 const callbacks = [];
 
 for (const i of validItems) {
@@ -7,14 +7,15 @@ for (const i of validItems) {
 
     for (const j of find) {
       if (j.uuid == focusedUUID) {
-        await j.callback(e);
+        j.callback(e);
+        return;
       }
     }
   })
 }
 
 function returnEvt(uuid) {
-  return new function(name, callback) {
+  return function(name, callback) {
     if (validItems.includes(name)) {
       callbacks.push({
         event: name,

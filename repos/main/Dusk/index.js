@@ -27,8 +27,7 @@ console.log("WM: Attempting to register a Window Manager...");
 const wmData = ws.registerWM("ProjectDusk");
 
 wmData.loadWM(require("./Callback/index.js"));
-createTestWindow("Window 1", 0, 0);
-createTestWindow("Window 2", 200, 0);
+exec("/bin/duskterm", [])
 
 require("./MouseEvent/index.js");
 

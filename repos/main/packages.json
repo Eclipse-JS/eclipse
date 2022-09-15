@@ -20,6 +20,13 @@
       "compilerOpts": {
         "src": "Dusk/index.js"
       }
+    },
+    "duskterm": {
+      "ver": "0.0.1",
+      "path": "duskterm.js",
+      "compilerOpts": {
+        "src": "DuskTerm/index.js"
+      }
     }
   }
 }
