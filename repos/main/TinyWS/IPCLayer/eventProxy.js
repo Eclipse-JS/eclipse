@@ -7,7 +7,7 @@ for (const i of validItems) {
 
     for (const j of find) {
       if (j.uuid == focusedUUID) {
-        await j.callback();
+        await j.callback(e);
       }
     }
   })
