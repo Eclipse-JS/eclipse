@@ -1,6 +1,6 @@
 function fillText(text, count) {
   ctx.font = fontSize + "px monospace";
-  ctx.fillStyle = "white";
+  ctx.fillStyle = theme.styles.general.accents.white["background-color"];
   ctx.fillText(
     text,
     2,
@@ -14,7 +14,7 @@ function redraw(textData) {
 
   while (text.length > maxLines) text.shift();
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = theme.styles.general.background["foreground-color"];
   ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
   for (var i = 1; i < maxLines+1; i++) {

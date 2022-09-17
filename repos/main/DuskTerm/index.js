@@ -9,8 +9,11 @@ let inputIsActive = false;
 require("./constants.js");
 
 const ws = Kernel.extensions.get("WindowServer");
+const ui = Kernel.extensions.get("LibDawn");
 
-await ws.createWindow(300, 300, async function(canvasElement, update, addEventListener) {
+const theme = ui.themes.getTheme(ui.themes.getDefaultTheme());
+
+await ws.createWindow(512, 512, async function(canvasElement, update, addEventListener) {
   canvasElement.title = "DuskTerm | " + shell;
   update();
 
