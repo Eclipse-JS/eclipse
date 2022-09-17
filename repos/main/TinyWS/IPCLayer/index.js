@@ -40,7 +40,9 @@ return {
       }
     }
   },
-  async createWindow(width, height, callback) {
+  async createWindow(width, height, callback, options) {
+    const parsedOptions = typeof options == "object" ? options : {};
+
     if (!this.hasWMStarted) {
       throw new Error("Window Manager not registered yet!");
     }
@@ -58,6 +60,17 @@ return {
 
     // Needed for when we implement titlebars
     outputDetails("WindowCreate", item);
+
+    if (!parsedOptions.disableFocus) {
+      if (focusedUUID) {
+        const oldWindow = windows.find(i => i.uuid == focusedUUID);
+        focusedUUID = item.uuid;
+
+        outputDetails("WindowUpdate", oldFocusedUUID);
+      } else {
+        focusedUUID = item.uuid;
+      }
+    }
 
     const resp = outputDetails("WindowUpdate", item);
 
