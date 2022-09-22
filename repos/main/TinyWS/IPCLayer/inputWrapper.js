@@ -30,6 +30,8 @@ switch (input.event) {
       }
       
       return { uuid: i.uuid, focused: false };
+    }).filter(function (j) {
+      return j != undefined;
     });
 
     if (focused) newWindows.push(focused);
