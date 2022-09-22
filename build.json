@@ -6,6 +6,10 @@
       "type": "static"
     },
     {
+      "path": "./src/DOM/colossal/index.js",
+      "out": "./out/colossal_bl.js"
+    },
+    {
       "path": "./src/kernel/index.js",
       "out": "./out/kernel.js"
     },
