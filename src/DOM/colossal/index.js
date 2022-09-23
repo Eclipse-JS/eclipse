@@ -3,7 +3,6 @@ qb.enableRegularRequire(); /* hee hee hee haw */
 const factor = 2; // FIXME: Changing this breaks everything. Oops.
 
 document.title = "ColossalBoot";
-localStorage.clear();
 
 require("./libs/displayOpts.js");
 require("./libs/uuidv4.js");
@@ -38,7 +37,12 @@ document.addEventListener("DOMContentLoaded", async function() {
     framebuffer.height-70
   );
 
-  const opt = await displayOpts(ctx, { display: "Install EclipseOS", id: "os_install" });
+  const rawUserOptions = localStorage.getItem("os_list") ? localStorage.getItem("os_list") : "[]";
+  const userOptions = JSON.parse(rawUserOptions).map(function(i) {
+    return { display: i.name, id: i.id };
+  });
+
+  const opt = await displayOpts(ctx, ...userOptions, { display: "Install EclipseOS", id: "os_install" });
   console.log(opt);
 
   ctx.fillStyle = "black";
@@ -46,5 +50,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   if (opt == "os_install") {
     require("./src/installOS.js");
+  } else {
+    require("./src/osBooter.js");
   }
 });
