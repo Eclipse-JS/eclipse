@@ -11,7 +11,7 @@ const localStorage = {
   }
 }
 
-if (localStorage["panic.log"]) {
+if (localStorage.getItem("panic.log")) {
   console.error(`Recovering from panic!\n\n${localStorage["panic.log"]}`);
 }
 

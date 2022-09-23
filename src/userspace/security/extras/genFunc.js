@@ -5,6 +5,6 @@ function genFunc(funcRaw) {
   const funcStr = typeof funcRaw != "string" ? funcRaw.toString() : funcRaw;
   const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
 
-  if (account.permLevel == 0) return AsyncFunction("argv", "Kernel", "pid", ...allBanned, funcStr);
-  return AsyncFunction("argv", "Kernel", "pid", "localStorage", ...notElevatedBanned, ...allBanned, funcStr);
+  const localBanned = account.permLevel == 0 ? [...allBanned] : [...notElevatedBanned, ...allBanned];
+  return AsyncFunction("argv", "Kernel", "pid", "localStorage", ...localBanned, funcStr);
 }
