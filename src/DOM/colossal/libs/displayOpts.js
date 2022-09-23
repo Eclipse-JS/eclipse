@@ -11,7 +11,7 @@ async function displayOpts(ctx, ...opts) {
       const i = opts[count];
       
       i.id == selectedElement.id ? ctx.fillStyle = "grey" : ctx.fillStyle = "black";
-      ctx.fillRect(12 - factor, 48+(24*count) + factor, window.innerWidth, 20, window.innerHeight-(152+factor));
+      ctx.fillRect(12 - factor, 48+(24*count) + factor, window.innerWidth - (18 + factor), 20);
   
       ctx.fillStyle = "white";
       ctx.fillText(i.display, 12, 64+(24*count));    
