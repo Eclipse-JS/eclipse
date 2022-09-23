@@ -3,24 +3,10 @@ qb.enableRegularRequire(); /* hee hee hee haw */
 const factor = 2; // FIXME: Changing this breaks everything. Oops.
 
 document.title = "ColossalBoot";
+localStorage.clear();
 
-async function displayOpts(ctx, ...opts) {
-  ctx.fillStyle = "black";
-  ctx.fillRect(12 - factor, 48 + factor, window.innerWidth - (18 + factor), window.innerHeight-(152+factor));
-
-  ctx.fillStyle = "white";
-
-  const selectedElement = opts[0];
-
-  for (const i of opts) {
-    ctx.fillStyle = "grey";
-    ctx.fillRect(1, 4, 9, 16);
-
-    if (i.id == selectedElement.id) {
-      console.log("main element");
-    }
-  }
-}
+require("./libs/displayOpts.js");
+require("./libs/uuidv4.js");
 
 document.addEventListener("DOMContentLoaded", async function() {
   const framebuffer = document.getElementById("framebuffer");
@@ -52,5 +38,13 @@ document.addEventListener("DOMContentLoaded", async function() {
     framebuffer.height-70
   );
 
-  const opt = await displayOpts(ctx, { display: "Install EclipseOS", id: "new_os" });
+  const opt = await displayOpts(ctx, { display: "Install EclipseOS", id: "os_install" });
+  console.log(opt);
+
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, framebuffer.width, framebuffer.height);
+
+  if (opt == "os_install") {
+    require("./src/installOS.js");
+  }
 });

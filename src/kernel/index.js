@@ -1,5 +1,16 @@
 qb.enableRegularRequire();
 
+const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
+
+const localStorage = {
+  getItem: function(key) {
+    return self.localStorage.getItem(prefix + key);
+  },
+  setItem: function(key, value) {
+    self.localStorage.setItem(prefix + key, value);
+  }
+}
+
 if (localStorage["panic.log"]) {
   console.error(`Recovering from panic!\n\n${localStorage["panic.log"]}`);
 }
@@ -45,7 +56,7 @@ self.Kernel = {
         async function () {}
       ).constructor;
 
-      return AsyncFunction("argv", "Kernel", "pid", funcStr);
+      return AsyncFunction("argv", "Kernel", "pid", "localStorage", funcStr);
     },
     async spawn(name, func, argv, kernel) {
       require("./process/spawn.js");
