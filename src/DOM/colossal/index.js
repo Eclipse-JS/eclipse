@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     return { display: i.name, id: i.id };
   });
 
-  const opt = await displayOpts(ctx, ...userOptions, { display: "Install EclipseOS", id: "os_install" });
+  const opt = await displayOpts(ctx, ...userOptions, { display: "Install EclipseOS", id: "os_install" }, { display: "Stress-test kernel and core apps", id: "debug_krnl" });
   console.log(opt);
 
   ctx.fillStyle = "black";
@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   if (opt == "os_install") {
     require("./src/installOS.js");
+  } else if (opt == "debug_krnl") {
+    require("./src/debug.js");
   } else {
     require("./src/osBooter.js");
   }

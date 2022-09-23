@@ -6,6 +6,18 @@
       "type": "static"
     },
     {
+      "path": "./src/DOM/colossal_dbg/init/index.js",
+      "out": "./out/colossal_dbg/colossal_dbg_init.js"
+    },
+    {
+      "path": "./src/DOM/colossal_dbg/rootlevel/index.js",
+      "out": "./out/colossal_dbg/colossal_dbg_rootlevel.js"
+    },
+    {
+      "path": "./src/DOM/colossal_dbg/userlevel/index.js",
+      "out": "./out/colossal_dbg/colossal_dbg_userlevel_root_shell.js"
+    },
+    {
       "path": "./src/DOM/colossal/index.js",
       "out": "./out/colossal_bl.js"
     },
