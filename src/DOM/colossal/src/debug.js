@@ -24,8 +24,8 @@ const uuid = "DEBUGTEST";
 
 wipeUUIDFS(uuid);
 
-const kernel = await read("/kernel.js");
-const stage0 = await read("/colossal_dbg/colossal_dbg_init.js");
+const kernel = await read("kernel.js");
+const stage0 = await read("colossal_dbg/colossal_dbg_init.js");
 
 console.log("Patching kernel...");
 const kernelOpts = `const BL_CMDLINE="fs_prefix='${uuid}__'"`;

@@ -43,18 +43,18 @@ async function secExecJS(name, path) {
 }
 
 console.log("INFO: Bringing up vfs...");
-await secExecJS("initvfs", "/init/vfs.js");
+await secExecJS("initvfs", "init/vfs.js");
 
 console.log("INFO: Bootstrapping OS...");
 await secExecJS("sys", "init/sys.js");
-await secExecJS("bootstrap", "/init/bootstrap.js");
+await secExecJS("bootstrap", "init/bootstrap.js");
 
 console.log("INFO: Running colossal_dbg_rootlevel...");
-await execJS("colossal_dbg_rootlevel", "/colossal_dbg/colossal_dbg_rootlevel.js");
+await execJS("colossal_dbg_rootlevel", "colossal_dbg/colossal_dbg_rootlevel.js");
 
 console.log("INFO: Running colossal_dbg_userlevel_root_shell...");
 const VFS = KernelSec.extensions.get("Vfs");
-const shell = await read("/colossal_dbg/colossal_dbg_userlevel_root_shell.js");
+const shell = await read("colossal_dbg/colossal_dbg_userlevel_root_shell.js");
 
 VFS.write("/bin/dbshell", "UWU;;\n\n" + shell);
 VFS.write("/etc/ttysh.conf", "shell=/bin/dbshell");

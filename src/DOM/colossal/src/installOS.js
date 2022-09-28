@@ -10,8 +10,8 @@ const uuid = uuidv4();
 
 osList.push({ id: uuid });
 
-const kernel = await read("/kernel.js");
-const stage0 = await read("/init/index.js");
+const kernel = await read("kernel.js");
+const stage0 = await read("init/index.js");
 
 localStorage.setItem("os_list", JSON.stringify(osList));
 localStorage.setItem(uuid + "__krnl", kernel);
