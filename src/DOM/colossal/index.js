@@ -39,11 +39,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   const rawUserOptions = localStorage.getItem("os_list") ? localStorage.getItem("os_list") : "[]";
   const userOptions = JSON.parse(rawUserOptions).map(function(i) {
-    return { display: i.name, id: i.id };
+    return { display: localStorage.getItem(i.id + "__bootername"), id: i.id };
   });
 
   const opt = await displayOpts(ctx, ...userOptions, { display: "Install EclipseOS", id: "os_install" }, { display: "Stress-test kernel and core apps", id: "debug_krnl" });
-  console.log(opt);
 
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, framebuffer.width, framebuffer.height);

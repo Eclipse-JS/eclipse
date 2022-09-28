@@ -34,13 +34,19 @@ const password = await input.stdin();
 input.stdout("\nPlease wait, adding profile...\n");
 await users.addUser(username, [username], 1, password);
 
-input.stdout("Would you like to enable a desktop environment to start on startup?\n> ");
+input.stdout("What do you want to name this install?\n\nName: ");
+const name = await input.stdin();
+
+localStorage.setItem("bootername", name);
+
+input.stdout("\nWould you like to enable a desktop environment to start on startup?\n> ");
 const opt = await input.stdin();
 
 input.stdout("Loading your desktop...\n");
 
 if (opt.toLowerCase().startsWith("y")) {
   await exec("/bin/pkg", ["install", "tinyws"]);
+  await exec("/bin/pkg", ["install", "duskterm"]);
   await exec("/bin/pkg", ["install", "dusk"]);
   await exec("/bin/pkg", ["install", "dawn"]);
 

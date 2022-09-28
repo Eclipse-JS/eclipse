@@ -8,6 +8,9 @@ const localStorage = {
   },
   setItem: function(key, value) {
     self.localStorage.setItem(prefix + key, value);
+  },
+  removeItem: function(key) {
+    self.localStorage.removeItem(prefix + key);
   }
 }
 

@@ -1,5 +1,5 @@
-const kernel = localStorage.getItem("krnl_" + opt);
-const stage0 = localStorage.getItem("init_" + opt);
+const kernel = localStorage.getItem(opt + "__krnl");
+const stage0 = localStorage.getItem(opt + "__init");
 
 console.log("Patching kernel...");
 const kernelOpts = `const BL_CMDLINE="fs_prefix='${opt}__'"`;

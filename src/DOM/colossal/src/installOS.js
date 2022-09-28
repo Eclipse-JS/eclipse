@@ -8,14 +8,16 @@ async function read(path) {
 const osList = localStorage.getItem("os_list") ? JSON.parse(localStorage.getItem("os_list")) : [];
 const uuid = uuidv4();
 
-osList.push({ name: "EclipseOS (uwu)", id: uuid });
+osList.push({ id: uuid });
 
 const kernel = await read("/kernel.js");
 const stage0 = await read("/init/index.js");
 
 localStorage.setItem("os_list", JSON.stringify(osList));
-localStorage.setItem("krnl_" + uuid, kernel);
-localStorage.setItem("init_" + uuid, stage0);
+localStorage.setItem(uuid + "__krnl", kernel);
+localStorage.setItem(uuid + "__init", stage0);
+
+localStorage.setItem(uuid + "__bootername", "EclipseOS (uwu)");
 
 console.log("Patching kernel...");
 const kernelOpts = `const BL_CMDLINE="fs_prefix='${uuid}__'"`;
