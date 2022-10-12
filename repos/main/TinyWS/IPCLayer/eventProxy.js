@@ -1,27 +1,24 @@
-const validItems = ["keypress", "keydown", "keyup"];
+const addedItems = [];
 const callbacks = [];
 
-for (const i of validItems) {
-  document.addEventListener(i, async function(e) {
-    const find = callbacks.filter(j => j.event == i);
-
-    for (const j of find) {
-      if (j.uuid == focusedUUID) {
-        j.callback(e);
-        return;
-      }
-    }
-  })
-}
-
 function returnEvt(uuid) {
-  return function(name, callback) {
-    if (validItems.includes(name)) {
-      callbacks.push({
-        event: name,
-        uuid: uuid,
-        callback: callback
-      })
+  return function (name, callback) {
+    if (!addedItems.includes(name)) {
+      document.addEventListener(name, function(e) {
+        const find = callbacks.filter(j => j.event == name);
+
+        for (const j of find) {
+          if (j.uuid == focusedUUID) return j.callback(e);
+        }
+      });
+
+      addedItems.push(name);
     }
-  }
+
+    callbacks.push({
+      event: name,
+      uuid: uuid,
+      callback: callback
+    });
+  };
 }
