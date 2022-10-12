@@ -66,7 +66,7 @@ return {
         const oldWindow = windows.find(i => i.uuid == focusedUUID);
         focusedUUID = item.uuid;
 
-        outputDetails("WindowUpdate", oldFocusedUUID);
+        outputDetails("WindowUpdate", oldWindow);
       } else {
         focusedUUID = item.uuid;
       }
@@ -98,41 +98,28 @@ return {
       // Virtual DOM - May be needed for porting applications?
       // Adds a way to proxy stuff through an element, and the active canvas can easily be switched
 
-      let ctxID;
-
       const vdom = document.createElement("html");
+
       vdom.addEventListener = eventListener;
+    
+      // I hate HTML.
+      // I have to make a custom implementation because it doesn't expose a way to do this via createElement (afaik)
+
+      vdom.getElementById = function(id) {
+        const elements = vdom.getElementsByTagName("*");
+
+        // Array.prototype.find doesn't work on HTML Arrays. wtf?
+        for (const i of elements) {
+          if (i.id == id) return i;
+        }
+
+        return undefined;
+      };
 
       vdom.createElement = function(item) {
         if (item == "script") return;
         return document.createElement(item);
       }
-
-      vdom.selectActiveCanvasID = function(id) {
-        if (!document.getElementById(id)) return false;
-        if (typeof id != "string") return false;
-
-        ctxID = id;
-        return true;
-      }
-
-      async function mainLoop() {
-        const ctx = item.fetchCanvas();
-
-        // Synchronize width and height
-        vdom.width =  ctx.width;
-        vdom.height = ctx.height;
-
-        // Draw canvas to screen
-        if (!ctxID) return;
-        if (!document.getElementById(ctxID) instanceof HTMLCanvasElement) return;
-
-        const canvas = document.getElementById(ctxID);
-
-        ctx.drawImage(canvas, 0, 0);
-      }
-
-      setInterval(mainLoop, 10);
 
       await callback(item.fetchCanvas(), update, eventListener, vdom);
     } catch (e) {
