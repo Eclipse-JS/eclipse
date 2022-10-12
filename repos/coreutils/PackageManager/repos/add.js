@@ -25,3 +25,4 @@ contents[testRead.identifier] = {
 vfs.write("/etc/pkg/repos.json", JSON.stringify(contents));
 
 logger("info", `Added repo ${testRead.identifier}. Please run 'pkg update' after, or else.`);
+break;

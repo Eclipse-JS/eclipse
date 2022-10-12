@@ -11,7 +11,8 @@ for (const oldIndex of Object.keys(oldContents)) {
   logger("info", `Downloading root repo '${oldIndex}'...`);
 
   try {
-    const data = JSON.parse(await read(i.path));
+    const rootURL = i.path;
+    const data = JSON.parse(await read(rootURL));
 
     items[oldIndex] = {
       contents: data.contents,
@@ -22,7 +23,7 @@ for (const oldIndex of Object.keys(oldContents)) {
       const i = items[oldIndex].contents[index];
       logger("info", `Setting up repo '${i.name}'...`);
 
-      const file = JSON.parse(await read("repos/" + i.path));
+      const file = JSON.parse(await read(rootURL.replace("rootpkgserver.json", "") + i.path));
 
       items[oldIndex].contents[index].contents = file.packages;
     }
