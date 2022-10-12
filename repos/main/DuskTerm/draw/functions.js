@@ -10,16 +10,15 @@ function fillText(text, count) {
 
 function redraw(textData) {
   const maxLines = Math.round((canvasElement.height/fontSize)/1.5);
-  const maxChars = Math.round(canvasElement.width/fontSize);
+  const maxChars = Math.round((canvasElement.width/fontSize)*1.75);
   
-  while (text.length > maxLines) text.shift();
-
   ctx.fillStyle = theme.styles.general.background["foreground-color"];
   ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
   const rawText = textData.split("\n").map(item => item === undefined || item == "" ? ' ' : item);
-
   let text = [];
+
+  while (text.length > maxLines) text.shift(); // Avoid over processing data
 
   for (i of rawText) {
     if (i.length > maxChars) {
@@ -34,5 +33,11 @@ function redraw(textData) {
     } else {
       text.push(i);
     }
+  }
+
+  for (var i = 1; i < maxLines+1; i++) {
+    if (!text[i-1]) break;
+
+    fillText(text[i-1], i);
   }
 }
