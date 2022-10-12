@@ -93,7 +93,48 @@ return {
     }
 
     try {
-      await callback(item.fetchCanvas(), update, returnEvt(item.uuid));
+      const eventListener = returnEvt(item.uuid);
+
+      // Virtual DOM - May be needed for porting applications?
+      // Adds a way to proxy stuff through an element, and the active canvas can easily be switched
+
+      let ctxID;
+
+      const vdom = document.createElement("html");
+      vdom.addEventListener = eventListener;
+
+      vdom.createElement = function(item) {
+        if (item == "script") return;
+        return document.createElement(item);
+      }
+
+      vdom.selectActiveCanvasID = function(id) {
+        if (!document.getElementById(id)) return false;
+        if (typeof id != "string") return false;
+
+        ctxID = id;
+        return true;
+      }
+
+      async function mainLoop() {
+        const ctx = item.fetchCanvas();
+
+        // Synchronize width and height
+        vdom.width =  ctx.width;
+        vdom.height = ctx.height;
+
+        // Draw canvas to screen
+        if (!ctxID) return;
+        if (!document.getElementById(ctxID) instanceof HTMLCanvasElement) return;
+
+        const canvas = document.getElementById(ctxID);
+
+        ctx.drawImage(canvas, 0, 0);
+      }
+
+      setInterval(mainLoop, 10);
+
+      await callback(item.fetchCanvas(), update, eventListener, vdom);
     } catch (e) {
       console.error(e);
     }
