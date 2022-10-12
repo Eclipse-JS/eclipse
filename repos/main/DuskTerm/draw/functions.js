@@ -9,17 +9,30 @@ function fillText(text, count) {
 }
 
 function redraw(textData) {
-  const maxLines = Math.round((canvasElement.width/fontSize)/1.5);
-  const text = textData.split("\n").map(item => item === undefined || item == "" ? ' ' : item);
-
+  const maxLines = Math.round((canvasElement.height/fontSize)/1.5);
+  const maxChars = Math.round(canvasElement.width/fontSize);
+  
   while (text.length > maxLines) text.shift();
 
   ctx.fillStyle = theme.styles.general.background["foreground-color"];
   ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-  for (var i = 1; i < maxLines+1; i++) {
-    if (!text[i-1]) break;
+  const rawText = textData.split("\n").map(item => item === undefined || item == "" ? ' ' : item);
 
-    fillText(text[i-1], i);
+  let text = [];
+
+  for (i of rawText) {
+    if (i.length > maxChars) {
+      const overLength = Math.floor(i.length / maxChars);
+
+      for (var j = 1; j <= overLength; j++) {
+        const str = i.slice(0, maxChars*j);
+      
+        if (j == 1) text.push(str);
+        text.push(i.replace(str, ""));
+      }
+    } else {
+      text.push(i);
+    }
   }
 }

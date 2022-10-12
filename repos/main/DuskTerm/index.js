@@ -15,6 +15,7 @@ const theme = ui.themes.getTheme(ui.themes.getDefaultTheme());
 
 await ws.createWindow(512, 512, async function(canvasElement, update, addEventListener) {
   canvasElement.title = "DuskTerm | " + shell;
+
   update();
 
   const ctx = canvasElement.getContext("2d");
