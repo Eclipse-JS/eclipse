@@ -95,33 +95,7 @@ return {
     try {
       const eventListener = returnEvt(item.uuid);
 
-      // Virtual DOM - May be needed for porting applications?
-      // Adds a way to proxy stuff through an element, and the active canvas can easily be switched
-
-      const vdom = document.createElement("html");
-
-      vdom.addEventListener = eventListener;
-    
-      // I hate HTML.
-      // I have to make a custom implementation because it doesn't expose a way to do this via createElement (afaik)
-
-      vdom.getElementById = function(id) {
-        const elements = vdom.getElementsByTagName("*");
-
-        // Array.prototype.find doesn't work on HTML Arrays. wtf?
-        for (const i of elements) {
-          if (i.id == id) return i;
-        }
-
-        return undefined;
-      };
-
-      vdom.createElement = function(item) {
-        if (item == "script") return;
-        return document.createElement(item);
-      }
-
-      await callback(item.fetchCanvas(), update, eventListener, vdom);
+      await callback(item.fetchCanvas(), update, eventListener);
     } catch (e) {
       console.error(e);
     }

@@ -14,6 +14,10 @@
         "src": "DawnUI/index.js"
       }
     },
+    "fakedom": {
+      "ver": "0.0.1",
+      "path": "libfakedom.js"
+    },
     "dusk": {
       "ver": "0.0.1",
       "path": "dusk.js",
