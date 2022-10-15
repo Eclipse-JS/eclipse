@@ -18,8 +18,6 @@ function redraw(textData) {
   const rawText = textData.split("\n").map(item => item === undefined || item == "" ? ' ' : item);
   let text = [];
 
-  while (text.length > maxLines) text.shift(); // Avoid over processing data
-
   for (i of rawText) {
     if (i.length > maxChars) {
       const overLength = Math.floor(i.length / maxChars);
@@ -34,6 +32,8 @@ function redraw(textData) {
       text.push(i);
     }
   }
+
+  while (text.length > maxLines) text.shift();
 
   for (var i = 1; i < maxLines+1; i++) {
     if (!text[i-1]) break;
