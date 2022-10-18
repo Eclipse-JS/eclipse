@@ -17,7 +17,6 @@ Kernel.extensions.load("LibFakeDOM", function(evtListen, evtRemoveListen, enable
   const removeEventListener = evtRemoveListen ? evtRemoveListen : Kernel.proxies.removeEventListener;
 
   const noSecurityForLulz = Kernel.accounts.getCurrentInfo().permLevel == 0 && enableSecurity ? true : false;
-  console.log(noSecurityForLulz);
 
   if (!noSecurityForLulz) {
     vdom.addEventListener = eventListener;
