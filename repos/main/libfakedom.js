@@ -1,33 +1,31 @@
-  const VFS = Kernel.extensions.get("Vfs");
+const VFS = Kernel.extensions.get("Vfs");
 
-  if (!VFS.read("/etc/init.d/init.conf").split("\n").includes("/bin/fakedom")) {
-    if (Kernel.accounts.getCurrentInfo().permLevel != 0) return;
-    const init = VFS.read("/etc/init.d/init.conf");
-    VFS.write("/etc/init.d/init.conf", "/bin/fakedom\n" + init);
+if (!VFS.read("/etc/init.d/init.conf").split("\n").includes("/bin/fakedom")) {
+  if (Kernel.accounts.getCurrentInfo().permLevel != 0) return;
+  const init = VFS.read("/etc/init.d/init.conf");
+  VFS.write("/etc/init.d/init.conf", "/bin/fakedom\n" + init);
 
-    if (argv.length != 0) {
-      argv[0].stdout("Installed FakeDOM.\n");
-      return;
+  if (argv.length != 0) {
+    argv[0].stdout("Installed FakeDOM.\n");
+    return;
   }
 }
 
-Kernel.extensions.load("LibFakeDOM", function(evtListen, enableSecurity) {
+Kernel.extensions.load("LibFakeDOM", function(evtListen, evtRemoveListen, enableSecurity) {
   const vdom = new Document();
   const eventListener = evtListen ? evtListen : Kernel.proxies.addEventListener;
+  const removeEventListener = evtRemoveListen ? evtRemoveListen : Kernel.proxies.removeEventListener;
 
-  const noSecurityForLulz = Kernel.accounts.getCurrentInfo().permLevel == 0 && !enableSecurity ? true : false;
+  const noSecurityForLulz = Kernel.accounts.getCurrentInfo().permLevel == 0 && enableSecurity ? true : false;
+  console.log(noSecurityForLulz);
 
   if (!noSecurityForLulz) {
     vdom.addEventListener = eventListener;
+    vdom.removeEventListener = removeEventListener;
 
     vdom.createElement = function (item) {
-      if (item == "script") return;
-  
-      const element = document.createElement(item);
-      element.addEventListener = eventListener;
-  
-      return element;
-    };
+      if (item != "script") return document.createElement(item);
+    }
   }
 
   const vwin = new Object();
@@ -72,12 +70,20 @@ Kernel.extensions.load("LibFakeDOM", function(evtListen, enableSecurity) {
     writable: true
   });
 
-  Object.defineProperty("vwin", "outerWidth", {
+  Object.defineProperty(vwin, "outerWidth", {
     writable: true
   });
 
   Object.defineProperty(vwin, "outerHeight", {
     writable: true
+  });
+
+  Object.defineProperty(vwin, "addEventListener", {
+    get: () => addEventListener
+  });
+
+  Object.defineProperty(vwin, "removeEventListener", {
+    get: () => removeEventListener
   });
 
   vwin.innerWidth  = 1280;

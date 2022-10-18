@@ -93,9 +93,9 @@ return {
     }
 
     try {
-      const eventListener = returnEvt(item.uuid);
+      const { addEventListener, removeEventListener } = returnEvt(item.uuid);
 
-      await callback(item.fetchCanvas(), update, eventListener);
+      await callback(item.fetchCanvas(), update, addEventListener, removeEventListener);
     } catch (e) {
       console.error(e);
     }

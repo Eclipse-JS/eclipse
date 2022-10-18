@@ -44,7 +44,14 @@ function genKernel(localAccount) {
         }
 
         document.addEventListener(...args);
-      }
+      },
+      removeEventListener(...args) {
+        if (account.permLevel != 0) {
+          throw "No permission!";
+        }
+
+        document.removeEventListener(...args);
+      },
     }
   }
 
