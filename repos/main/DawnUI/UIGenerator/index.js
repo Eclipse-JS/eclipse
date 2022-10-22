@@ -29,10 +29,10 @@ class UIGenerator {
 
           const text = i.text.split("\n");
 
-          for (j in text) {
-            const pos = j != 0 ? fontSize + i.pos.x * j : i.pos.x;
+          for (const j in text) {
+            const pos = j != 0 ? i.fontSize + i.pos.y * j : i.pos.y;
 
-            ctx.fillText(text[j], pos, i.pos.y);
+            ctx.fillText(text[j], i.pos.x, pos);
           }
         }
       }
