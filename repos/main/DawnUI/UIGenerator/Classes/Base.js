@@ -33,11 +33,32 @@ class BaseTemplate {
     };
   }
 
-  #update(newContents) {
+  #update() {
+    if (this.#isRemoved()) return;
+    
     const contents = this.#fetchDefaultConfiguration();
 
     const item = this.drawItems.find(i => i.objRef == this.objRef);
-    this.drawItems.splice(this.drawItems.indexOf(item), 1, newContents);
+    this.drawItems.splice(this.drawItems.indexOf(item), 1, contents);
+  }
+
+  #isRemoved() {
+    // Yes, this is pointless. I don't care.
+    if (this.removed) {
+      console.warn("%s: This is a removed item and will not work!", this.objRef);
+      return true;
+    }
+
+    return false;
+  }
+
+  remove() {
+    if (this.#isRemoved()) return;
+    
+    this.removed = true;
+
+    const item = this.drawItems.find(i => i.objRef == this.objRef);
+    this.drawItems.splice(this.drawItems.indexOf(item), 1);
   }
 
   updatePos(x, y) {
