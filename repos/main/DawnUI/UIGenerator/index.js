@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
 class UIGenerator {
-  constructor(canvas, addEventListener) {
+  constructor(canvas, addEventListener, removeEventListener) {
     if (!canvas instanceof HTMLCanvasElement) {
       throw "Not a raw canvas element.";
     }
@@ -10,6 +10,7 @@ class UIGenerator {
 
     this.canvas = canvas;
     this.evtListener = typeof addEventListener == "function" ? addEventListener : Kernel.proxies.addEventListener;
+    this.rmEvtListener = typeof removeEventListener == "function" ? removeEventListener : Kernel.proxies.removeEventListener;
 
     // Nothing works for me today. - @greysoh 10/22/2022
     function redraw(self) {

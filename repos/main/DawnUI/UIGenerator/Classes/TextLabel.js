@@ -1,5 +1,7 @@
 class TextLabel {
   constructor(text, x, y, params) {
+    // Recommended template v1.
+    
     this.pos = {
       x: x,
       y: y

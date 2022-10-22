@@ -1,6 +1,7 @@
 // Do not use! This is just a template, based on TextLabel.
 
 class BaseTemplate {
+  // Recommended template v2.
   constructor(data, x, y, params) {
     this.pos = {
       x: x,
