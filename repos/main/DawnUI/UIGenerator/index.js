@@ -23,7 +23,7 @@ class UIGenerator {
   
       for (i of self.drawItems) {
         if (i.type == "text") {
-          ctx.font = "12px system-ui";
+          ctx.font = i.textStyle;
           ctx.fillStyle = currentTheme.styles.general.accents.white["background-color"];
   
           ctx.fillText(i.text, i.pos.x, i.pos.y);

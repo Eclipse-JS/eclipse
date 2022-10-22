@@ -5,6 +5,8 @@ class TextLabel {
       y: y
     };
 
+    this.textStyle = "12px system-ui";
+
     this.text = text;
     this.drawItems = params.drawItems;
 
@@ -13,6 +15,7 @@ class TextLabel {
       type: "text",
 
       text: this.text,
+      textStyle: this.textStyle,
 
       objRef: this.objRef,
       pos: this.pos
@@ -34,6 +37,7 @@ class TextLabel {
       type: "text",
 
       text: this.text,
+      textStyle: this.textStyle,
 
       objRef: this.objRef,
       pos: this.pos
@@ -47,6 +51,21 @@ class TextLabel {
       type: "text",
 
       text: this.text,
+      textStyle: this.textStyle,
+
+      objRef: this.objRef,
+      pos: this.pos
+    });
+  }
+
+  updateTextStyle(newStyle) {
+    this.textStyle = typeof newStyle == "string" ? newStyle : this.textStyle;
+
+    this.update({
+      type: "text",
+
+      text: this.text,
+      textStyle: this.textStyle,
 
       objRef: this.objRef,
       pos: this.pos
