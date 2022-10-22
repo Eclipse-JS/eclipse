@@ -24,23 +24,29 @@ class UIGenerator {
   
       for (i of self.drawItems) {
         if (i.type == "text") {
-          ctx.font = i.textStyle;
+          ctx.font = i.fontSize + "px " + i.fontFamily;
           ctx.fillStyle = currentTheme.styles.general.accents.white["background-color"];
-  
-          ctx.fillText(i.text, i.pos.x, i.pos.y);
+
+          const text = i.text.split("\n");
+
+          for (j in text) {
+            const pos = j != 0 ? fontSize + i.pos.x * j : i.pos.x;
+
+            ctx.fillText(text[j], pos, i.pos.y);
+          }
         }
       }
     }
 
     // Hijack draw items for sanity
-    const self = this; // fucking fuck fuck fuck fuck fuck ballsack I AM GOUING TO LOSE IT askjlhfdklasjflkjsdfjm
+    const self = this;
 
     this.drawItems.push = function() {
       Array.prototype.push.apply(this, arguments);
       redraw(self);
     }
 
-    this.drawItems.slice = function() {
+    this.drawItems.splice = function() {
       Array.prototype.push.apply(this, arguments);
       redraw(self);
     }

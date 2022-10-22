@@ -1,15 +1,15 @@
 class TextLabel {
+  // Recommended template v2.
   constructor(text, x, y, params) {
-    // Recommended template v1.
-    
     this.pos = {
       x: x,
       y: y
     };
 
-    this.textStyle = "12px system-ui";
-
     this.text = text;
+    this.fontSize = 12;
+    this.fontFamily = "system-ui";
+
     this.drawItems = params.drawItems;
 
     this.objRef = uuidv4();
@@ -17,16 +17,62 @@ class TextLabel {
       type: "text",
 
       text: this.text,
-      textStyle: this.textStyle,
+
+      fontSize: this.fontSize,
+      fontFamily: this.fontFamily,
 
       objRef: this.objRef,
       pos: this.pos
     });
   }
 
-  update(newContents) {
+  #fetchDefaultConfiguration() {
+    return {
+      type: "text",
+
+      text: this.text,
+      
+      fontSize: this.fontSize,
+      fontFamily: this.fontFamily,
+
+      objRef: this.objRef,
+      pos: this.pos
+    };
+  }
+
+  #update() {
+    if (this.#isRemoved()) return;
+    
+    const contents = this.#fetchDefaultConfiguration();
+
     const item = this.drawItems.find(i => i.objRef == this.objRef);
-    this.drawItems.splice(this.drawItems.indexOf(item), 1, newContents);
+    this.drawItems.splice(this.drawItems.indexOf(item), 1, contents);
+  }
+
+  #isRemoved() {
+    // Yes, this is pointless. I don't care.
+    if (this.removed) {
+      console.warn("%s: This is a removed item and will not work!", this.objRef);
+      return true;
+    }
+
+    return false;
+  }
+
+  remove() {
+    if (this.#isRemoved()) return;
+    
+    this.removed = true;
+
+    const item = this.drawItems.find(i => i.objRef == this.objRef);
+    this.drawItems.splice(this.drawItems.indexOf(item), 1);
+  }
+
+  // Fetches recommended base version
+  // Not required to implement, but it helps users tell what underlying style they're dealing with.
+
+  fetchBaseVersion() {
+    return 2;
   }
 
   updatePos(x, y) {
@@ -35,42 +81,19 @@ class TextLabel {
       y: typeof y == "number" ? x : this.pos.y
     }
 
-    this.update({
-      type: "text",
-
-      text: this.text,
-      textStyle: this.textStyle,
-
-      objRef: this.objRef,
-      pos: this.pos
-    });
+    this.#update();
   }
 
   updateText(text) {
     this.text = typeof text == "string" ? text : this.text;
 
-    this.update({
-      type: "text",
-
-      text: this.text,
-      textStyle: this.textStyle,
-
-      objRef: this.objRef,
-      pos: this.pos
-    });
+    this.#update();
   }
 
-  updateTextStyle(newStyle) {
-    this.textStyle = typeof newStyle == "string" ? newStyle : this.textStyle;
+  updateTextStyle(fontSize, fontFamily) {
+    this.fontSize = typeof fontSize == "string" ? fontSize : this.textStyle;
+    this.fontFamily = typeof fontFamily == "string" ? fontFamily : this.textStyle;
 
-    this.update({
-      type: "text",
-
-      text: this.text,
-      textStyle: this.textStyle,
-
-      objRef: this.objRef,
-      pos: this.pos
-    });
+    this.#update();
   }
 }

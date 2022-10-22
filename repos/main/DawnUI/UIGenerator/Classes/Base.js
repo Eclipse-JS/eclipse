@@ -1,4 +1,4 @@
-// Do not use! This is just a template, based on TextLabel.
+// Do not use! This is just a template, based on TextLabel (template v1).
 
 class BaseTemplate {
   // Recommended template v2.
@@ -60,6 +60,16 @@ class BaseTemplate {
     const item = this.drawItems.find(i => i.objRef == this.objRef);
     this.drawItems.splice(this.drawItems.indexOf(item), 1);
   }
+
+  // Fetches recommended base version
+  // Not required to implement, but it helps users tell what underlying style they're dealing with.
+
+  fetchBaseVersion() {
+    return 2;
+  }
+
+  // Modifiable code below.
+  // Then again, you can modify above alot. I'm not judging. (yet) :3
 
   updatePos(x, y) {
     this.pos = {
