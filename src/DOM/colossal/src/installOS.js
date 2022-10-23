@@ -1,10 +1,3 @@
-async function read(path) {
-  const data = await fetch(path);
-  const dataText = await data.text();
-
-  return dataText;
-}
-
 const osList = localStorage.getItem("os_list") ? JSON.parse(localStorage.getItem("os_list")) : [];
 const uuid = uuidv4();
 

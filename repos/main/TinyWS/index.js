@@ -93,5 +93,9 @@ while (true) {
 
   framebuffer.drawImage(newFB, 0, 0);
 
+  // I see no problem with this, but es-lint complains.
+  // Therefore we disable it (+ ratio)
+
+  // eslint-disable-next-line
   await new Promise(r => setTimeout(r, fbFPSLock));
 }

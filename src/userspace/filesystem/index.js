@@ -11,7 +11,7 @@ fileSystem = JSON.parse(fileSystem);
 
 let activeBackend = "gbrfs";
 
-require("./selectBackends.js");
+require("./selectBackends.js")
 
 Kernel.extensions.load("Vfs", function(userData) {
   const backendData = fsMap.find(i => i.name == activeBackend);

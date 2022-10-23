@@ -11,7 +11,7 @@ if (folderExists.length == 0) {
 
 let matches = [];
 
-for (i of fileSystem) {
+for (const i of fileSystem) {
   if (i.type == "file" && i.directory == folders) {
     matches.push(i.directory + "/" + i.name);
   }

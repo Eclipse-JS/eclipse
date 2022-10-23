@@ -1,5 +1,6 @@
 qb.enableRegularRequire();
 
+// eslint-disable-next-line
 const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
 
 const localStorage = {
@@ -47,10 +48,10 @@ self.Kernel = {
   },
   extensions: {
     load: function (name, data, isGenFunction) {
-      require("./extensions/load.js");
+      require("./extensions/load.js")
     },
     get: function (name, ...params) {
-      require("./extensions/get.js");
+      require("./extensions/get.js")
     },
   },
   process: {
@@ -62,14 +63,14 @@ self.Kernel = {
       return AsyncFunction("argv", "Kernel", "pid", "localStorage", funcStr);
     },
     async spawn(name, func, argv, kernel) {
-      require("./process/spawn.js");
+      require("./process/spawn.js")
     },
     getTree: () => processTree,
     getPID: () => processCount,
   },
   display: {
     getFramebuffer() {
-      require("./display/getFramebuffer.js");
+      require("./display/getFramebuffer.js")
     },
   },
 };

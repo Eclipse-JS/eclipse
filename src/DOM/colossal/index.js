@@ -4,8 +4,31 @@ const factor = 2; // FIXME: Changing this breaks everything. Oops.
 
 document.title = "ColossalBoot";
 
-require("./libs/displayOpts.js");
-require("./libs/uuidv4.js");
+async function read(path) {
+  const data = await fetch(path);
+  const dataText = await data.text();
+
+  return dataText;
+}
+
+function wipeUUIDFS(uuid) {
+  let arr = []; // Array to hold the keys
+  // Iterate over localStorage and insert the keys that meet the condition into arr
+  for (let fpCount = 0; fpCount < localStorage.length; fpCount++) {
+    // First pass count
+    if (localStorage.key(fpCount).startsWith(uuid)) {
+      arr.push(localStorage.key(fpCount));
+    }
+  }
+
+  // Iterate over arr and remove the items by key
+  for (let rm = 0; rm < arr.length; rm++) {
+    localStorage.removeItem(arr[rm]);
+  }
+}
+
+require("./libs/displayOpts.js")
+require("./libs/uuidv4.js")
 
 document.addEventListener("DOMContentLoaded", async function() {
   const framebuffer = document.getElementById("framebuffer");
@@ -48,10 +71,10 @@ document.addEventListener("DOMContentLoaded", async function() {
   ctx.fillRect(0, 0, framebuffer.width, framebuffer.height);
 
   if (opt == "os_install") {
-    require("./src/installOS.js");
+    require("./src/installOS.js")
   } else if (opt == "debug_krnl") {
-    require("./src/debug.js");
+    require("./src/debug.js")
   } else {
-    require("./src/osBooter.js");
+    require("./src/osBooter.js")
   }
 });
