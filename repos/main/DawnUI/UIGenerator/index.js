@@ -2,7 +2,7 @@ qb.enableRegularRequire();
 
 class UIGenerator {
   constructor(canvas, addEventListener, removeEventListener) {
-    if (!(canvas instanceof HTMLCanvasElement)) {
+    if (!canvas instanceof HTMLCanvasElement) {
       throw "Not a raw canvas element.";
     }
 
@@ -22,7 +22,7 @@ class UIGenerator {
       ctx.fillStyle = currentTheme.styles.general.background["foreground-color"];
       ctx.fillRect(0, 0, self.canvas.width, self.canvas.height);
   
-      for (const i of self.drawItems) {
+      for (i of self.drawItems) {
         if (i.type == "text") {
           ctx.font = i.fontSize + "px " + i.fontFamily;
           ctx.fillStyle = currentTheme.styles.general.accents.white["background-color"];
@@ -53,7 +53,7 @@ class UIGenerator {
   }
 
   textLabel(text, x, y) {
-    require("./Classes/TextLabel.js")
+    require("./Classes/TextLabel.js");
 
     const label = new TextLabel(text, x, y, {
       canvas: this.canvas,

@@ -3,7 +3,7 @@ qb.enableRegularRequire();
 const args = argv;
 const input = args.shift();
 
-require("./ThemeLoader.js")
+require("./ThemeLoader.js");
 
 function isRoot() {
   // If we have permission level 0, we are effectively root
