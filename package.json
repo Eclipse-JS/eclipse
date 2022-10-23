@@ -6,6 +6,9 @@
   "scripts": {
     "build": "cd buildagent && node index.js",
     "start-server": "cd out && python3 -m http.server",
+    
+    "test": "npm run build && node linter.mjs",
+    "install-all": "npm install && cd buildagent && npm install",
 
     "start": "npm run build && npm run start-server"
   },
@@ -18,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/greysoh/jskernel/issues"
   },
-  "homepage": "https://github.com/greysoh/jskernel#readme"
+  "homepage": "https://github.com/greysoh/jskernel#readme",
+  "devDependencies": {
+    "eslint": "^8.26.0"
+  }
 }
