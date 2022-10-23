@@ -11,7 +11,7 @@ const processTreeExtras = [];
 function genKernel(localAccount) {
   let account = localAccount;
 
-  require("./extras/genFunc.js")
+  require("./extras/genFunc.js");
 
   let newKernel = {
     extensions: {
@@ -35,7 +35,7 @@ function genKernel(localAccount) {
       async elevate(username, password) {
         require("./accounts/elevate.js")
       },
-      getCurrentInfo: () => account
+      getCurrentInfo() { return account; }
     },
     proxies: {
       addEventListener(...args) {

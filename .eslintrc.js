@@ -5,11 +5,9 @@ module.exports = {
   },
 
   parserOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-
+    ecmaVersion: "latest",
     ecmaFeatures: {
-      globalReturn: true
+      globalReturn: true,
     },
   },
 
