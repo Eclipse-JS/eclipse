@@ -11,6 +11,7 @@ while (true) {
   const command = await input.stdin();
 
   if (command.trim() == "") continue;
+  if (command.trim() == "exit") return;
 
   if (!command.startsWith("/")) {
     const validEnv = ENV.split(";");
