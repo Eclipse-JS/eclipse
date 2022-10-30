@@ -15,18 +15,32 @@ require("./functions.js");
 switch (args[0]) {
   case "init": {
     require("./repos/init.js")
+    
+    break;
+  }
+
+  case "update-boot": {
+    require("./packages/update-boot.js")
+
+    break;
   }
 
   case "update": {
     require("./repos/update.js")
+    
+    break;
   }
 
-  case "add-repo": {
+  case "ad-repo": {
     require("./repos/add.js")
+
+    break;
   }
 
   case "install": {
     require("./packages/install.js")
+
+    break;
   }
   
   default: {

@@ -11,22 +11,26 @@ async function read(path) {
 
 function help() {
   const cmds = [
-  {
-    name: "init",
-    desc: "Initialize package manager (First load only)"
-  },
-  {
-    name: "update",
-    desc: "Updates package lists"
-  },
-  {
-    name: "add-repo",
-    desc: "Adds repo"
-  },
-  {
-    name: "install",
-    desc: "Installs package"
-  }
+    {
+      name: "init",
+      desc: "Initialize package manager (First load only)"
+    },
+    {
+      name: "update",
+      desc: "Updates package lists"
+    },
+    {
+      name: "update-boot",
+      desc: "Updates kernel and low level processes. Init is not required for this command."
+    },
+    {
+      name: "add-repo",
+      desc: "Adds repo"
+    },
+    {
+      name: "install",
+      desc: "Installs package"
+    }
   ]
 
   for (i of cmds) {

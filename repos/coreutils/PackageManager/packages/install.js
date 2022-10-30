@@ -93,5 +93,3 @@ const itemData = {
 
 pkgCacheData.push(itemData);
 vfs.write("/etc/pkg/caches.json", JSON.stringify(pkgCacheData));
-
-break;

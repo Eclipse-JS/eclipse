@@ -33,5 +33,3 @@ for (const oldIndex of Object.keys(oldContents)) {
 }
 
 vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
-
-break;

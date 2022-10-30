@@ -31,5 +31,3 @@ vfs.write(
   "/etc/pkg/isSetup",
   "do you want a furry for christmas - August, 2022\n"
 ); // ;) hi
-
-break;
