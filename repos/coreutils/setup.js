@@ -54,9 +54,9 @@ if (opt.toLowerCase().startsWith("y")) {
   VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
   VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
 
-  await exec("/bin/dusk", []);
+  await exec("/bin/dusk", [input]);
 } else {
   VFS.write("/etc/ttysh.conf", "shell=/bin/login");
 
-  await exec("/bin/login", []);
+  await exec("/bin/login", [input]);
 }
