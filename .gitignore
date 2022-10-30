@@ -4,3 +4,6 @@ qbuild*
 buildagent/node_modules
 buildagent/package-lock.json
 buildagent/yarn.lock
+
+.fleet
+demo.txt
