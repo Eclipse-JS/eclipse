@@ -31,7 +31,7 @@ switch (args[0]) {
     break;
   }
 
-  case "ad-repo": {
+  case "add-repo": {
     require("./repos/add.js")
 
     break;
