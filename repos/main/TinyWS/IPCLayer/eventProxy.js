@@ -21,14 +21,17 @@ function returnEvt(uuid) {
 
                 const newE = {};
 
-                newE.clientX = e.clientX - convertCSSStyleToJS(canvas.style.top);
-                newE.clientY = e.clientY - convertCSSStyleToJS(canvas.style.left);
+                const canvasTop = convertCSSStyleToJS(canvas.style.top); // Done this way to not spam JS code to gain some performance back
+                const canvasLeft = convertCSSStyleToJS(canvas.style.left);
+
+                newE.clientX = e.clientX - canvasTop;
+                newE.clientY = e.clientY - canvasLeft;
 
                 newE.clientX = newE.clientX < 0 ? 0 : newE.clientX;
-                newE.clientX = newE.clientX > convertCSSStyleToJS(canvas.style.top) ? convertCSSStyleToJS(canvas.style.top) : newE.clientX;
+                newE.clientX = newE.clientX > canvas.width ? canvas.width : newE.clientX;
 
                 newE.clientY = newE.clientY < 0 ? 0 : newE.clientY;
-                newE.clientY = newE.clientY > convertCSSStyleToJS(canvas.style.left) ? convertCSSStyleToJS(canvas.style.left) : newE.clientY;
+                newE.clientY = newE.clientY > canvas.height ? canvas.height : newE.clientY;
 
                 j.callback(newE);
               } else {
