@@ -73,14 +73,6 @@ while (true) {
 
     const canvas = i.fetchCanvas();
 
-    function convertCSSStyleToJS(item) {
-      if (item.endsWith("px")) {
-        return parseFloat(item.replace("px", ""));
-      }
-
-      return;
-    }
-
     // Write to screen
     fbContext.drawImage(canvas, convertCSSStyleToJS(canvas.style.top), convertCSSStyleToJS(canvas.style.left));
 

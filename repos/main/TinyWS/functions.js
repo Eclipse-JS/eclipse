@@ -7,6 +7,7 @@ require("./Functions/caculateFPS.js")
 
 // Utilities
 require("./Functions/uuidV4.js")
+require("./Functions/convert.js")
 
 // Canvas-related functions
 require("./Functions/generateCanvas.js")
