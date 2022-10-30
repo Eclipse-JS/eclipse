@@ -1,8 +1,10 @@
 qb.enableRegularRequire();
 
+// TODO: Import base class and make everything base on top of that.
+
 class UIGenerator {
   constructor(canvas, addEventListener, removeEventListener) {
-    if (!canvas instanceof HTMLCanvasElement) {
+    if (!(canvas instanceof HTMLCanvasElement)) {
       throw "Not a raw canvas element.";
     }
 
@@ -17,22 +19,41 @@ class UIGenerator {
       const ctx = self.canvas.getContext("2d");
       const currentTheme = handler.themes.getTheme(handler.themes.getDefaultTheme());
 
-      console.log(self.canvas, self.canvas.width, self.canvas.height);
-
       ctx.fillStyle = currentTheme.styles.general.background["foreground-color"];
       ctx.fillRect(0, 0, self.canvas.width, self.canvas.height);
   
-      for (i of self.drawItems) {
-        if (i.type == "text") {
-          ctx.font = i.fontSize + "px " + i.fontFamily;
-          ctx.fillStyle = currentTheme.styles.general.accents.white["background-color"];
+      for (const i of self.drawItems) {
+        switch (i.type) {
+          case "text": {
+            ctx.font = i.fontSize + "px " + i.fontFamily;
+            ctx.fillStyle = currentTheme.styles.general.accents.white["background-color"];
+  
+            const text = i.text.split("\n");
+  
+            for (const j in text) {
+              const pos = j != 0 ? i.fontSize + i.pos.y * j : i.pos.y;
+  
+              ctx.fillText(text[j], i.pos.x, pos);
+            }
 
-          const text = i.text.split("\n");
+            break;
+          }
 
-          for (const j in text) {
-            const pos = j != 0 ? i.fontSize + i.pos.y * j : i.pos.y;
+          case "button": {
+            const colorShade = i.isPreassed ? "foreground-color" : "background-color";
+            
+            ctx.font = i.fontSize + "px " + i.fontFamily;
+            ctx.fillStyle = currentTheme.styles.general.background["background-color"];
 
-            ctx.fillText(text[j], i.pos.x, pos);
+            const textWidth = ctx.measureText(i.text).width + (i.textPadding * 2);
+            const textHeight = i.fontSize + (i.textPadding * 2);
+            
+            ctx.fillRect(i.pos.x, i.pos.y, textWidth, textHeight);
+
+            ctx.fillStyle = currentTheme.styles.general.accents.white[colorShade];
+            ctx.fillText(i.text, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2 /* wtf? */));
+
+            break;
           }
         }
       }
@@ -62,5 +83,17 @@ class UIGenerator {
     })
 
     return label;
+  }
+
+  button(text, x, y) {
+    require("./Classes/Button.js");
+
+    const button = new Button(text, x, y, {
+      canvas: this.canvas,
+      evtListener: this.evtListener,
+      drawItems: this.drawItems
+    });
+
+    return button;
   }
 }
