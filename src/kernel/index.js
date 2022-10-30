@@ -15,7 +15,7 @@ const localStorage = {
 }
 
 if (localStorage.getItem("panic.log")) {
-  console.error(`Recovering from panic!\n\n${localStorage["panic.log"]}`);
+  console.error(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
 }
 
 const extensions = [];
@@ -24,12 +24,24 @@ const processTree = [];
 let processCount = 0;
 
 function panic(error, atLocation, trace) {
-  let file = `panic! nocpu!\n  ${error} @ ${atLocation}\n`;
+  let file = `panic!\n  ${error} @ ${atLocation}\n`;
 
-  if (trace) file += "  Error:" + trace;
+  if (trace) file += `  Error: ${trace}\n`;
+
+  file += "  Running applications:\n";
+
+  for (const i of processTree) {
+    file += `    ${i.name}: pid ${i.id}\n`;
+  }
+
+  file += "  Running extensions:\n";
+
+  for (const i of extensions) {
+    file += `    ${i.name}: ${i.isGenFunction ? "generatable" : "static"}\n`;
+  }
 
   file +=
-    "\n\nPlease report this panic to https://github.com/Eclipse-JS/eclipse!";
+    "\nPlease report this panic to https://github.com/Eclipse-JS/eclipse!\n";
 
   localStorage.setItem("panic.log", file);
 

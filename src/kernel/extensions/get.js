@@ -1,12 +1,11 @@
-if (extensions.find(val => val.name == name).length == 0) {
+if (!extensions.find(val => val.name == name)) {
   throw "Extension not loaded!";
 }
 
 const extFind = extensions.find(val => val.name == name);
 
 if (extFind.isGenFunction) {
-  const data = extFind.data(...params);
-  return data;
+  return extFind.data(...params);
 } else {
   return extFind.data;
 }
