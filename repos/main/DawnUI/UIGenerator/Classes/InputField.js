@@ -1,14 +1,41 @@
-class Button {
+const keysToIgnore = [
+  "Control",
+  "Alt",
+  "WakeUp",
+  "Meta",
+  "OS",
+  "Page",
+  "Arrow",
+  "Shift",
+  "Escape",
+  "CapsLock",
+  "Tab",
+  "Home",
+  "End",
+  "Insert",
+  "Delete",
+  "Unidentified",
+  "F1",
+  "F2",
+  "F0",
+  "ContextMenu",
+  "AudioVolumeDown",
+  "AudioVolumeUp",
+];
+
+class InputField {
   // Recommended template v2.
-  constructor(text, x, y, params) {
+  constructor(x, y, w, h, params) {
     this.pos = {
       x: x,
-      y: y
+      y: y,
+      w: w,
+      h: h
     };
 
     this.textPadding = 4;
 
-    this.text = text;
+    this.text = "";
     this.fontSize = 12;
     this.fontFamily = "system-ui";
 
@@ -17,8 +44,7 @@ class Button {
 
     this.objRef = uuidv4();
     this.drawItems.push({
-      type: "button",
-      subtype: "standard",
+      type: "input",
 
       text: this.text,
 
@@ -63,43 +89,54 @@ class Button {
 
       const mousePos = [e.clientX, e.clientY];
       const barPos = [self.pos.x, self.pos.y];
-      const barSize =                      [];
-
-      // We're running as root, so this should be fine...?
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      ctx.font = self.fontSize + "px " + self.fontFamily;
-
-      const textWidth = ctx.measureText(self.text).width + (self.textPadding * 2); // Account for padding * 2, for up and down.
-      const textHeight = self.fontSize + (self.textPadding * 2);
-
-      barSize.push(textWidth, textHeight);
+      const barSize =[self.pos.w, self.pos.h];
 
       const collisionCheck = isColliding(mousePos, barPos, barSize);
 
-      if (collisionCheck) {
-        self.isPressed = true;
-        self.update();
-
-        if (typeof self.onclick == "function") self.onclick();
-      }
+      self.doNotEverUseThisPleaseISwearToGod(collisionCheck);
+      self.update();
     });
 
     this.addEventListener("mouseup", function() {
       if (self.isRemoved()) return;
 
       if (self.isPressed) {
-        self.isPressed = false;
+        self.doNotEverUseThisPleaseISwearToGod(false);
         self.update();
       }
     })
+
+    this.addEventListener("keydown", function(e) {
+      if (keysToIgnore.includes(e.key)) return;
+      if (e.key == "Enter") self.doNotEverUseThisPleaseISwearToGod(false);
+
+      let text = self.text;
+
+      if (e.key == "Backspace") {
+        text = text.slice(0, -1);
+      } else {
+        text += e.key;
+      }
+      
+      self.doNotEverUseThisPleaseISwearToGod(text, "text");
+
+      self.update();
+     });
+  }
+
+  // Absolute evil hack
+  doNotEverUseThisPleaseISwearToGod(updateState, updateType) {
+    if (updateType == "text") {
+      this.text = updateState;
+      return;
+    }
+
+    this.isPressed = typeof updateState == "boolean" ? updateState : this.isPressed;
   }
 
   #fetchDefaultConfiguration() {
     return {
-      type: "button",
-      subtype: "standard",
+      type: "input",
 
       text: this.text,
 
@@ -153,14 +190,21 @@ class Button {
   updatePos(x, y) {
     this.pos = {
       x: typeof x == "number" ? x : this.pos.x,
-      y: typeof y == "number" ? x : this.pos.y
+      y: typeof y == "number" ? x : this.pos.y,
+      w: this.pos.w,
+      h: this.pos.h
     }
 
     this.update();
   }
 
-  updateText(text) {
-    this.text = typeof text == "string" ? text : this.text;
+  updateSize(w, h) {
+    this.pos = {
+      x: this.pos.x,
+      y: this.pos.y,
+      w: typeof w == "number" ? w : this.pos.w,
+      h: typeof h == "number" ? h : this.pos.w
+    }
 
     this.update();
   }
@@ -176,9 +220,5 @@ class Button {
     this.fontFamily = typeof fontFamily == "string" ? fontFamily : this.textStyle;
 
     this.update();
-  }
-
-  updateClickEvent(func) {
-    this.onclick = func;
   }
 }

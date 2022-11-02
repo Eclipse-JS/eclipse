@@ -55,6 +55,25 @@ class UIGenerator {
 
             break;
           }
+
+          case "input": {
+            const colorShade = i.isPreassed ? "foreground-color" : "background-color";
+            
+            ctx.fillStyle = currentTheme.styles.general.background["background-color"];
+            ctx.fillRect(i.pos.x, i.pos.y, i.pos.w, i.pos.h);
+
+            let text = i.text;
+
+            console.log(ctx.measureText(text), i.pos.w, i.textPadding)
+            while (ctx.measureText(text).width + (i.textPadding * 2) > i.pos.w) text = text.substring(1);
+
+            ctx.fillStyle = currentTheme.styles.general.accents.white[colorShade];
+            ctx.font = i.fontSize + "px " + i.fontFamily;
+
+            ctx.fillText(text, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2));
+
+            break;
+          }
         }
       }
     }
@@ -95,5 +114,17 @@ class UIGenerator {
     });
 
     return button;
+  }
+
+  inputField(x, y, w, h) {
+    require("./Classes/InputField.js")
+
+    const inputField = new InputField(x, y, w, h, {
+      canvas: this.canvas,
+      evtListener: this.evtListener,
+      drawItems: this.drawItems
+    });
+
+    return inputField;
   }
 }
