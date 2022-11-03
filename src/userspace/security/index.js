@@ -52,6 +52,11 @@ function genKernel(localAccount) {
 
         document.removeEventListener(...args);
       },
+    },
+    verInfo: {
+      ver: "0.2.1",
+      displayVer: "EclipseOS: Codename 'Solar' Milestone 1",
+      isBeta: true
     }
   }
 

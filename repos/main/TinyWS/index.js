@@ -85,5 +85,13 @@ while (true) {
 
   framebuffer.drawImage(newFB, 0, 0);
 
+  if (cKernel.verInfo.isBeta) {
+    framebuffer.font = '12px system-ui';
+    framebuffer.fillStyle = 'white';
+
+    const textSize = framebuffer.measureText(Kernel.verInfo.displayVer);
+    framebuffer.fillText(Kernel.verInfo.displayVer, rootElem.width-textSize.width-2, rootElem.height-2)
+  }
+
   await new Promise(r => setTimeout(r, fbFPSLock));
 }

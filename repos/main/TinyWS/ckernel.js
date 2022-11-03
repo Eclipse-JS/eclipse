@@ -74,5 +74,23 @@ const cKernel = {
      * Deprecated if using as root, use document instead as we now expose that 
      */
     addEventListener: (...args) => Kernel.proxies.addEventListener(args)
+  },
+
+  verInfo: {
+    /**
+     * Version number of OS
+     * @returns {number} Number identifier of build
+     */
+    ver: () => Kernel.verInfo.ver,
+    /**
+     * Display version of OS
+     * @returns {string} String identifier of build, not exact
+     */
+    displayVer: () => Kernel.verInfo.displayVer,
+    /**
+     * Fetches if the OS is beta or not
+     * @returns {boolean} Boolean to see if the OS is beta or not
+     */
+    isBeta: () => Kernel.verInfo.isBeta
   }
 }

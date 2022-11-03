@@ -97,16 +97,9 @@ class InputField {
       self.update();
     });
 
-    this.addEventListener("mouseup", function() {
-      if (self.isRemoved()) return;
-
-      if (self.isPressed) {
-        self.doNotEverUseThisPleaseISwearToGod(false);
-        self.update();
-      }
-    })
-
     this.addEventListener("keydown", function(e) {
+      if (!self.isPressed) return;
+      
       if (keysToIgnore.includes(e.key)) return;
       if (e.key == "Enter") self.doNotEverUseThisPleaseISwearToGod(false);
 
