@@ -28,8 +28,11 @@ await execJS("sec", "init/security.js");
 const security = Kernel.extensions.get("genkernel");
 const users = Kernel.extensions.get("users");
 
-if (typeof localStorage.getItem("/etc/passwd") != "string") {
-  await users.addUser("root", ["root"], 0, "toor");
+let isYolo;
+
+if (!users.parseUser("root")) {
+  isYolo = true;
+  await users.addUser("root", ["root"], 0, "toor", "/root");
 }
 
 console.log("init_stage0: Loading init with sandboxing enabled...");
@@ -38,4 +41,4 @@ const newKernel = await security("root");
 const file = await read("init/init.js");
 const process = Kernel.process.create(file);
 
-await Kernel.process.spawn("init", process, [], newKernel);
+await Kernel.process.spawn("init", process, [isYolo], newKernel);

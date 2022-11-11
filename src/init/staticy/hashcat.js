@@ -1,6 +1,3 @@
-console.log("Meow :3");
-console.log("LibHashcat loaded.");
-
 Kernel.extensions.load("hashcat", {
   sha512(str) {
     return crypto.subtle.digest("SHA-512", new TextEncoder("utf-8").encode(str)).then(buf => {

@@ -33,6 +33,7 @@ const password = await input.stdin();
 
 input.stdout("\nPlease wait, adding profile...\n");
 await users.addUser(username, [username], 1, password);
+VFS.mkdir("/home/" + username);
 
 input.stdout("What do you want to name this install?\n\nName: ");
 const name = await input.stdin();
