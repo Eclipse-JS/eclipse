@@ -11,7 +11,6 @@ _______      _ _                   _____    _
 |_______)____)_|_| ||_/(___/ \\____)\\_____(______/ 
                  |_|                              
 
-Tip: The default username is anon, and the password is anonymous.
-The root password is toor. ;-)
+Tip: The default root password is toor.
 
 `)
