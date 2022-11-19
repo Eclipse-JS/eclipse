@@ -18,7 +18,7 @@ if (VFS.existsSync("/etc/motd", "file")) {
   input.stdout(file);
 }
 
-input.stdout(`Welcome to ${Kernel.verInfo.displayVer}.\nThe build is ${Kernel.verInfo.ver}.\n\n`);
+input.stdout(`Welcome to ${Kernel.verInfo.displayVer}.\nThe build version is v${Kernel.verInfo.ver}.\n\n`);
 
 let isCorrect = false;
 
