@@ -1,9 +1,9 @@
 qbuild*
 *out
 
-buildagent/node_modules
-buildagent/package-lock.json
-buildagent/yarn.lock
+node_modules
+package-lock.json
+yarn.lock
 
 .fleet
 demo.txt
