@@ -1,7 +1,7 @@
 // Loads UI Library
 if (!extensionExists("LibDawn")) {
   input.stdout("WM<WARN>: UI Framework is not running. Attempting to start...\n");
-  if (!fs.existsSync("/bin/tinyws", "file")) {
+  if (!fs.existsSync("/bin/dawn", "file")) {
     input.stdout("WM<FATAL> UI Framework is not installed! Aborting...\n");
     return false;
   } else if (Kernel.accounts.getCurrentInfo().permLevel != 0) {

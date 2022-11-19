@@ -57,6 +57,10 @@
     "cls": {
       "ver": "1.0.0",
       "path": "clear.js"
-    }   
+    },
+    "reboot": {
+      "ver": "1.0.0",
+      "path": "reboot.js"
+    }
   }
 }

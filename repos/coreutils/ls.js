@@ -1,9 +1,7 @@
-const args = argv;
-const input = args.shift();
-
+const input = Kernel.extensions.get("input");
 const VFS = Kernel.extensions.get("Vfs");
 
-const path = !args[0] ? "/" : args[0];
+const path = !argv[0] ? "/" : argv[0];
 
 if (!VFS.existsSync(path, "folder")) {
   input.stdout("Folder does not exist\n");

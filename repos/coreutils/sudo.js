@@ -1,9 +1,24 @@
 const VFS = Kernel.extensions.get("Vfs");
+const input = Kernel.extensions.get("input");
+const env = Kernel.extensions.get("env");
 
-const args = argv;
-const input = args.shift();
+if (argv.length == 0) {
+  input.stdout("sudo: No commands specified.\n");
+  return;
+}
 
-const cmd = args.shift();
+const path = env.get("PATH");
+const rawCmd = argv.shift();
+
+const validEnv = path.split(";");
+const validCmdPath = validEnv.find(path => VFS.existsSync(path + rawCmd, "file"));
+
+const cmd = rawCmd.startsWith("/") ? rawCmd : validCmdPath ? validCmdPath + rawCmd : new Error("Command not found.");
+
+if (cmd instanceof Error) {
+  input.stdout(`sudo: ${cmd.message}\n`);
+  return;
+}
 
 const oldUsername = Kernel.accounts.getCurrentInfo().username;
 
@@ -22,7 +37,7 @@ try {
   const binData = VFS.read(cmd);
 
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn(i, process, [input, ...args]);
+  await Kernel.process.spawn(i, process, argv);
 } catch (e) {
   console.error(e);
 }

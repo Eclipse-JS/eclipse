@@ -8,8 +8,44 @@ console.log("Security: Preparing...");
 
 const processTreeExtras = [];
 
-function genKernel(localAccount) {
+function genKernel(localAccount, processTelementry, inputProviderDefault, envArgsDefault) {
   let account = localAccount;
+
+  let envArgs = envArgsDefault && typeof envArgsDefault == "object" ? envArgsDefault : [];
+  let inputProvider = inputProviderDefault && typeof inputProviderDefault == "object" ? inputProviderDefault : {};
+  
+  const envProvider = {
+    get(arg) {
+      if (envArgs.find(i => i.name == arg)) {
+        const envVar = envArgs.find(i => i.name == arg);
+
+        return envVar.value;
+      } else {
+        return undefined;
+      } 
+    },
+    add(arg, value) {
+      if (envArgs.find(i => i.name == arg)) {
+        const index = envArgs.indexOf(envArgs.find(i => i.name == arg));
+        envArgs.splice(index, 1);
+      }
+
+      envArgs.push({
+        name: arg,
+        value: value
+      });
+    },
+    remove(arg) {
+      if (envArgs.find(i => i.name == arg)) {
+        const index = envArgs.indexOf(envArgs.find(i => i.name == arg));
+        envArgs.splice(index, 1);
+
+        return true;
+      }
+
+      return false;
+    }
+  };
 
   require("./extras/genFunc.js");
 
@@ -38,19 +74,29 @@ function genKernel(localAccount) {
       getCurrentInfo() { return account; }
     },
     proxies: {
-      addEventListener(...args) {
+      addEventListener(...argv) {
+        if (typeof processTelementry == "object" && processTelementry.name && processTelementry.id) {
+          console.warn("Security: Process name: %s with pid: %s is using the deprecated method of addEventListener! This will be removed.", 
+                       processTelementry.name, processTelementry.id);
+        }
+
         if (account.permLevel != 0) {
           throw "No permission!";
         }
 
-        document.addEventListener(...args);
+        document.addEventListener(...argv);
       },
-      removeEventListener(...args) {
+      removeEventListener(...argv) {
+        if (typeof processTelementry == "object" && processTelementry.name && processTelementry.id) {
+          console.warn("Security: Process name: %s with pid: %s is using the deprecated method of addEventListener! This will be removed.", 
+                       processTelementry.name, processTelementry.id);
+        }
+
         if (account.permLevel != 0) {
           throw "No permission!";
         }
 
-        document.removeEventListener(...args);
+        document.removeEventListener(...argv);
       },
     },
     verInfo: {

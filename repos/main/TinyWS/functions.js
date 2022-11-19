@@ -1,13 +1,13 @@
 qb.enableRegularRequire();
 
 // Main functions
-require("./Functions/logger.js")
-require("./Functions/checkIfRoot.js")
-require("./Functions/caculateFPS.js")
+require("./functions/logger.js")
+require("./functions/checkIfRoot.js")
+require("./functions/caculateFPS.js")
 
 // Utilities
-require("./Functions/uuidV4.js")
-require("./Functions/convert.js")
+require("./functions/uuidV4.js")
+require("./functions/convert.js")
 
 // Canvas-related functions
-require("./Functions/generateCanvas.js")
+require("./functions/generateCanvas.js")

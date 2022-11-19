@@ -1,5 +1,4 @@
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
 function test(text, callback) {
   function log(...str) {

@@ -1,5 +1,4 @@
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
 const users = Kernel.extensions.get("users");
 const VFS = Kernel.extensions.get("Vfs");
@@ -10,7 +9,7 @@ function ok() {
 
 async function exec(path, args) {
   const file = VFS.read(path);
-  await Kernel.process.spawn(path, file.replace("UWU;;\n\n"), [input, ...args]);
+  await Kernel.process.spawn(path, file.replace("UWU;;\n\n"), args);
 }
 
 input.stdout("Welcome to EclipseOS! Please wait while I get things ready for you...\n");
@@ -46,18 +45,15 @@ const opt = await input.stdin();
 input.stdout("Loading your desktop...\n");
 
 if (opt.toLowerCase().startsWith("y")) {
-  await exec("/bin/pkg", ["install", "tinyws"]);
-  await exec("/bin/pkg", ["install", "duskterm"]);
-  await exec("/bin/pkg", ["install", "dusk"]);
-  await exec("/bin/pkg", ["install", "dawn"]);
+  await exec("/bin/pkg", ["install", "tinyws", "dawn", "dusk", "duskterm"]);
 
   VFS.write("/etc/init.d/init.conf", "/bin/dawn\n/bin/tinyws");
   VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
   VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
 
-  await exec("/bin/dusk", [input]);
+  await exec("/bin/dusk", []);
 } else {
   VFS.write("/etc/ttysh.conf", "shell=/bin/login");
 
-  await exec("/bin/login", [input]);
+  await exec("/bin/login", []);
 }

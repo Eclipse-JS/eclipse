@@ -1,7 +1,5 @@
 const VFS = Kernel.extensions.get("Vfs");
-
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
 // De-escelate
 console.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
@@ -18,7 +16,7 @@ if (VFS.existsSync("/etc/motd", "file")) {
   input.stdout(file);
 }
 
-input.stdout(`Welcome to ${Kernel.verInfo.displayVer}.\nThe build is ${Kernel.verInfo.ver}.\n\n`);
+input.stdout(`Welcome to ${Kernel.verInfo.displayVer}.\nThe build version is v${Kernel.verInfo.ver}.\n\n`);
 
 let isCorrect = false;
 
@@ -42,4 +40,4 @@ input.stdout("\n");
 const binData = VFS.read("/bin/sh");
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-await Kernel.process.spawn("/bin/sh", process, [input]);
+await Kernel.process.spawn("/bin/sh", process, []);

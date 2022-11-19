@@ -2,6 +2,8 @@ qb.enableRegularRequire();
 
 // Port of ttysh to the window server
 
+const oldInput = Kernel.extensions.get("input");
+
 let textfb = "";
 let inputfb = "";
 let inputIsActive = false;
@@ -45,7 +47,8 @@ await ws.createWindow(512, 512, async function(canvasElement, update, addEventLi
   });
   
   const input = require("./inputbindings.js");
+  oldInput.registerInput(input);
   
   const binData = VFS.read(shell);
-  await Kernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), [input]);
+  await Kernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
 });

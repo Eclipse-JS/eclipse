@@ -5,7 +5,7 @@ let startPos = [0, 0];
 
 const barSize = 27;
 
-Kernel.proxies.addEventListener("mousemove", function(e) {
+event.addEventListener("mousemove", function(e) {
   if (!enableMove) return;
 
   wmData.inputWrapper({
@@ -16,7 +16,7 @@ Kernel.proxies.addEventListener("mousemove", function(e) {
   })
 });
 
-Kernel.proxies.addEventListener("mousedown", function(e) {
+event.addEventListener("mousedown", function(e) {
   const pos = [e.clientX, e.clientY];
 
   for (const i of wmData.inputWrapper({ event: "FetchAllWindows" })) {
@@ -57,7 +57,8 @@ Kernel.proxies.addEventListener("mousedown", function(e) {
   }
 })
 
-Kernel.proxies.addEventListener("mouseup", function() {
+event.addEventListener("mouseup", function() {
   enableMove = false;
+  
   mvUUID = null;
 })

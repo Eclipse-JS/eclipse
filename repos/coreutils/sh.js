@@ -1,7 +1,7 @@
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
-let ENV = "/bin/";
+const env = Kernel.extensions.get("env");
+const path = env.get("PATH");
 
 const VFS = Kernel.extensions.get("Vfs");
 const net = Kernel.extensions.get("libnet");
@@ -14,7 +14,7 @@ while (true) {
   if (command.trim() == "exit") return;
 
   if (!command.startsWith("/")) {
-    const validEnv = ENV.split(";");
+    const validEnv = path.split(";");
     let validPath = validEnv.filter(path => VFS.existsSync(path + command.split(" ")[0], "file"));
 
     if (validPath.length == 0) {
@@ -28,7 +28,7 @@ while (true) {
       const binData = VFS.read(validPath);
 
       const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-      await Kernel.process.spawn(validPath, process, [input, ...command.split(" ").slice(1)]);
+      await Kernel.process.spawn(validPath, process, command.split(" ").slice(1));
     } catch (e) {
       console.error(e);
       input.stdout(command.split(" ")[0] + ": Exception raised.\n");
@@ -43,7 +43,7 @@ while (true) {
       const binData = VFS.read(command.split(" ")[0]);
 
       const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-      await Kernel.process.spawn(command.split(" ")[0], process, [input, ...command.split(" ").slice(1)]);
+      await Kernel.process.spawn(command.split(" ")[0], process, command.split(" ").slice(1));
     } catch (e) {
       console.error(e);
       input.stdout(command.split(" ")[0] + ": Exception raised.\n");

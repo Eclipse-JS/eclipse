@@ -6,7 +6,8 @@
   "scripts": {
     "build": "cd buildagent && node index.js",
     "start-server": "cd out && python3 -m http.server",
-
+    
+    "postinstall": "cd buildagent && npm install",
     "start": "npm run build && npm run start-server"
   },
   "repository": {

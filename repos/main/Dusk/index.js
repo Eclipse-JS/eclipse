@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
+const event = Kernel.extensions.get("eventListener");
 
 const windows = [];
 
