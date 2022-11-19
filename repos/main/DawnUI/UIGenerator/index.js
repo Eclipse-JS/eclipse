@@ -2,6 +2,14 @@ qb.enableRegularRequire();
 
 // TODO: Import base class and make everything base on top of that.
 
+function offsetify(i, x, y, w, h) {
+  if (i.renderOffset != "top") {
+    return [x-w, y-h, w, h];
+  } else {
+    return [x, y, w, h];
+  }
+}
+
 class UIGenerator {
   constructor(canvas, addEventListener, removeEventListener) {
     if (!(canvas instanceof HTMLCanvasElement)) {
@@ -40,14 +48,6 @@ class UIGenerator {
           }
 
           case "button": {
-            function offsetify(x, y, w, h) {
-              if (i.renderOffset != "top") {
-                return [x-w, y-h, w, h];
-              } else {
-                return [x, y, w, h];
-              }
-            }
-            
             const colorShade = i.isPreassed ? "foreground-color" : "background-color";
             
             ctx.font = i.fontSize + "px " + i.fontFamily;
@@ -56,10 +56,10 @@ class UIGenerator {
             const textWidth = ctx.measureText(i.text).width + (i.textPadding * 2);
             const textHeight = i.fontSize + (i.textPadding * 2);
 
-            ctx.fillRect(...offsetify(i.pos.x, i.pos.y, textWidth, textHeight));
+            ctx.fillRect(...offsetify(i, i.pos.x, i.pos.y, textWidth, textHeight));
 
             ctx.fillStyle = currentTheme.styles.general.accents.white[colorShade];
-            ctx.fillText(...offsetify(i.text, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2)));
+            ctx.fillText(i.text, ...offsetify(i, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2), textWidth, textHeight));
 
             break;
           }
@@ -94,7 +94,7 @@ class UIGenerator {
     }
 
     this.drawItems.splice = function() {
-      Array.prototype.push.apply(this, arguments);
+      Array.prototype.splice.apply(this, arguments);
       redraw(self);
     }
   }

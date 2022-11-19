@@ -67,7 +67,7 @@ class Button {
 
       const mousePos = [e.clientX, e.clientY];
       const barPos = [self.pos.x, self.pos.y];
-      const barSize =                      [];
+      const barSize =[self.pos.w, self.pos.h];
 
       // We're running as root, so this should be fine...?
       const canvas = document.createElement("canvas");
@@ -80,7 +80,8 @@ class Button {
 
       barSize.push(textWidth, textHeight);
 
-      const collisionCheck = isColliding(mousePos, barPos, barSize);
+      const offset = offsetify({renderOffset:self.renderOffset}, ...barPos, ...barSize);
+      const collisionCheck = isColliding(mousePos, ...offset);
 
       if (collisionCheck) {
         self.isPressed = true;
