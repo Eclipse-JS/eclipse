@@ -1,6 +1,7 @@
 const input = Kernel.extensions.get("input");
 
-let ENV = "/bin/";
+const env = Kernel.extensions.get("env");
+const path = env.get("PATH");
 
 const VFS = Kernel.extensions.get("Vfs");
 const net = Kernel.extensions.get("libnet");
@@ -13,7 +14,7 @@ while (true) {
   if (command.trim() == "exit") return;
 
   if (!command.startsWith("/")) {
-    const validEnv = ENV.split(";");
+    const validEnv = path.split(";");
     let validPath = validEnv.filter(path => VFS.existsSync(path + command.split(" ")[0], "file"));
 
     if (validPath.length == 0) {

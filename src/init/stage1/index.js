@@ -1,5 +1,7 @@
 qb.enableRegularRequire();
 
+const env = Kernel.extensions.get("env");
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -36,6 +38,8 @@ Sys.loadPercent(10);
 
 console.log("Loading binaries...");
 require("./load/boostrap_check.js");
+
+env.add("PATH", "/bin/")
 
 console.log("Loading programs...");
 const initPrgms = VFS.read("/etc/init.d/init.conf").split("\n");
