@@ -45,10 +45,7 @@ const opt = await input.stdin();
 input.stdout("Loading your desktop...\n");
 
 if (opt.toLowerCase().startsWith("y")) {
-  await exec("/bin/pkg", ["install", "tinyws"]);
-  await exec("/bin/pkg", ["install", "duskterm"]);
-  await exec("/bin/pkg", ["install", "dusk"]);
-  await exec("/bin/pkg", ["install", "dawn"]);
+  await exec("/bin/pkg", ["install", "tinyws", "dawn", "dusk", "duskterm"]);
 
   VFS.write("/etc/init.d/init.conf", "/bin/dawn\n/bin/tinyws");
   VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
