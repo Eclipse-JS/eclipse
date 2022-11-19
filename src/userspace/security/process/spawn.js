@@ -9,6 +9,6 @@ const item = {
 
 processTreeExtras.push(item);
 
-await Kernel.process.spawn(name, func, argv, genKernel(account));
+await Kernel.process.spawn(name, func, argv, genKernel(account, item, inputProvider, envArgs));
 
 processTreeExtras.splice(processTreeExtras.indexOf(item), 1);

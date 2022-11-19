@@ -8,8 +8,44 @@ console.log("Security: Preparing...");
 
 const processTreeExtras = [];
 
-function genKernel(localAccount) {
+function genKernel(localAccount, processTelementry, inputProviderDefault, envArgsDefault) {
   let account = localAccount;
+
+  let envArgs = envArgsDefault && typeof envArgsDefault == "object" ? envArgsDefault : [];
+  let inputProvider = inputProviderDefault && typeof inputProviderDefault == "object" ? inputProviderDefault : {};
+  
+  const envProvider = {
+    get(arg) {
+      if (envArgs.find(i => i.name == arg)) {
+        const envVar = envArgs.find(i => i.name == arg);
+
+        return envVar.value;
+      } else {
+        return undefined;
+      } 
+    },
+    add(arg, value) {
+      if (envArgs.find(i => i.name == arg)) {
+        const index = envArgs.indexOf(envArgs.find(i => i.name == arg));
+        envArgs.splice(index, 1);
+      }
+
+      envArgs.push({
+        name: arg,
+        value: value
+      });
+    },
+    remove(arg) {
+      if (envArgs.find(i => i.name == arg)) {
+        const index = envArgs.indexOf(envArgs.find(i => i.name == arg));
+        envArgs.splice(index, 1);
+
+        return true;
+      }
+
+      return false;
+    }
+  };
 
   require("./extras/genFunc.js");
 
