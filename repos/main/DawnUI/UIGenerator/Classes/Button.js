@@ -15,6 +15,8 @@ class Button {
     this.drawItems = params.drawItems;
     this.addEventListener = params.evtListener;
 
+    this.renderOffset = "top";
+
     this.objRef = uuidv4();
     this.drawItems.push({
       type: "button",
@@ -28,6 +30,8 @@ class Button {
       textPadding: this.textPadding,
 
       isPressed: this.isPressed ? this.isPressed : false,
+
+      renderOffset: this.renderOffset,
 
       objRef: this.objRef,
       pos: this.pos
@@ -110,6 +114,8 @@ class Button {
 
       isPressed: this.isPressed ? this.isPressed : false,
 
+      renderOffset: this.renderOffset,
+
       objRef: this.objRef,
       pos: this.pos
     };
@@ -180,5 +186,10 @@ class Button {
 
   updateClickEvent(func) {
     this.onclick = func;
+  }
+
+  invertRenderOffset(opt) {
+    this.renderOffset = typeof opt == "string" ? opt : this.renderOffset;
+    this.update();
   }
 }

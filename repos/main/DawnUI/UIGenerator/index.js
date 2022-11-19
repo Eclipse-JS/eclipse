@@ -40,6 +40,14 @@ class UIGenerator {
           }
 
           case "button": {
+            function offsetify(x, y, w, h) {
+              if (i.renderOffset != "top") {
+                return [x-w, y-h, w, h];
+              } else {
+                return [x, y, w, h];
+              }
+            }
+            
             const colorShade = i.isPreassed ? "foreground-color" : "background-color";
             
             ctx.font = i.fontSize + "px " + i.fontFamily;
@@ -47,11 +55,11 @@ class UIGenerator {
 
             const textWidth = ctx.measureText(i.text).width + (i.textPadding * 2);
             const textHeight = i.fontSize + (i.textPadding * 2);
-            
-            ctx.fillRect(i.pos.x, i.pos.y, textWidth, textHeight);
+
+            ctx.fillRect(...offsetify(i.pos.x, i.pos.y, textWidth, textHeight));
 
             ctx.fillStyle = currentTheme.styles.general.accents.white[colorShade];
-            ctx.fillText(i.text, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2 /* wtf? */));
+            ctx.fillText(...offsetify(i.text, i.pos.x + i.textPadding, i.pos.y + i.fontSize + (i.textPadding / 2)));
 
             break;
           }
@@ -64,7 +72,6 @@ class UIGenerator {
 
             let text = i.text;
 
-            console.log(ctx.measureText(text), i.pos.w, i.textPadding)
             while (ctx.measureText(text).width + (i.textPadding * 2) > i.pos.w) text = text.substring(1);
 
             ctx.fillStyle = currentTheme.styles.general.accents.white[colorShade];
