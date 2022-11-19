@@ -5,7 +5,7 @@ if (!isSetUp()) {
 
 logger("info", "Attempting to add repo...");
 
-const path = args[1];
+const path = argv[1];
 let testRead;
 
 try {

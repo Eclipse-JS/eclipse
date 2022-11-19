@@ -1,9 +1,7 @@
 const VFS = Kernel.extensions.get("Vfs");
+const input = Kernel.extensions.get("input");
 
-const args = argv;
-const input = args.shift();
-
-const cmd = args.shift();
+const cmd = argv.shift();
 
 const oldUsername = Kernel.accounts.getCurrentInfo().username;
 
@@ -22,7 +20,7 @@ try {
   const binData = VFS.read(cmd);
 
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-  await Kernel.process.spawn(i, process, [input, ...args]);
+  await Kernel.process.spawn(i, process, [, ...argv]);
 } catch (e) {
   console.error(e);
 }

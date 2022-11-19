@@ -1,5 +1,7 @@
 qb.enableRegularRequire();
 
+const events = Kernel.extensions.get("eventListener");
+
 require("./constants.js");
 require("./draw/functions.js");
 
@@ -7,7 +9,7 @@ let textfb = "";
 let inputfb = "";
 let inputIsActive = false;
 
-Kernel.proxies.addEventListener("keydown", function(e) {
+events.addEventListener("keydown", function(e) {
   if (!inputIsActive) return;
 
   if (e.key == "Enter") {
@@ -29,9 +31,12 @@ Kernel.proxies.addEventListener("keydown", function(e) {
   redraw(textfb + inputfb);
 })
 
+const oldInput = Kernel.extensions.get("input");
 const input = require("./inputbindings.js");
+
+oldInput.registerInput(input);
 
 const binData = VFS.read(shell);
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-await Kernel.process.spawn(i, process, [input]);
+await Kernel.process.spawn(i, process, []);

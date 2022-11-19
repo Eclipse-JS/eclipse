@@ -1,12 +1,12 @@
 if (!isSetUp()) {
   logger("error", "The package manager is not set up! Please run 'pkg init'.");
   break;
-} else if (typeof args[1] != "string") {
+} else if (typeof argv[1] != "string") {
   logger("error", "Invalid argument (take it to twitter)");
   break;
 }
 
-logger("info", `Locating package '${args[1]}'...`)
+logger("info", `Locating package '${argv[1]}'...`)
 const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
 
 let data = {
@@ -21,7 +21,7 @@ for (const index of Object.keys(pkgData)) {
 
   for (const j of i.contents) {
     for (const k of Object.keys(j.contents)) {
-      if (k == args[1]) {
+      if (k == argv[1]) {
         data.found = true;
 
         data.rootPkg = {};
@@ -54,7 +54,7 @@ if (!data.found) {
 
 const cache = vfs.existsSync("/etc/pkg/caches.json", "file") ? JSON.parse(vfs.read("/etc/pkg/caches.json")) : [];
 
-const pkgCacheData = cache.filter(item => item.pkgName == args[1]);
+const pkgCacheData = cache.filter(item => item.pkgName == argv[1]);
 
 if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
   logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
@@ -71,7 +71,7 @@ for (const data in pkgCacheData) {
   cache.splice(cache.indexOf(data), 1);
 }
 
-logger("info", `Downloading '${args[1]}'...`);
+logger("info", `Downloading '${argv[1]}'...`);
 
 const rootPkg = data.rootPkg.path.split("/");
 const corePkg = data.corePkg.path.split("/");
@@ -82,10 +82,10 @@ corePkg.pop();
 const url = rootPkg.join("/") + "/" + corePkg.join("/") + "/" + data.pkgData.path;
 const appData = "UWU;;\n\n" + await read(url);
 
-vfs.write(`/bin/${args[1]}`, appData);
+vfs.write(`/bin/${argv[1]}`, appData);
 
 const itemData = {
-  pkgName: args[1],
+  pkgName: argv[1],
   rootPkg: data.rootPkg,
   corePkg: data.corePkg,
   pkgData: data.pkgData

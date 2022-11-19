@@ -1,7 +1,5 @@
 qb.enableRegularRequire();
-
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
 if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
   input.stdout("You must be root!\n");
@@ -12,7 +10,7 @@ const vfs = Kernel.extensions.get("Vfs");
 
 require("./functions.js");
 
-switch (args[0]) {
+switch (argv[0]) {
   case "init": {
     require("./repos/init.js")
     

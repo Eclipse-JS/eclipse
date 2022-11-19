@@ -21,13 +21,12 @@ if (!extensionExists("libnet")) {
     }
   })
 } else {
-  const args = argv;
-  const input = args.shift();
+  const input = Kernel.extensions.get("input");
 
   input.stdout(`Network communications library:\n\n`);
 
-  if (args[0] == "set-hostname" && typeof args[1] == "string") {
-    input.stdout(`Set hostname to '${args[1]}'\n`);
-    hostname = args[1];
+  if (argv[0] == "set-hostname" && typeof argv[1] == "string") {
+    input.stdout(`Set hostname to '${argv[1]}'\n`);
+    hostname = argv[1];
   }
 }

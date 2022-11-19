@@ -1,7 +1,5 @@
 const VFS = Kernel.extensions.get("Vfs");
-
-const args = argv;
-const input = args.shift();
+const input = Kernel.extensions.get("input");
 
 // De-escelate
 console.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
@@ -42,4 +40,4 @@ input.stdout("\n");
 const binData = VFS.read("/bin/sh");
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
-await Kernel.process.spawn("/bin/sh", process, [input]);
+await Kernel.process.spawn("/bin/sh", process, []);
