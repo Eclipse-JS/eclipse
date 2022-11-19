@@ -38,19 +38,29 @@ function genKernel(localAccount) {
       getCurrentInfo() { return account; }
     },
     proxies: {
-      addEventListener(...args) {
+      addEventListener(...argv) {
+        if (typeof processTelementry == "object" && processTelementry.name && processTelementry.id) {
+          console.warn("Security: Process name: %s with pid: %s is using the deprecated method of addEventListener! This will be removed.", 
+                       processTelementry.name, processTelementry.id);
+        }
+
         if (account.permLevel != 0) {
           throw "No permission!";
         }
 
-        document.addEventListener(...args);
+        document.addEventListener(...argv);
       },
-      removeEventListener(...args) {
+      removeEventListener(...argv) {
+        if (typeof processTelementry == "object" && processTelementry.name && processTelementry.id) {
+          console.warn("Security: Process name: %s with pid: %s is using the deprecated method of addEventListener! This will be removed.", 
+                       processTelementry.name, processTelementry.id);
+        }
+
         if (account.permLevel != 0) {
           throw "No permission!";
         }
 
-        document.removeEventListener(...args);
+        document.removeEventListener(...argv);
       },
     },
     verInfo: {
