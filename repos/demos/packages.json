@@ -6,6 +6,13 @@
       "compilerOpts": {
         "src": "secutest/index.js"
       }
+    },
+    "lvplay": {
+      "ver": "0.1.0",
+      "path": "lvplay.js",
+      "compilerOpts": {
+        "src": "lvplay/index.js"
+      }
     }
   }
 }
