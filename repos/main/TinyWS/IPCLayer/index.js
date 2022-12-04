@@ -3,6 +3,8 @@ qb.enableRegularRequire();
 require("./eventProxy.js");
 
 function outputDetails(event, item) {
+  if (!item) return console.error("TinyWS<EOHSHIT>: What the crap?? Item is null for the event '" + event + "'. Kinda cap bro");
+
   return wmConf.outputWrapper({
     event: event,
     uuid: item.uuid,
@@ -58,7 +60,6 @@ return {
       fetchCanvas: () => canvas
     };
 
-    // Needed for when we implement titlebars
     outputDetails("WindowCreate", item);
 
     if (!parsedOptions.disableFocus) {

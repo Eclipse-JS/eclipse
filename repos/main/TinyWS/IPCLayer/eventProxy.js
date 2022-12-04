@@ -14,6 +14,8 @@ function returnEvt(uuid) {
             if (j.uuid == focusedUUID) {
               const win = windows.find(i => i.uuid == focusedUUID);
 
+              if (!win) return;
+
               if (e instanceof MouseEvent) {
                 // KILL YOURSELF
 
