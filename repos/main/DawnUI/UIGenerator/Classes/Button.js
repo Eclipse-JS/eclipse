@@ -65,10 +65,6 @@ class Button {
         return false;
       }
 
-      const mousePos = [e.clientX, e.clientY];
-      const barPos = [self.pos.x, self.pos.y];
-      const barSize =[self.pos.w, self.pos.h];
-
       // We're running as root, so this should be fine...?
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -78,10 +74,12 @@ class Button {
       const textWidth = ctx.measureText(self.text).width + (self.textPadding * 2); // Account for padding * 2, for up and down.
       const textHeight = self.fontSize + (self.textPadding * 2);
 
-      barSize.push(textWidth, textHeight);
+      const mousePos = [e.clientX, e.clientY];
+      const barSize = [textWidth, textHeight];
+      const barPos = [self.pos.x, self.pos.y];
 
-      const offset = offsetify({renderOffset:self.renderOffset}, ...barPos, ...barSize);
-      const collisionCheck = isColliding(mousePos, ...offset);
+      const offset = offsetify(self, ...barPos, ...barSize);
+      const collisionCheck = isColliding(mousePos, [offset[0], offset[1]], [offset[2], offset[3]]);
 
       if (collisionCheck) {
         self.isPressed = true;
