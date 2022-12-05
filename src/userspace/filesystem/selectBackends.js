@@ -4,7 +4,7 @@ function fetchGbrfs(userData, load) {
   require("./gbrfs/libs/binaries.js")
   
   const gbrfsBackend = {
-    version: () => "gbvfsR4",
+    version: () => "gbvfsR5",
     read(rawPath) {
       require("./gbrfs/read.js")
     },
@@ -30,8 +30,9 @@ function fetchGbrfs(userData, load) {
   
   if (load && localStorage.getItem("vfs_ver") != gbrfsBackend.version()) {
     console.error("Incompatible version, wiping drive...");
-    localStorage.clear();
-    window.location.reload();
+
+    localStorage.setItem("oldvfs", localStorage.getItem("vfs"));
+    localStorage.removeItem("vfs");
   }
 
   return gbrfsBackend;

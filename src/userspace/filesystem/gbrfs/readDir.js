@@ -14,6 +14,8 @@ let matches = [];
 for (i of fileSystem) {
   if (i.type == "file" && i.directory == folders) {
     matches.push(i.directory + "/" + i.name);
+  } else if (i.type == "directory" && i.prevDirectory == folders) {
+    matches.push(i.name);
   }
 }
 

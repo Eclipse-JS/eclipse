@@ -2,7 +2,7 @@ qb.enableRegularRequire();
 
 function wipeVFS() {
   localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/", owner: "root"}]));
-  localStorage.setItem("vfs_ver", "gbvfsR4");
+  localStorage.setItem("vfs_ver", "gbvfsR5");
   return JSON.stringify([{type: "directory", name: "/"}]);
 }
 

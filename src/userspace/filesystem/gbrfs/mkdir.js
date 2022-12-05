@@ -3,16 +3,30 @@ const folders = "/" + path.join("/");
 
 // TODO: Add check for when the directory before the item does not exist
 
-const folderExists = fileSystem.filter(
+const folderAlreadyExists = fileSystem.find(
   (d) => d.type == "directory" && d.name == folders
 );
 
-if (folderExists.length >= 1) {
+if (folderAlreadyExists) {
   throw "Folder already exists!";
+}
+
+const folderArr = path;
+folderArr.pop();
+
+const prevFolder = "/" + folderArr.join("/");
+
+const prevFolderExists = fileSystem.find(
+  (d) => d.type == "directory" && d.name == prevFolder
+);
+
+if (!prevFolderExists) {
+  throw "Previous folder doesn't exist!"
 }
 
 fileSystem.push({
   type: "directory",
+  prevDirectory: prevFolder,
   name: folders,
   owner: userData().username,
 });
