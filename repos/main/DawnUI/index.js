@@ -1,6 +1,7 @@
 qb.enableRegularRequire();
 
 const input = Kernel.extensions.get("input");
+const VFS = Kernel.extensions.get("Vfs");
 
 require("./ThemeLoader.js");
 
