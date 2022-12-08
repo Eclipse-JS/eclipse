@@ -1,5 +1,7 @@
 qb.enableRegularRequire();
 
+const VFS = Kernel.extensions.get("Vfs");
+
 const input = Kernel.extensions.get("input");
 const event = Kernel.extensions.get("eventListener");
 
@@ -27,9 +29,20 @@ console.log("WM: Attempting to register a Window Manager...");
 const wmData = ws.registerWM("ProjectDusk");
 
 wmData.loadWM(require("./Callback/index.js"));
-exec("/bin/duskterm", [])
 
 require("./MouseEvent/index.js");
+
+if (!VFS.existsSync("/etc/sonnesvr", "folder")) VFS.mkdir("/etc/sonnesvr");
+if (!VFS.existsSync("/etc/sonnesvr/dusk.conf.json", "file")) VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+  autoStart: VFS.existsSync("/bin/gls") ? "/bin/gls" : "/bin/duskterm"
+}));
+
+const conf = JSON.parse(VFS.read("/etc/sonnesvr/dusk.conf.json"));
+if (VFS.existsSync(conf.autoStart, "file")) {
+  exec(conf.autoStart, []);
+} else {
+  console.warn("Autostart program does not exist!");
+}
 
 while (true) {
   await new Promise(r => setTimeout(r, 5000));

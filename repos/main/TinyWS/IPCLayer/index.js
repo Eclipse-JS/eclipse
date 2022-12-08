@@ -24,7 +24,7 @@ function outputDetails(event, item) {
 
 return {
   hasWMStarted: hasWMStarted,
-  registerWM: function(name, outputWrapper) {
+  registerWM(name, outputWrapper) {
     if (this.hasWMStarted) {
       throw new Error("Window Manager already registered!");
     }
@@ -107,5 +107,12 @@ return {
       event: "WindowClose",
       uuid: item.uuid
     });
+  },
+  registerWallpaper(canvas) {
+    if (!this.hasWMStarted) throw new Error("Window Manager not registered yet!");
+    if (!wmConf.wallpaper) throw new Error("Wallpaper already loaded");
+    if (!(canvas instanceof HTMLCanvasElement) || !(canvas instanceof HTMLPictureElement)) throw new Error("Invalid canvas type");
+
+    wmConf.wallpaper = canvas;
   }
 };

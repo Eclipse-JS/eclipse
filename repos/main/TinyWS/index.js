@@ -9,7 +9,7 @@ let windows = [];
 
 let wmConf = {};
 
-const fbFPSLock = 15; // Should be about ~80fps
+const fbFPSLock = 1000/60; // Should be about ~80fps
 
 require("./ckernel.js")
 
@@ -64,8 +64,10 @@ while (true) {
 
     return i;
   });
-
+p
   if (danglingItem) newArray.push(danglingItem);
+
+  if (wmConf.wallpaper) newFB.drawImage(wmConf.wallpaper, 0, 0, rootElem.width, rootElem.height);
 
   for (const i of newArray) {
     if (!i) continue;
