@@ -38,8 +38,7 @@ await ws.createWindow(512, 512, async function(canvasElement, update, addEventLi
       return;
     }
   
-    const filter = bannedKbdKeys.filter(ban => e.key.startsWith(ban));
-    if (filter.length != 0) return;
+    if (e.key.length > 1) return;
   
     inputfb += e.key;
   
