@@ -12,8 +12,5 @@ if (!extensionExists("LibDawn")) {
   const dawnData = fs.read("/bin/dawn");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
-  Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), [{
-    stdout: () => null,
-    stdin: () => ""
-  }]);
+  Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), []);
 }

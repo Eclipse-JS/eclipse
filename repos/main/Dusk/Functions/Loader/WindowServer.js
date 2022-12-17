@@ -12,8 +12,5 @@ if (!extensionExists("WindowServer")) {
   const wmData = fs.read("/bin/tinyws");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
-  Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), [{
-    stdout: () => null,
-    stdin: () => ""
-  }]);
+  Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), []);
 }
