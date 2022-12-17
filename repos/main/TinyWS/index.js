@@ -64,7 +64,7 @@ while (true) {
 
     return i;
   });
-p
+
   if (danglingItem) newArray.push(danglingItem);
 
   if (wmConf.wallpaper) newFB.drawImage(wmConf.wallpaper, 0, 0, rootElem.width, rootElem.height);
