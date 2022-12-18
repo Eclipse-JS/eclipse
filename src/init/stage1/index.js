@@ -20,16 +20,11 @@ async function execJS(name, path) {
   await Kernel.process.spawn(name, processData); 
 }
 
-console.log("Loading VFS Libraries...");
-require("./load/vfs.js");
-
 const VFS = Kernel.extensions.get("Vfs");
 if (argv[0]) {
   VFS.mkdir("/root");
   VFS.mkdir("/home");
 }
-
-require("./load/sys.js");
 
 const Sys = Kernel.extensions.get("sys");
 
