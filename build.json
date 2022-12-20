@@ -26,7 +26,7 @@
       "out": "./out/kernel.js"
     },
     {
-      "path": "./src/init/stage0/index.js",
+      "path": "./src/init/loader/index.js",
       "out": "./out/init/index.js"
     },
     {

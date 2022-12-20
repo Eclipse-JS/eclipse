@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
 document.title = "EclipseOS";
-console.log("init: Loading user libraries...");
+console.log("Loading user libraries...");
 
 async function read(path) {
   const data = await fetch(path);
@@ -57,7 +57,7 @@ const users = Kernel.extensions.get("users");
 
 if (!users.parseUser("root")) await users.addUser("root", ["root"], 0, "toor", "/root");
 
-console.log("init: Loading init with sandboxing enabled...");
+console.log("Loading init with sandboxing enabled...");
 const nKernel = await security("root");
 
 const env = nKernel.extensions.get("env");
@@ -91,9 +91,11 @@ for (i of initPrgms) {
 
     await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
   } catch (e) {
-    console.error("init: Failed to execute '" + i + "'.");
+    console.error("Failed to execute '" + i + "'.");
   }
 }
+
+console.log("Starting init process...");
 
 const binData = VFS.read(onloadProgram);
 await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
