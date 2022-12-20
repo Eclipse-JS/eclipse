@@ -41,7 +41,11 @@ const lowLevelLibraries = localStorage.getItem("lowLevelLibraries") ? JSON.parse
 
 for (const i in lowLevelLibraries) {
   if (!lowLevelLibraries[i].contents) {
-    lowLevelLibraries[i].contents = await read(lowLevelLibraries[i].path);
+    try {
+      lowLevelLibraries[i].contents = await read(lowLevelLibraries[i].path);
+    } catch (e) {
+      Kernel.kernelLevel.panic("Failed to download library contents for " + lowLevelLibraries[i].name, "init::stage0::for_lowLevelLibraries", e);
+    }
   }
 
   await execJS(lowLevelLibraries[i].name, lowLevelLibraries[i].contents);
@@ -52,17 +56,15 @@ localStorage.setItem("lowLevelLibraries", JSON.stringify(lowLevelLibraries));
 const security = Kernel.extensions.get("genkernel");
 const users = Kernel.extensions.get("users");
 
-let isYolo;
-
-if (!users.parseUser("root")) {
-  isYolo = true;
-  await users.addUser("root", ["root"], 0, "toor", "/root");
-}
-
 console.log("init_stage0: Loading init with sandboxing enabled...");
 const newKernel = await security("root");
 
 const file = await read("init/init.js");
 const process = Kernel.process.create(file);
 
-await Kernel.process.spawn("init", process, [isYolo], newKernel);
+if (!users.parseUser("root")) {
+  await users.addUser("root", ["root"], 0, "toor", "/root");
+  await Kernel.process.spawn("init", process, [true], newKernel);
+} else {
+  await Kernel.process.spawn("init", process, [false], newKernel);
+}
