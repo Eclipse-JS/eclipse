@@ -30,10 +30,6 @@
       "out": "./out/init/index.js"
     },
     {
-      "path": "./src/init/stage1/index.js",
-      "out": "./out/init/init.js"
-    },
-    {
       "path": "./src/init/bootstrap/index.js",
       "out": "./out/init/bootstrap.js"
     },
