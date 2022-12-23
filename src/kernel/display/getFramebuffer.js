@@ -1,3 +1,5 @@
+if (BL_CMDLINE.includes("virtualized=true")) return document.getElementById("framebuffer").getContext("2d");
+
 assert(document.getElementById("framebuffer"), "No framebuffer detected!");
 
 if (

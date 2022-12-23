@@ -52,7 +52,7 @@ function assert(test, msg) {
   if (!test) panic("Assertion failed!! " + msg, "KernelSpace::Anonymous");
 }
 
-self.Kernel = {
+const Kernel = {
   kernelLevel: {
     panic: panic,
     assert: assert,
@@ -85,3 +85,5 @@ self.Kernel = {
     },
   },
 };
+
+self.Kernel = Kernel;
