@@ -2,6 +2,28 @@ qb.enableRegularRequire();
 
 const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
 
+const elemCreate = document.createElement;
+
+function createElementInject(...argv) {
+  document.createElement32 = elemCreate;
+  const element = document.createElement32(...argv);
+
+  document.createElement32 = null;
+  return element;
+}
+
+function createElementSec(elem) {
+  if (elem == "script") return panic("Attempted privelege escelation!", "Kernel::display::getFramebuffer::v2");
+
+  const createdElement = createElementInject(elem);
+  createdElement.createElement = createElementSec;
+
+  return createdElement;
+}
+
+document.getElementById("framebuffer_v2").createElement = createElementSec;
+document.createElement = createElementSec;
+
 const localStorage = {
   getItem: function(key) {
     return self.localStorage.getItem(prefix + key);
@@ -45,6 +67,7 @@ function panic(error, atLocation, trace) {
 
   localStorage.setItem("panic.log", file);
 
+  alert("Kernel Fatal Error:\n\n" + file);
   window.location.reload();
 }
 
@@ -80,8 +103,15 @@ self.Kernel = {
     getPID: () => processCount,
   },
   display: {
-    getFramebuffer() {
-      require("./display/getFramebuffer.js");
+    getFramebuffer(futureMode) {
+      if (futureMode) {
+        require("./display/getFramebuffer.js");
+
+        return true;
+      }
+
+      console.warn(" !! WARNING !! - Framebuffer has been loaded in legacy mode!");
+      require("./display/getLegacyFramebuffer.js");
     },
   },
 };
