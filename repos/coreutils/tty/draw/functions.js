@@ -4,4 +4,6 @@ function redraw(textData) {
     .replaceAll(">", "&#62;")
     .replaceAll("\n", "<br>")
     .replaceAll(" ", "&nbsp;");
+  
+  fb.scrollTo(0, fb.scrollHeight);
 }

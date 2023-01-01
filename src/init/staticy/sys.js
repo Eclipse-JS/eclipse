@@ -6,6 +6,9 @@ fbBoot.className = "fb_boot_sys";
 fb.appendChild(fbBoot);
 
 function loadPercent(percent) {
+  console.error("Sys.loadPercent(); is deprecated (at least for now).");
+  return;
+
   const ctx = Kernel.display.getFramebuffer();
 
   ctx.fillStyle = "black";
