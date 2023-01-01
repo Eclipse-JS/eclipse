@@ -1,5 +1,12 @@
 {
   "packages": {
+    "tinyws": {
+      "ver": "0.0.1",
+      "path": "tws.js",
+      "compilerOpts": {
+        "src": "TinyWS/index.js"
+      }
+    },
     "fakedom": {
       "ver": "0.0.1",
       "path": "libfakedom.js"

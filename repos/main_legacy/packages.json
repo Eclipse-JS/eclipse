@@ -1,34 +1,34 @@
 {
   "packages": {
-    "tinyws": {
+    "lg_tinyws": {
       "ver": "0.0.1",
       "path": "tws.js",
       "compilerOpts": {
         "src": "TinyWS/index.js"
       }
     },
-    "dawn": {
+    "lg_dawn": {
       "ver": "0.0.1",
       "path": "dawnui.js",
       "compilerOpts": {
         "src": "DawnUI/index.js"
       }
     },
-    "dusk": {
+    "lg_dusk": {
       "ver": "0.0.1",
       "path": "dusk.js",
       "compilerOpts": {
         "src": "Dusk/index.js"
       }
     },
-    "duskterm": {
+    "lg_duskterm": {
       "ver": "0.0.1",
       "path": "duskterm.js",
       "compilerOpts": {
         "src": "DuskTerm/index.js"
       }
     },
-    "gls": {
+    "lg_gls": {
       "ver": "0.0.1",
       "path": "gls.js"
     }
