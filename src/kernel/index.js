@@ -43,10 +43,10 @@ self.Kernel = {
   },
   extensions: {
     load: function (name, data, isGenFunction) {
-      require("./extensions/load.js");
+      require("./Kernel/extensions/load.js");
     },
     get: function (name, ...params) {
-      require("./extensions/get.js");
+      require("./Kernel/extensions/get.js");
     },
   },
   process: {
@@ -58,7 +58,7 @@ self.Kernel = {
       return AsyncFunction("argv", "Kernel", "pid", "localStorage", funcStr);
     },
     async spawn(name, func, argv, kernel) {
-      require("./process/spawn.js");
+      require("./Kernel/process/spawn.js");
     },
     getTree: () => processTree,
     getPID: () => processCount,
@@ -66,13 +66,13 @@ self.Kernel = {
   display: {
     getFramebuffer(futureMode) {
       if (futureMode) {
-        require("./display/getFramebuffer.js");
+        require("./Kernel/display/getFramebuffer.js");
 
         return true;
       }
 
       console.warn(" !! WARNING !! - Framebuffer has been loaded in legacy mode!");
-      require("./display/getLegacyFramebuffer.js");
+      require("./Kernel/display/getLegacyFramebuffer.js");
     },
   },
 };
