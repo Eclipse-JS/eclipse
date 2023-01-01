@@ -10,16 +10,21 @@ async function fetchTextData(url) {
   return dataText;
 }
 
-const ctx = Kernel.display.getFramebuffer();
+const fb = Kernel.display.getFramebuffer(true);
+const fbText = fb.createElement("div");
+fbText.className = "fb_text";
 
-function fillText(text, count) {
-  ctx.font = "14px monospace";
-  ctx.fillStyle = "white";
-  ctx.fillText(
-    text,
-    2,
-    12 * (count + count * 0.5)
-  );
+fbText.style.fontFamily = "monospace";
+fbText.style.fontSize = "14px";
+
+fb.appendChild(fbText);
+
+function fillText(text) {
+  fbText.innerHTML += text + "\n"
+    .replaceAll("<", "&#60;")
+    .replaceAll(">", "&#62;")
+    .replaceAll("\n", "<br>")
+    .replaceAll(" ", "&nbsp;");
 }
 
 fillText("Bootstrapping directories...", 1)
@@ -40,3 +45,5 @@ fillText("Configuring packages...", indexes+2);
 if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
 require("./initCfg.js");
+
+fbText.remove();

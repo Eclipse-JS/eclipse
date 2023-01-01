@@ -1,13 +1,16 @@
-const ctx = Kernel.display.getFramebuffer();
+const fb = Kernel.display.getFramebuffer(true);
 
-const Sys = {
-  loadPercent: loadPercent,
-  drawLogo: drawLogo
-}
+const fbBoot = fb.createElement("div");
+fbBoot.className = "fb_boot_sys";
 
-Kernel.extensions.load("sys", Sys);
+fb.appendChild(fbBoot);
 
 function loadPercent(percent) {
+  console.error("Sys.loadPercent(); is deprecated (at least for now).");
+  return;
+
+  const ctx = Kernel.display.getFramebuffer();
+
   ctx.fillStyle = "black";
   ctx.fillRect(0, window.innerHeight-20, window.innerWidth, 20);
 
@@ -16,10 +19,24 @@ function loadPercent(percent) {
 }
 
 function drawLogo() {
-  ctx.font = "48px monospace";
-  ctx.fillText(
-    "EclipseOS™",
-    window.innerWidth / 2 - 120,
-    window.innerHeight / 2
-  );
+  const logo = fb.createElement("div");
+
+  logo.style.position = "absolute";
+  logo.style.left = window.innerWidth / 2 - 120 + "px";
+  logo.style.top = window.innerHeight / 2 - 50  + "px";
+
+  logo.style.fontFamily = "monospace";
+  logo.style.fontWeight = "bold";
+  logo.style.fontSize = "48px";
+
+  logo.innerText = "EclipseOS™";
+
+  fbBoot.appendChild(logo);
 }
+
+const Sys = {
+  loadPercent: loadPercent,
+  drawLogo: drawLogo
+}
+
+Kernel.extensions.load("sys", Sys);

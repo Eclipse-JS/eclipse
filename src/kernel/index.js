@@ -1,6 +1,14 @@
 qb.enableRegularRequire();
 
 const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
+const elemCreate = document.createElement;
+
+require("./FrameSecurity/createElementInject.js");
+require("./FrameSecurity/createElementSecurity.js");
+require("./FrameSecurity/elementSentry.js");
+
+document.getElementById("framebuffer_v2").createElement = createElementSec;
+document.createElement = createElementSec;
 
 const localStorage = {
   getItem: function(key) {
@@ -23,34 +31,10 @@ const extensions = [];
 const processTree = [];
 let processCount = 0;
 
-function panic(error, atLocation, trace) {
-  let file = `panic!\n  ${error} @ ${atLocation}\n`;
+require("./ErrorHandler/panic.js");
 
-  if (trace) file += `  Error: ${trace}\n`;
-
-  file += "  Running applications:\n";
-
-  for (const i of processTree) {
-    file += `    ${i.name}: pid ${i.id}\n`;
-  }
-
-  file += "  Running extensions:\n";
-
-  for (const i of extensions) {
-    file += `    ${i.name}: ${i.isGenFunction ? "generatable" : "static"}\n`;
-  }
-
-  file +=
-    "\nPlease report this panic to https://github.com/Eclipse-JS/eclipse!\n";
-
-  localStorage.setItem("panic.log", file);
-
-  window.location.reload();
-}
-
-function assert(test, msg) {
-  if (!test) panic("Assertion failed!! " + msg, "KernelSpace::Anonymous");
-}
+console.log("Loading Sentry...");
+sentry();
 
 const Kernel = {
   kernelLevel: {
@@ -59,10 +43,10 @@ const Kernel = {
   },
   extensions: {
     load: function (name, data, isGenFunction) {
-      require("./extensions/load.js");
+      require("./Kernel/extensions/load.js");
     },
     get: function (name, ...params) {
-      require("./extensions/get.js");
+      require("./Kernel/extensions/get.js");
     },
   },
   process: {
@@ -74,14 +58,21 @@ const Kernel = {
       return AsyncFunction("argv", "Kernel", "pid", "localStorage", funcStr);
     },
     async spawn(name, func, argv, kernel) {
-      require("./process/spawn.js");
+      require("./Kernel/process/spawn.js");
     },
     getTree: () => processTree,
     getPID: () => processCount,
   },
   display: {
-    getFramebuffer() {
-      require("./display/getFramebuffer.js");
+    getFramebuffer(futureMode) {
+      if (futureMode) {
+        require("./Kernel/display/getFramebuffer.js");
+
+        return true;
+      }
+
+      console.warn(" !! WARNING !! - Framebuffer has been loaded in legacy mode!");
+      require("./Kernel/display/getLegacyFramebuffer.js");
     },
   },
 };

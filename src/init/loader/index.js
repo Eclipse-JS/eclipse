@@ -3,6 +3,12 @@ qb.enableRegularRequire();
 document.title = "EclipseOS";
 console.log("Loading user libraries...");
 
+const fbData = Kernel.display.getFramebuffer(true);
+
+// Again, not sandboxed yet, so *should* be fine(?)
+document.getElementById("framebuffer").style.visibility = "hidden";
+fbData.style.backgroundColor = "#000000";
+
 async function read(path) {
   const data = await fetch(path);
   const dataText = await data.text();
@@ -96,6 +102,8 @@ for (i of initPrgms) {
 }
 
 console.log("Starting init process...");
+
+fbData.getElementsByClassName("fb_boot_sys")[0].remove();
 
 const binData = VFS.read(onloadProgram);
 await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
