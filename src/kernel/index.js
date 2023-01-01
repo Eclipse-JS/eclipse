@@ -36,7 +36,7 @@ require("./ErrorHandler/panic.js");
 console.log("Loading Sentry...");
 sentry();
 
-const Kernel = {
+self.Kernel = {
   kernelLevel: {
     panic: panic,
     assert: assert,
@@ -76,5 +76,3 @@ const Kernel = {
     },
   },
 };
-
-self.Kernel = Kernel;
