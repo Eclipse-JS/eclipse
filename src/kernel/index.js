@@ -1,34 +1,11 @@
 qb.enableRegularRequire();
 
 const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
-
 const elemCreate = document.createElement;
 
-function createElementInject(...argv) {
-  document.createElement32 = elemCreate;
-  const element = document.createElement32(...argv);
-
-  document.createElement32 = null;
-  return element;
-}
-
-function createElementSec(elem) {
-  if (elem == "script") return panic("Attempted privelege escelation!", "Kernel::display::getFramebuffer::v2");
-
-  const createdElement = createElementInject(elem);
-  createdElement.createElement = createElementSec;
-
-  return createdElement;
-}
-
-function sentry() {
-  const fbV2 = document.getElementById("framebuffer_v2");
-  if (fbV2.innerHTML.includes("<script>") || fbV2.innerHTML.includes("</script>")) {
-    panic("Security bypass remanents have been detected. You have been compromised.", "Kernel::Sentry");
-  }
-
-  setTimeout(sentry, 200);
-}
+require("./FrameSecurity/createElementInject.js");
+require("./FrameSecurity/createElementSecurity.js");
+require("./FrameSecurity/elementSentry.js");
 
 document.getElementById("framebuffer_v2").createElement = createElementSec;
 document.createElement = createElementSec;
@@ -54,35 +31,7 @@ const extensions = [];
 const processTree = [];
 let processCount = 0;
 
-function panic(error, atLocation, trace) {
-  let file = `panic!\n  ${error} @ ${atLocation}\n`;
-
-  if (trace) file += `  Error: ${trace}\n`;
-
-  file += "  Running applications:\n";
-
-  for (const i of processTree) {
-    file += `    ${i.name}: pid ${i.id}\n`;
-  }
-
-  file += "  Running extensions:\n";
-
-  for (const i of extensions) {
-    file += `    ${i.name}: ${i.isGenFunction ? "generatable" : "static"}\n`;
-  }
-
-  file +=
-    "\nPlease report this panic to https://github.com/Eclipse-JS/eclipse!\n";
-
-  localStorage.setItem("panic.log", file);
-
-  alert("Kernel Fatal Error:\n\n" + file);
-  window.location.reload();
-}
-
-function assert(test, msg) {
-  if (!test) panic("Assertion failed!! " + msg, "KernelSpace::Anonymous");
-}
+require("./ErrorHandler/panic.js");
 
 console.log("Loading Sentry...");
 sentry();
