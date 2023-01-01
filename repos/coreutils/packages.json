@@ -11,6 +11,10 @@
         "src": "tty/index.js"
       }
     },
+    "dttysh": {
+      "ver": "0.1.0",
+      "path": "denotty.js"
+    },
     "login": {
       "ver": "0.1.0",
       "path": "login.js"
