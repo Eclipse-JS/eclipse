@@ -1,34 +1,21 @@
 qb.enableRegularRequire();
 
-function outputDetails(event, uuid, x, y, w, h) {
-  return wmConf.outputWrapper({
-    event: event,
-    uuid: uuid,
-    details: {
-      fetchWindowSize: () => {
-        return {
-          xy: [x, y],
-          wh: [w, h]
-        }
-      }
-    }
-  });
-}
+require("./Utilities/OutputDetails.js");
+require("./Utilities/InputWrapper.js");
 
 return {
   hasWMStarted: hasWindowManagerRegistered,
-  registerWM(name, outputWrapper) {
+  registerWM(name) {
     if (hasWindowManagerRegistered) throw new Error("Window Manager already registered!");
 
     wmConf.name = name;
-    wmConf.outputWrapper = outputWrapper;
-
+  
     hasWindowManagerRegistered = true;
     this.hasWMStarted = true; 
 
-    // Input wrapper
-    return function(input) {
-
+    return {
+      outputWrapper: (outputWrapper) => wmConf.outputWrapper = outputWrapper,
+      inputWrapper: inputWrapper
     }
   },
   async createWindow(x, y, width, height, callback, options = {}) {
@@ -41,7 +28,7 @@ return {
     const overlay = resp;
     
     if (!(overlay instanceof HTMLDivElement)) {
-      throw new Error("WindowManager has failed to supply a window template!");
+      throw new Error("The window manager has failed to supply a window template!");
     }
 
     const mainElement = framebuffer.createElement("div");

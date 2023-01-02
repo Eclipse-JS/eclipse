@@ -17,7 +17,6 @@ if (!wsLoad) return 1;
 
 console.log("WM: Attempting to start IPC with the Window Server...");
 const ws = Kernel.extensions.get("WindowServer");
-//const ui = Kernel.extensions.get("LibDawn");
 
 if (ws.hasWMStarted) {
   console.log("WM<FATAL>: Another Window Manager is already running!");
@@ -26,8 +25,8 @@ if (ws.hasWMStarted) {
 
 console.log("WM: Attempting to register a Window Manager...");
 
-const wmCallback = ws.registerWM("ProjectDusk_RevII", require("./Callback/index.js"));
-//r.equire("./MouseEvent/index.js");
+const wmData = ws.registerWM("ProjectDusk_RevII");
+wmData.outputWrapper(require("./Callback/index.js"));
 
 if (!VFS.existsSync("/etc/sonnesvr", "folder")) VFS.mkdir("/etc/sonnesvr");
 if (!VFS.existsSync("/etc/sonnesvr/dusk.conf.json", "file")) VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({

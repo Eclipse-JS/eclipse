@@ -6,6 +6,6 @@ function duskCallback(e) {
     const xy = e.details.fetchWindowSize().xy;
     const wh = e.details.fetchWindowSize().wh;
     
-    return generateUI(...xy, ...wh);
+    return generateUI(...xy, ...wh, e.uuid);
   }
 }

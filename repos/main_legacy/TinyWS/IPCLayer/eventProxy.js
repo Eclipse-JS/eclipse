@@ -6,7 +6,7 @@ function returnEvt(uuid) {
     addEventListener(name, callback) {
       if (!addedItems.includes(name)) {
         document.addEventListener(name, function(e) {
-            e.preventDefault();
+          e.preventDefault();
             
           const find = callbacks.filter(j => j.event == name);
   
@@ -17,8 +17,6 @@ function returnEvt(uuid) {
               if (!win) return;
 
               if (e instanceof MouseEvent) {
-                // KILL YOURSELF
-
                 const canvas = win.fetchCanvas();
 
                 const newE = {};

@@ -1,4 +1,4 @@
-function generateUI(x, y, width, height) {
+function generateUI(x, y, width, height, uuid) {
   const overlay = framebuffer.createElement("div");
     overlay.style.position = "absolute";
     
@@ -34,6 +34,32 @@ function generateUI(x, y, width, height) {
     container.className = "container";
 
   titlebar.appendChild(winTitle);
+
+  // Hacky way to check if the mouse is down while moving the mouse
+  let mousePressed = false;
+  const positionData = [0, 0];
+
+  titlebar.addEventListener("mousedown", function(e) {
+    mousePressed = true;
+
+    positionData[0] = e.clientX-parseInt(overlay.style.top.replace("px", ""));
+    positionData[1] = e.clientY-parseInt(overlay.style.left.replace("px", ""));
+  });
+
+  titlebar.addEventListener("mouseup", function(e) {
+    mousePressed = false;
+  });
+
+  titlebar.addEventListener("mousemove", function(e) {
+    if (!mousePressed) return;
+
+    const res = wmData.inputWrapper({
+      type: "MoveWindow",
+      uuid: uuid,
+      top: e.clientX - positionData[0],
+      left: e.clientY - positionData[1]
+    });
+  });
   
   overlay.appendChild(titlebar);
   overlay.appendChild(container);
