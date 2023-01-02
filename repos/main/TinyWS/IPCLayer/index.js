@@ -35,49 +35,18 @@ return {
     if (!hasWindowManagerRegistered) throw new Error("Window Manager not registered yet!");
     const id = uuidv4();
 
-    const stockOverlay = framebuffer.createElement("div");
-    stockOverlay.style.position = "absolute";
-    stockOverlay.style.top = x + "px";
-    stockOverlay.style.left = y + "px";
-    stockOverlay.style.width = width + "px";
-    stockOverlay.style.height = height + "px";
-    stockOverlay.style.overflow = "hidden";
+    outputDetails("WindowCreate", id, x, y, width, height);
+    const resp = outputDetails("WindowUpdate", id, x, y, width, height);
+
+    const overlay = resp;
+    
+    if (!(overlay instanceof HTMLDivElement)) {
+      throw new Error("WindowManager has failed to supply a window template!");
+    }
 
     const mainElement = framebuffer.createElement("div");
     mainElement.className = id;
     mainElement.title = "Window";
-    
-    outputDetails("WindowCreate", id, x, y, width, height);
-    const resp = outputDetails("WindowUpdate", id, x, y, width, height);
-
-    let overlay = stockOverlay;
-
-    if (resp instanceof HTMLDivElement) {
-      overlay = resp;
-    } else {
-      const titleElem = framebuffer.createElement("span");
-      titleElem.className = "title";
-
-      titleElem.style.fontFamily = "monospace";
-      titleElem.style.fontSize = "14px";
-      titleElem.style.fontWeight = "bold";
-
-      titleElem.style.color = "#000000";
-
-      titleElem.style.position = "absolute";
-      titleElem.style.top = "0px";
-      titleElem.style.left = "0px";
-      titleElem.style.width = width + "px";
-      titleElem.style.height = height + "px";
-
-      const containerElem = framebuffer.createElement("div");
-      containerElem.className = "container";
-      
-      containerElem.style.backgroundColor = "#ffffff";
-
-      overlay.appendChild(titleElem);
-      overlay.appendChild(containerElem);
-    }
 
     overlay.getElementsByClassName("container")[0].appendChild(mainElement);
     overlay.className = `${id}_overlay`;
