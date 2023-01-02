@@ -1,5 +1,4 @@
 function inputWrapper(data) {
-  console.log(data, data.type, typeof data == "object");
   if (typeof data != "object") return;
   if (!data.type) return;
 
