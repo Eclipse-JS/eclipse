@@ -18,19 +18,15 @@ function inputWrapper(data) {
         };
       }
 
-      const window = wsData.getElementsByClassName(data.uuid);
-      const windowContainer = wsData.getElementsByClassName(data.uuid + "_overlay");
-
-      if (window.length != 1) return {
+      const window = wsData.getElementsByClassName(data.uuid + "_overlay")[0];
+      
+      if (!window) return {
         type: "failure",
         message: "Window does not exist!"
       };
 
-      window[0].style.top = data.top + "px";
-      window[0].style.left = data.left + "px";
-
-      windowContainer[0].style.top = data.top + "px";
-      windowContainer[0].style.left = data.left + "px";
+      window.style.top = data.top + "px";
+      window.style.left = data.left + "px";
 
       return {
         type: "success"

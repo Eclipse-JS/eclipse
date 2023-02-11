@@ -12,6 +12,39 @@ require("./Functions/extensionExists.js");
 require("./Functions/exec.js");
 require("./Functions/LoadWS.js");
 
+const mvEvents = {
+  mouseup: [],
+  mousemove: []
+};
+
+function subscribeMouseMove(func) {
+  if (typeof func == "function") mvEvents.mousemove.push(func);
+}
+
+document.body.addEventListener("mousemove", function(e) {
+  for (const event of mvEvents.mousemove) {
+    try {
+      event(e);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+})
+
+function subscribeMouseUp(func) {
+  if (typeof func == "function") mvEvents.mouseup.push(func);
+}
+
+document.body.addEventListener("mouseup", function(e) {
+  for (const event of mvEvents.mouseup) {
+    try {
+      event(e);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+})
+
 const wsLoad = loadWS();
 if (!wsLoad) return 1;
 

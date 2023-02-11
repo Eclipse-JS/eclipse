@@ -13,6 +13,13 @@
       "compilerOpts": {
         "src": "lvplay/index.js"
       }
+    },
+    "duskterm": {
+      "ver": "0.1.0",
+      "path": "testwin.js",
+      "compilerOpts": {
+        "src": "testwin/index.js"
+      }
     }
   }
 }
