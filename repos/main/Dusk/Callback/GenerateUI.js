@@ -49,16 +49,20 @@ function generateUI(x, y, width, height, uuid) {
 
   subscribeMouseUp(function() {
     if (mousePressed) mousePressed = false;
+
+    positionData[0] = 0;
+    positionData[1] = 0;
   });
 
   subscribeMouseMove(function(e) {
     if (!mousePressed) return;
+    //console.warn("val ([cx, cy], [posmap]):", [e.clientX, e.clientY], positionData);
 
     const res = wmData.inputWrapper({
       type: "MoveWindow",
       uuid: uuid,
-      top: e.clientY - positionData[1],
-      left: e.clientX - positionData[0]
+      top: e.clientY,
+      left: e.clientX
     });
   });
   
