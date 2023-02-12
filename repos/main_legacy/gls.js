@@ -1,7 +1,7 @@
 // Graphical Library (Login) System
 
 const { UIGenerator } = Kernel.extensions.get("LibDawn");
-const ws = Kernel.extensions.get("WindowServer");
+const ws = Kernel.extensions.get("wscompat");
 
 const VFS = Kernel.extensions.get("Vfs");
 

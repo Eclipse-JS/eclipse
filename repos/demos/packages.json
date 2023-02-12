@@ -14,7 +14,7 @@
         "src": "lvplay/index.js"
       }
     },
-    "duskterm": {
+    "testwin": {
       "ver": "0.1.0",
       "path": "testwin.js",
       "compilerOpts": {

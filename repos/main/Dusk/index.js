@@ -63,7 +63,7 @@ wmData.outputWrapper(require("./Callback/index.js"));
 
 if (!VFS.existsSync("/etc/sonnesvr", "folder")) VFS.mkdir("/etc/sonnesvr");
 if (!VFS.existsSync("/etc/sonnesvr/dusk.conf.json", "file")) VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
-  autoStart: VFS.existsSync("/bin/gls") ? "/bin/gls" : "/bin/duskterm"
+  autoStart: VFS.existsSync("/bin/lg_gls") ? "/bin/lg_gls" : "/bin/lg_duskterm"
 }));
 
 const conf = JSON.parse(VFS.read("/etc/sonnesvr/dusk.conf.json"));

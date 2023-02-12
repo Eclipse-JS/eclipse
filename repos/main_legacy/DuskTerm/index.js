@@ -10,7 +10,7 @@ let inputIsActive = false;
 
 require("./constants.js");
 
-const ws = Kernel.extensions.get("WindowServer");
+const ws = Kernel.extensions.get("wscompat");
 const ui = Kernel.extensions.get("LibDawn");
 
 const theme = ui.themes.getTheme(ui.themes.getDefaultTheme());

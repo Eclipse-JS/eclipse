@@ -3,6 +3,10 @@
     "nuke": {
       "ver": "0.1.0",
       "path": "nuke.js"
+    },
+    "wscompat": {
+      "ver": "1.0.0",
+      "path": "wscompat.js"
     }
   }
 }
