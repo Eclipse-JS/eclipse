@@ -7,6 +7,7 @@ let hasWindowManagerRegistered = false;
 const wmConf = {};
 
 const input = Kernel.extensions.get("input");
+const kprint = Kernel.extensions.get("kprint");
 
 require("./Functions/logger.js");
 require("./Functions/convert.js");

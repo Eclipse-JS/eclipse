@@ -4,7 +4,7 @@
  */
 function log(...args) {
   if (!hasWindowServerStarted) input.stdout(args.join(" ") + "\n");
-  console.log(args.join(" "));
+  kprint.log(args.join(" "));
 }
 
 /**
@@ -13,5 +13,5 @@ function log(...args) {
  */
 function logf(...args) {
   if (!hasWindowServerStarted) input.stdout(args.join(" "));
-  console.log(args.join(" "));
+  kprint.log(args.join(" "));
 }

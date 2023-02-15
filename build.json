@@ -28,11 +28,6 @@
       "type": "static"
     },
     {
-      "path": "./src/init/staticy/sys.js",
-      "out": "./out/init/sys.js",
-      "type": "static"
-    },
-    {
       "path": "./src/init/staticy/users.js",
       "out": "./out/init/users.js",
       "type": "static"

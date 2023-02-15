@@ -1,8 +1,9 @@
 const VFS = Kernel.extensions.get("Vfs");
 const input = Kernel.extensions.get("input");
+const kprint = Kernel.extensions.get("kprint");
 
 // De-escelate
-console.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
+kprint.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
 const attempt = await Kernel.accounts.elevate("nobody");
 
 if (!attempt) {

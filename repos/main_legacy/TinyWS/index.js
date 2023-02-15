@@ -16,6 +16,7 @@ require("./ckernel.js")
 require("./functions.js")
 
 const input = Kernel.extensions.get("input");
+const kprint = Kernel.extensions.get("kprint");
 
 logf("Checking if I am running as root...");
 

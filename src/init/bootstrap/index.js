@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
 const VFS = Kernel.extensions.get("Vfs");
-const Sys = Kernel.extensions.get("sys");
+const kprint = Kernel.extensions.get("kprint");
 
 async function fetchTextData(url) {
   const data = await fetch(url);
@@ -20,28 +20,20 @@ fbText.style.fontSize = "14px";
 fb.appendChild(fbText);
 
 function fillText(text) {
-  fbText.innerHTML += text + "\n"
-    .replaceAll("<", "&#60;")
-    .replaceAll(">", "&#62;")
-    .replaceAll("\n", "<br>")
-    .replaceAll(" ", "&nbsp;");
+  kprint.log("boostrap: " + text);
 }
 
-fillText("Bootstrapping directories...", 1)
+kprint.log("boostrap: Setting up directories...");
 require("./loadDir.js");
 
-Sys.drawLogo();
-Sys.loadPercent(7);
-
-fillText("Downloading packages:", 2);
+kprint.log("bootstrap: Downloading packages...");
 const data = JSON.parse(await fetchTextData("repos/coreutils/packages.json"));
-Sys.loadPercent(14);
 
 let indexes = 2;
 
 require("./installAll.js");
 
-fillText("Configuring packages...", indexes+2);
+kprint.log("boostrap: Configuring packages...");
 if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
 
 require("./initCfg.js");

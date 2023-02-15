@@ -4,6 +4,7 @@ const VFS = Kernel.extensions.get("Vfs");
 
 const input = Kernel.extensions.get("input");
 const event = Kernel.extensions.get("eventListener");
+const kprint = Kernel.extensions.get("kprint");
 
 const windows = [];
 
@@ -15,16 +16,16 @@ require("./functions.js");
 const wsLoad = loadWS();
 if (!wsLoad) return 1;
 
-console.log("WM: Attempting to start IPC with the Window Server...");
+kprint.log("WM: Attempting to start IPC with the Window Server...");
 const ws = Kernel.extensions.get("WindowServer");
 const ui = Kernel.extensions.get("LibDawn");
 
 if (ws.hasWMStarted) {
-  console.log("WM<FATAL>: Another Window Manager is already running!");
+  kprint.log("WM<FATAL>: Another Window Manager is already running!");
   return;
 }
 
-console.log("WM: Attempting to register a Window Manager...");
+kprint.log("WM: Attempting to register a Window Manager...");
 
 const wmData = ws.registerWM("ProjectDusk");
 

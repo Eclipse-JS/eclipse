@@ -4,6 +4,7 @@ const framebuffer = Kernel.display.getFramebuffer(true);
 
 const VFS = Kernel.extensions.get("Vfs");
 const input = Kernel.extensions.get("input");
+const kprint = Kernel.extensions.get("kprint");
 
 input.stdout("WM: Dusk is starting up...\n");
 input.stdout("WM: Attempting to negotiate deals with the Window Server...\n");
@@ -48,15 +49,15 @@ document.body.addEventListener("mouseup", function(e) {
 const wsLoad = loadWS();
 if (!wsLoad) return 1;
 
-console.log("WM: Attempting to start IPC with the Window Server...");
+kprint.log("WM: Attempting to start IPC with the Window Server...");
 const ws = Kernel.extensions.get("WindowServer");
 
 if (ws.hasWMStarted) {
-  console.log("WM<FATAL>: Another Window Manager is already running!");
+  kprint.log("WM<FATAL>: Another Window Manager is already running!");
   return;
 }
 
-console.log("WM: Attempting to register a Window Manager...");
+kprint.log("WM: Attempting to register a Window Manager...");
 
 const wmData = ws.registerWM("ProjectDusk_RevII");
 wmData.outputWrapper(require("./Callback/index.js"));

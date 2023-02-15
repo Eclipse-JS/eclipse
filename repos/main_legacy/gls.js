@@ -34,7 +34,6 @@ await ws.createWindow(500, 110, async function (canvasElement, update, addEventL
 
   inputDoneButton.updateClickEvent(async function() {
     const runEscalate = await Kernel.accounts.elevate(userInput.text, passInput.text);
-    console.log(runEscalate, userInput.text, passInput.text);
 
     if (runEscalate) loginSuccessStatus = true;
   });

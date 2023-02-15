@@ -2,9 +2,10 @@ qb.enableRegularRequire();
 
 const users = Kernel.extensions.get("users");
 const hash = Kernel.extensions.get("hashcat");
+const kprint = Kernel.extensions.get("kprint");
 
 // Implements virtual kernels.
-console.log("Security: Preparing...");
+kprint.log("Security: Preparing...");
 
 const processTreeExtras = [];
 
