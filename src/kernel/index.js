@@ -91,6 +91,14 @@ klogfb.style.fontSize = "14px";
 const testfb = self.Kernel.display.getFramebuffer(true);
 testfb.appendChild(klogfb);
 
+function fillText(text, element) {
+  element.innerHTML += text + "\n"
+    .replaceAll("<", "&#60;")
+    .replaceAll(">", "&#62;")
+    .replaceAll("\n", "<br>")
+    .replaceAll(" ", "&nbsp;");
+}
+
 self.Kernel.extensions.load("kprint", {
   log(str) {
     if (typeof str != "string" && typeof str != "number") panic("Unknown argument specified in kprint call", "Kernel::extension::kprint", new Error("kperr"));
@@ -102,7 +110,13 @@ self.Kernel.extensions.load("kprint", {
 
     klog.push(loggedData);
 
-    console.log("[%s] %s", ((loggedData.time-klog[0].time)/1000).toFixed(3), loggedData.msg);
+    // Uncomment to enable console debugging.
+    //console.log("[%s] %s", ((loggedData.time-klog[0].time)/1000).toFixed(3), loggedData.msg);
+
+    const logMsg = `[${((loggedData.time-klog[0].time)/1000).toFixed(3)}] ${loggedData.msg}`
+    fillText(logMsg, klogfb);
+
+    document.body.scrollTo(0, document.body.scrollHeight);
   },
 
   getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.

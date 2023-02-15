@@ -3,7 +3,7 @@ const input = Kernel.extensions.get("input");
 const kprint = Kernel.extensions.get("kprint");
 
 // De-escelate
-kprint.log("TTY: Goodbye! De-escelating to '%s'...", "nobody");
+kprint.log("TTY: Goodbye! De-escelating to 'nobody'...");
 const attempt = await Kernel.accounts.elevate("nobody");
 
 if (!attempt) {
