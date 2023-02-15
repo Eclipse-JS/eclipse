@@ -1,6 +1,5 @@
 qb.enableRegularRequire();
 
-const prefix = BL_CMDLINE ? BL_CMDLINE.split("fs_prefix='")[1].split("'")[0] : "";
 const elemCreate = document.createElement;
 
 require("./FrameSecurity/createElementInject.js");
@@ -10,16 +9,24 @@ require("./FrameSecurity/elementSentry.js");
 document.getElementById("framebuffer_v2").createElement = createElementSec;
 document.createElement = createElementSec;
 
-const localStorage = {
-  getItem: function(key) {
-    return self.localStorage.getItem(prefix + key);
-  },
-  setItem: function(key, value) {
-    self.localStorage.setItem(prefix + key, value);
-  },
-  removeItem: function(key) {
-    self.localStorage.removeItem(prefix + key);
+let localStorage = self.localStorage;
+
+if (typeof BL_CMDLINE !== 'undefined') {
+  localStorage = {
+    getItem: function(key) {
+      return self.localStorage.getItem(prefix + key);
+    },
+    setItem: function(key, value) {
+      self.localStorage.setItem(prefix + key, value);
+    },
+    removeItem: function(key) {
+      self.localStorage.removeItem(prefix + key);
+    }
   }
+}
+
+function isBootloader() {
+  return typeof BL_CMDLINE !== "undefined";
 }
 
 if (localStorage.getItem("panic.log")) {
