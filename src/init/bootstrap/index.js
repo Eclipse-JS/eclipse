@@ -31,18 +31,13 @@ fillText("Bootstrapping directories...", 1)
 require("./loadDir.js");
 
 Sys.drawLogo();
-Sys.loadPercent(15);
+Sys.loadPercent(7);
 
 fillText("Downloading packages:", 2);
 const data = JSON.parse(await fetchTextData("repos/coreutils/packages.json"));
-Sys.loadPercent(20);
+Sys.loadPercent(14);
 
-fillText(" - VFS", 3);
-const vfs = "UWU;;\n\n" + await fetchTextData("init/vfs.js");
-
-localStorage.setItem("preboot_vfs", vfs);
-
-let indexes = 3;
+let indexes = 2;
 
 require("./installAll.js");
 
