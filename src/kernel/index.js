@@ -29,19 +29,12 @@ function isBootloader() {
   return typeof BL_CMDLINE !== "undefined";
 }
 
-if (localStorage.getItem("panic.log")) {
-  console.error(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
-}
-
 const extensions = [];
 
 const processTree = [];
 let processCount = 0;
 
 require("./ErrorHandler/panic.js");
-
-console.log("Loading Sentry...");
-sentry();
 
 self.Kernel = {
   kernelLevel: {
@@ -83,3 +76,43 @@ self.Kernel = {
     },
   },
 };
+
+const klog = [
+  {
+    msg: "Kernel loaded.",
+    time: Date.now()
+  }
+];
+
+const klogfb = document.createElement("div");
+klogfb.style.fontFamily = "monospace";
+klogfb.style.fontSize = "14px";
+
+const testfb = self.Kernel.display.getFramebuffer(true);
+testfb.appendChild(klogfb);
+
+self.Kernel.extensions.load("kprint", {
+  log(str) {
+    if (typeof str != "string" && typeof str != "number") panic("Unknown argument specified in kprint call", "Kernel::extension::kprint", new Error("kperr"));
+
+    const loggedData = {
+      msg: str,
+      time: Date.now()
+    };
+
+    klog.push(loggedData);
+
+    console.log("[%s] %s", ((loggedData.time-klog[0].time)/1000).toFixed(3), loggedData.msg);
+  },
+
+  getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.
+})
+
+const kprint = Kernel.extensions.get("kprint");
+
+if (localStorage.getItem("panic.log")) {
+  kprint.log(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
+}
+
+kprint.log("Loading Sentry...");
+sentry();
