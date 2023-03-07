@@ -13,7 +13,11 @@ function help() {
   const cmds = [
     {
       name: "init",
-      desc: "Initialize package manager (First load only)"
+      desc: "Initialize package manager (First install only)"
+    },
+    {
+      name: "search",
+      desc: "Searches for a package"
     },
     {
       name: "update",

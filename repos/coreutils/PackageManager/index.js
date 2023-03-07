@@ -35,6 +35,12 @@ switch (argv[0]) {
     break;
   }
 
+  case "search": {
+    require("./repos/search.js")
+
+    break;
+  }
+
   case "install": {
     require("./packages/install.js")
 
