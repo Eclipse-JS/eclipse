@@ -61,6 +61,14 @@
     "reboot": {
       "ver": "1.0.0",
       "path": "reboot.js"
+    },
+    "dmesg": {
+      "ver": "1.0.0",
+      "path": "dmesg.js"
+    },
+    "kecho": {
+      "ver": "1.0.0",
+      "path": "kecho.js"
     }
   }
 }

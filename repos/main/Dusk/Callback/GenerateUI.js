@@ -1,5 +1,7 @@
 function generateUI(x, y, width, height, uuid) {
-  const overlay = framebuffer.createElement("div");
+  const titlebarHeight = 24;
+
+  const overlay = document.createElement("div");
     overlay.style.position = "absolute";
     
     overlay.style.top = x + "px";
@@ -13,27 +15,39 @@ function generateUI(x, y, width, height, uuid) {
 
     overlay.style.fontFamily = "system-ui";
     overlay.style.fontSize = "14px";
-    overlay.style.padding = "3px";
 
     overlay.style.zIndex = 13;
 
-    overlay.style.borderRadius = "8px";
+  const titlebar = document.createElement("div");
+    titlebar.style.position = "absolute";
+    titlebar.style.left = "0px";
+    titlebar.style.top = "0px";
+    titlebar.style.width = "100%";
 
-  const titlebar = framebuffer.createElement("div");
     titlebar.style.fontWeight = "600";
     titlebar.style.fontSize = "16px";
 
-    titlebar.style.height = "20px";
+    titlebar.style.height = titlebarHeight + "px";
 
     titlebar.style.backgroundColor = "#F4F5FF";
-  
-    titlebar.style.textAlign = "center";
 
-  const winTitle = framebuffer.createElement("span");
+    titlebar.style.userSelect = "none";
+
+  const whitespace = document.createElement("span");
+    whitespace.innerHTML = "&nbsp;";
+  
+  titlebar.appendChild(whitespace);
+
+  const winTitle = document.createElement("span");
     winTitle.className = "title";
   
-  const container = framebuffer.createElement("div");
+  const container = document.createElement("div");
     container.className = "container";
+    container.style.position = "absolute";
+    container.style.top = titlebarHeight + "px";
+
+    container.style.width = "100%";
+    container.style.height = (height - titlebarHeight) + "px"; 
 
   titlebar.appendChild(winTitle);
 
