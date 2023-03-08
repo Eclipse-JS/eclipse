@@ -60,6 +60,7 @@ function findDependenciesOfPackage(packageFoundData, notCompliant) {
       const dependency = findPackage(dep, notCompliant);
       if (!dependency) throw new Error(`Could not find package '${dep}'`);
 
+      dependency.isDependency = true;
       dependencyList.push(notCompliant ? dependency : dependency.name);
 
       if (dependency.data.deps) {
@@ -86,13 +87,15 @@ for (const i of packagesArgv) {
     break;
   }
 
+  let deps = {};
   try {
-    const deps = findDependenciesOfPackage(pkg, true);
-    deps.forEach((i) => logger("info", `Discovered dependency '${i}'.`));
+    deps = findDependenciesOfPackage(pkg, true);
   } catch (e) {
     logger("error", `A dependency for package '${i}' could not be found.`);
     break;
   }
+
+  deps.forEach((i) => logger("info", `Discovered dependency '${i.name}'.`));
 
   packages.push(...deps, pkg);
 }
@@ -101,13 +104,15 @@ for (const i of packagesArgv) {
 const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
 
 for (const package of removeDuplicateItemsFromArray(packages)) {
-  logger("info", `Locating package '${package.name}'...`)
+  logger("info", `Locating package '${package.name}'...`);
   const data = package; // TODO?
   
   const cache = vfs.existsSync("/etc/pkg/caches.json", "file") ? JSON.parse(vfs.read("/etc/pkg/caches.json")) : [];
   const pkgCacheData = cache.filter(item => item.pkgName == package.name);
   
   if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
+    if (package.isDependency) break;
+
     logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
     
     input.stdout("> ");
