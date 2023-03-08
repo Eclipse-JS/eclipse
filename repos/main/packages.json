@@ -10,6 +10,10 @@
     "dusk": {
       "ver": "0.0.1",
       "path": "dusk.js",
+      "deps": [
+        "tinyws",
+        "dawn"
+      ],
       "compilerOpts": {
         "src": "Dusk/index.js"
       }

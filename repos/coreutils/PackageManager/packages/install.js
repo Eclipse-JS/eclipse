@@ -3,16 +3,78 @@ if (!isSetUp()) {
   break;
 } 
 
-const packages = argv.slice(1);
+const packagesArgv = argv.slice(1).map((i) => i.trim());
 
-if (packages.length == 0) {
+if (packagesArgv.length == 0) {
   logger("error", "No packages specified.");
   break;
 }
 
-for (package of packages) {
+function removeDuplicateItemsFromArray(arr) {
+  return [...new Set(arr)];
+}
+
+function findPackage(name) {
+  const contents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+  
+  for (const pkgProviderIndex of Object.keys(contents)) {
+    for (const repo of contents[pkgProviderIndex].contents) {
+      for (const i of Object.keys(repo.contents)) {
+        if (i == name) return {
+          name: i,
+          data: repo.contents[name]
+        };
+      }
+    }
+  }
+}
+
+function findDependenciesOfPackage(packageFoundData) {
+  const dependencyList = [];
+  const package = packageFoundData.data;
+  
+  if (package.deps) {
+    for (const dep of package.deps) {
+      const dependency = findPackage(dep);
+      if (!dependency) throw new Error(`Could not find package '${dep}'`);
+
+      dependencyList.push(dependency.name);
+
+      if (dependency.data.deps) {
+        const deps = findDependenciesOfPackage(dependency);
+
+        dependencyList.push(...deps);
+      }
+    }
+  }
+
+  return removeDuplicateItemsFromArray(dependencyList);
+}
+
+logger("info", "Getting package install list...");
+const packages = [];
+
+for (const i of packagesArgv) {
+  if (i == "") return;
+  logger("info", `Getting package canidates for '${i}'...`);
+
+  const pkg = findPackage(i);
+  if (!pkg) {
+    logger("error", `Failed to find package '${i}'.`);
+    break;
+  }
+
+  const deps = findDependenciesOfPackage(pkg);
+  deps.forEach((i) => logger("info", `Discovered dependency '${i}'.`));
+
+  packages.push(...deps, i);
+}
+
+// TODO: Migrate package install to findPackage();
+const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+
+for (const package of removeDuplicateItemsFromArray(packages)) {
   logger("info", `Locating package '${package}'...`)
-  const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
   
   let data = {
     found: false,
@@ -96,6 +158,6 @@ for (package of packages) {
     pkgData: data.pkgData
   };
   
-  pkgCacheData.push(itemData);
-  vfs.write("/etc/pkg/caches.json", JSON.stringify(pkgCacheData));
+  cache.push(itemData);
+  vfs.write("/etc/pkg/caches.json", JSON.stringify(cache));
 }
