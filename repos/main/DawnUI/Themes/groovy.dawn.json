@@ -1,0 +1,24 @@
+{
+  "DawnUI": {
+    "configRevision": "1",
+    "name": "Groovy"
+  },
+  "styles": {
+    "general": {
+      "background": {
+        "background-color": "#504945",
+        "foreground-color": "#665c54"
+      },
+      "accents": {
+        "white": {
+          "background-color": "#bdae93",
+          "foreground-color": "#d5c4a1"
+        },
+        "black": {
+          "background-color": "#32302f",
+          "foreground-color": "#282828"
+        }
+      }
+    }
+  }
+}
