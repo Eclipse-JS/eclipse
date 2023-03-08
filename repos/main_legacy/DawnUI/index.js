@@ -3,6 +3,37 @@ qb.enableRegularRequire();
 const input = Kernel.extensions.get("input");
 const VFS = Kernel.extensions.get("Vfs");
 
+// I KNOW I KNOW I KNOW
+// That I shouldn't tamper with legacy code.
+// However,
+// Having non-matching themes is killing me.
+function extensionExists(name) {
+  try {
+    Kernel.extensions.get(name);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+if (!extensionExists("LibreDawn")) {
+  input.stdout("WM<WARN>: UI Framework is not running. Attempting to start...\n");
+  if (!VFS.existsSync("/bin/dawn", "file")) {
+    input.stdout("WM<FATAL> UI Framework is not installed! Aborting...\n");
+    return false;
+  } else if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
+    input.stdout("WM<FATAL>: I am not running as root so I cannot load the UI. Sorry!\n");
+    return false;
+  }
+  
+  const dawnData = VFS.read("/bin/dawn");
+
+  // Pipe all stdout and input to null -- It gets logged to the console anyways
+  Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), []);
+}
+
+const dawnV2 = Kernel.extensions.get("LibreDawn");
+
 require("./ThemeLoader.js");
 
 function isRoot() {
@@ -23,17 +54,7 @@ if (!isRoot()) {
 }
 
 const handler = {
-  themes: {
-    getAllThemes: getAllThemes,
-    getDefaultTheme: getDefaultTheme,
-
-    getTheme: function(theme) {
-      const themes = this.getAllThemes();
-      const themesFilter = themes.find(i => i.DawnUI.name == theme);
-
-      return themesFilter;
-    }
-  }
+  themes: dawnV2.themes
 }
 
 require("./UIGenerator/index.js")
