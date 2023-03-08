@@ -49,6 +49,11 @@ document.body.addEventListener("mouseup", function(e) {
 const wsLoad = loadWS();
 if (!wsLoad) return 1;
 
+const dawn = Kernel.extensions.get("LibreDawn");
+const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
+
+console.debug("WMDEBUG:", theme);
+
 kprint.log("WM: Attempting to start IPC with the Window Server...");
 const ws = Kernel.extensions.get("WindowServer");
 

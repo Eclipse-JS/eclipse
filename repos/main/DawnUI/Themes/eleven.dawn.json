@@ -22,8 +22,9 @@
     },
     "duskplus-config": {
       "titlebar": {
-        "background-color": "#b3b9ff",
-        "foreground-color": "#f4f5ff"
+        "background-color": "#f4f5ff",
+        "foreground-color": "#b3b9ff",
+        "__COMMENT": "TODO: Make foreground-color decent :p"
       }
     }
   }

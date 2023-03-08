@@ -1,6 +1,8 @@
 function generateUI(x, y, width, height, uuid) {
   const titlebarHeight = 24;
 
+  const canUseNewFeatures = theme.DawnUI.configRevision == "2";
+
   const overlay = document.createElement("div");
     overlay.style.position = "absolute";
     
@@ -17,6 +19,8 @@ function generateUI(x, y, width, height, uuid) {
     overlay.style.fontSize = "14px";
 
     overlay.style.zIndex = 13;
+    overlay.style.backgroundColor = theme.styles.general.background["background-color"];
+    overlay.style.color = theme.styles.general.accents.white["background-color"];
 
   const titlebar = document.createElement("div");
     titlebar.style.position = "absolute";
@@ -29,7 +33,7 @@ function generateUI(x, y, width, height, uuid) {
 
     titlebar.style.height = titlebarHeight + "px";
 
-    titlebar.style.backgroundColor = "#F4F5FF";
+    titlebar.style.backgroundColor = canUseNewFeatures ? theme.styles["duskplus-config"].titlebar["background-color"] : themes.styles.general.background["background-color"];
 
     titlebar.style.userSelect = "none";
 

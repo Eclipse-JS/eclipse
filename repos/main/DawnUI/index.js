@@ -30,4 +30,4 @@ const handler = {
   }
 }
 
-Kernel.extensions.load("LibDawn", handler);
+Kernel.extensions.load("LibreDawn", handler);
