@@ -14,34 +14,56 @@ function removeDuplicateItemsFromArray(arr) {
   return [...new Set(arr)];
 }
 
-function findPackage(name) {
+function findPackage(name, notCompliant) {
   const contents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
   
   for (const pkgProviderIndex of Object.keys(contents)) {
     for (const repo of contents[pkgProviderIndex].contents) {
       for (const i of Object.keys(repo.contents)) {
-        if (i == name) return {
-          name: i,
-          data: repo.contents[name]
-        };
+        if (i == name) {
+          if (notCompliant) {
+            return { // Mix both types of data, for both compliant and not compliant methods
+              name: i,
+              data: repo.contents[name],
+              
+              found: true,
+              rootPkg: {
+                index: pkgProviderIndex,
+                path: contents[pkgProviderIndex].path
+              },
+
+              corePkg: {
+                name: repo.name,
+                path: repo.path
+              },
+
+              pkgData: repo.contents[name]
+            };
+          } else {
+            return {
+              name: i,
+              data: repo.contents[name]
+            };
+          }
+        }
       }
     }
   }
 }
 
-function findDependenciesOfPackage(packageFoundData) {
+function findDependenciesOfPackage(packageFoundData, notCompliant) {
   const dependencyList = [];
   const package = packageFoundData.data;
   
   if (package.deps) {
     for (const dep of package.deps) {
-      const dependency = findPackage(dep);
+      const dependency = findPackage(dep, notCompliant);
       if (!dependency) throw new Error(`Could not find package '${dep}'`);
 
-      dependencyList.push(dependency.name);
+      dependencyList.push(notCompliant ? dependency : dependency.name);
 
       if (dependency.data.deps) {
-        const deps = findDependenciesOfPackage(dependency);
+        const deps = findDependenciesOfPackage(dependency, notCompliant);
 
         dependencyList.push(...deps);
       }
@@ -58,70 +80,27 @@ for (const i of packagesArgv) {
   if (i == "") return;
   logger("info", `Getting package canidates for '${i}'...`);
 
-  const pkg = findPackage(i);
+  const pkg = findPackage(i, true);
   if (!pkg) {
     logger("error", `Failed to find package '${i}'.`);
     break;
   }
 
-  const deps = findDependenciesOfPackage(pkg);
+  const deps = findDependenciesOfPackage(pkg, true);
   deps.forEach((i) => logger("info", `Discovered dependency '${i}'.`));
 
-  packages.push(...deps, i);
+  packages.push(...deps, pkg);
 }
 
 // TODO: Migrate package install to findPackage();
 const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
 
 for (const package of removeDuplicateItemsFromArray(packages)) {
-  logger("info", `Locating package '${package}'...`)
-  
-  let data = {
-    found: false,
-    rootPkg: null,
-    corePkg: null,
-    pkgData: null
-  }
-  
-  for (const index of Object.keys(pkgData)) {
-    const i = pkgData[index];
-  
-    for (const j of i.contents) {
-      for (const k of Object.keys(j.contents)) {
-        if (k == package) {
-          data.found = true;
-  
-          data.rootPkg = {};
-          data.rootPkg.index = index;
-          data.rootPkg.path = i.path;
-  
-          data.corePkg = {};
-          data.corePkg.name = j.name;
-          data.corePkg.path = j.path;
-  
-          data.pkgData = j.contents[k];
-  
-          break;
-        }
-  
-        // Gotta do this redundantly as there is nested for loops.
-        if (data.found) break;
-      }
-  
-      if (data.found) break;
-    }
-  
-    if (data.found) break;
-  }
-  
-  if (!data.found) {
-    logger("error", "Package does not exist!");
-    break;
-  }
+  logger("info", `Locating package '${package.name}'...`)
+  const data = package; // TODO?
   
   const cache = vfs.existsSync("/etc/pkg/caches.json", "file") ? JSON.parse(vfs.read("/etc/pkg/caches.json")) : [];
-  
-  const pkgCacheData = cache.filter(item => item.pkgName == package);
+  const pkgCacheData = cache.filter(item => item.pkgName == package.name);
   
   if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
     logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
@@ -138,7 +117,7 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
     cache.splice(cache.indexOf(data), 1);
   }
   
-  logger("info", `Downloading '${package}'...`);
+  logger("info", `Downloading '${package.name}'...`);
   
   const rootPkg = data.rootPkg.path.split("/");
   const corePkg = data.corePkg.path.split("/");
@@ -149,10 +128,10 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
   const url = rootPkg.join("/") + "/" + corePkg.join("/") + "/" + data.pkgData.path;
   const appData = "UWU;;\n\n" + await read(url);
   
-  vfs.write(`/bin/${package}`, appData);
+  vfs.write(`/bin/${package.name}`, appData);
   
   const itemData = {
-    pkgName: package,
+    pkgName: package.name,
     rootPkg: data.rootPkg,
     corePkg: data.corePkg,
     pkgData: data.pkgData
