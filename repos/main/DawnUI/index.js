@@ -30,4 +30,8 @@ const handler = {
   }
 }
 
+require("./UIGenerator/index.js")
+handler.UIGenerator = UIGenerator;
+handler.UIRules = UIRules;
+
 Kernel.extensions.load("LibreDawn", handler);
