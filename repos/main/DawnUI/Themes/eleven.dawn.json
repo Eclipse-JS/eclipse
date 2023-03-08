@@ -1,0 +1,30 @@
+{
+  "DawnUI": {
+    "configRevision": "2",
+    "name": "Eleven (Light)"
+  },
+  "styles": {
+    "general": {
+      "background": {
+        "background-color": "#f2f2f2",
+        "foreground-color": "#d9d9d9"
+      },
+      "accents": {
+        "white": {
+          "background-color": "#1a1a1a",
+          "foreground-color": "#404040"
+        },
+        "black": {
+          "background-color": "#b3b3b3",
+          "foreground-color": "#a6a6a6"
+        }
+      }
+    },
+    "duskplus-config": {
+      "titlebar": {
+        "background-color": "#b3b9ff",
+        "foreground-color": "#f4f5ff"
+      }
+    }
+  }
+}
