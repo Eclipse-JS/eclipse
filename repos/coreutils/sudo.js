@@ -23,7 +23,7 @@ if (cmd instanceof Error) {
 const oldUsername = Kernel.accounts.getCurrentInfo().username;
 
 const username = "root";
-input.stdout(`sudo: Passsword for ${username}: `);
+input.stdout(`sudo: Password for ${username}: `);
 const password = await input.stdin();
 
 const runEscalate = await Kernel.accounts.elevate(username, password);

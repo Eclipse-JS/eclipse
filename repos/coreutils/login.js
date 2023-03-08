@@ -24,7 +24,7 @@ let isCorrect = false;
 while (!isCorrect) {
   input.stdout("Username: ");
   const username = await input.stdin();
-  input.stdout("Passsword: ");
+  input.stdout("Password: ");
   const password = await input.stdin();
   
   const runEscalate = await Kernel.accounts.elevate(username, password);

@@ -90,7 +90,7 @@ for (const i of packagesArgv) {
     const deps = findDependenciesOfPackage(pkg, true);
     deps.forEach((i) => logger("info", `Discovered dependency '${i}'.`));
   } catch (e) {
-    logger("error", `Dependency for package '${i}', named '${pkg.name}' does not exist`);
+    logger("error", `A dependency for package '${i}' could not be found.`);
     break;
   }
 
