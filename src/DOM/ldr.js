@@ -10,6 +10,13 @@ if (!localStorage.getItem("__init")) {
   localStorage.setItem("__init", init);
 }
 
+if (!localStorage.getItem("krnl")) {
+  const kernel = await read("kernel.js");
+  localStorage.setItem("krnl", kernel);
+}
+
+eval(localStorage.getItem("krnl"));
+
 const init = localStorage.getItem("__init");
 const initProc = Kernel.process.create(init);
 
