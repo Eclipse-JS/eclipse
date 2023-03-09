@@ -23,6 +23,22 @@ input.stdout(" - Initializing package manager\n\n");
 
 await exec("/bin/pkg", ["init"]);
 
+input.stdout("\nWould you like to try the WIP graphical installer?\n> ");
+const isGraphicsMode = await input.stdin();
+
+if (isGraphicsMode.toLowerCase().startsWith("y")) {
+  input.stdout("\nInitializing...\n\n");
+  await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
+  
+  VFS.mkdir("/etc/sonnesvr");
+  VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+    autoStart: "/bin/setup-gui"
+  }));
+
+  input.stdout("$c:clear");
+  await exec("/bin/dusk", ["/bin/setup-gui"]);
+}
+
 input.stdout("\n");
 input.stdout("Welcome to EclipseOS! What do you want your username and password to be?\n\nUsername: ");
 const username = await input.stdin();

@@ -16,8 +16,12 @@
       "path": "login.js"
     },
     "setup": {
-      "ver": "0.1.0",
+      "ver": "1.0.0",
       "path": "setup.js"
+    },
+    "setup-gui": {
+      "ver": "1.0.0",
+      "path": "setup-gui.js"
     },
     "sh": {
       "ver": "0.1.0",
