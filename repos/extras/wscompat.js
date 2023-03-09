@@ -4,7 +4,7 @@ Kernel.extensions.load("wscompat", {
   createWindow(w, h, func) {
     const ws = Kernel.extensions.get("WindowServer");
 
-    async function dummy(win) {
+    async function dummy(win, add, rm) {
       const canvas = document.createElement("canvas");
       canvas.width = w;
       canvas.height = h;
@@ -16,7 +16,7 @@ Kernel.extensions.load("wscompat", {
         win.title = canvas.title;
       }
 
-      await func(canvas, sync, canvas.addEventListener, canvas.removeEventListener);
+      await func(canvas, sync, add, rm);
     } 
     
     ws.createWindow(300, 300, w, h, dummy);

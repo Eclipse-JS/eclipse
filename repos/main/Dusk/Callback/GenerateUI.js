@@ -18,7 +18,7 @@ function generateUI(x, y, width, height, uuid) {
     overlay.style.fontFamily = "system-ui";
     overlay.style.fontSize = "14px";
 
-    overlay.style.zIndex = 13;
+    overlay.style.zIndex = 12;
     overlay.style.backgroundColor = theme.styles.general.background["background-color"];
     overlay.style.color = theme.styles.general.accents.white["background-color"];
 
@@ -63,6 +63,20 @@ function generateUI(x, y, width, height, uuid) {
 
     positionData[0] = e.clientX-parseInt(overlay.style.top.replace("px", ""));
     positionData[1] = e.clientY-parseInt(overlay.style.left.replace("px", ""));
+  });
+
+  overlay.addEventListener("mousedown", function() {
+    const focusedUUID = wmData.inputWrapper({
+      type: "GetFocusedWindow",
+      uuid: uuid
+    }).uuid;
+
+    if (focusedUUID != uuid) {
+      wmData.inputWrapper({
+        type: "SetFocusedWindow",
+        uuid: uuid
+      })
+    }
   });
 
   subscribeMouseUp(function() {

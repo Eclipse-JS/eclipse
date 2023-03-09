@@ -4,6 +4,7 @@ qb.enableRegularRequire();
 let hasWindowServerStarted = false;
 let hasWindowManagerRegistered = false;
 
+let focusedUUID = null;
 const wmConf = {};
 
 const input = Kernel.extensions.get("input");
@@ -13,6 +14,8 @@ require("./Functions/logger.js");
 require("./Functions/convert.js");
 require("./Functions/checkIfRoot.js");
 require("./Functions/uuidV4.js");
+
+require("./Functions/EventProxy.js");
 
 logf("Checking if I am running as root...");
 

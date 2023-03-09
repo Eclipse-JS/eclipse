@@ -65,14 +65,26 @@ return {
     }
 
     updated();
+    const eventListeners = returnEvt(id);
+
+    if (focusedUUID) {
+      const window = wsData.getElementsByClassName(focusedUUID + "_overlay")[0];
+
+      if (window) {
+        window.style.zIndex = 12;
+      }
+    }
+
+    focusedUUID = id;
 
     try {
-      await callback(mainElement);
+      await callback(mainElement, eventListeners.addEventListener, eventListeners.removeEventListener);
     } catch (e) {
       console.error(e);
     }
 
     outputDetails("WindowClose", id, x, y, width, height);
+    if (focusedUUID == id) focusedUUID = null;
    
     mainElement.remove();
     overlay.remove();

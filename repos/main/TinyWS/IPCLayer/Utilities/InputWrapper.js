@@ -33,6 +33,44 @@ function inputWrapper(data) {
       }
     }
 
+    case "SetFocusedWindow": {
+      if (!data.uuid) {
+        return {
+          type: "failure",
+          message: "Missing Window UUID."
+        };
+      }
+
+      const window = wsData.getElementsByClassName(data.uuid + "_overlay")[0];
+
+      if (!window) return {
+        type: "failure",
+        message: "Window does not exist!"
+      };
+
+      if (focusedUUID) {
+        const window = wsData.getElementsByClassName(focusedUUID + "_overlay")[0];
+
+        if (window) {
+          window.style.zIndex = 12;
+        }
+      }
+
+      window.style.zIndex = 13;
+      focusedUUID = data.uuid;
+
+      return {
+        type: "success"
+      }
+    }
+
+    case "GetFocusedWindow": {
+      return {
+        type: "success",
+        uuid: focusedUUID
+      }
+    }
+
     default: {
       return {
         type: "failure",
