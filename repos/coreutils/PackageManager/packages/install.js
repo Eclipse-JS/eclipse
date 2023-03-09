@@ -111,15 +111,15 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
   const pkgCacheData = cache.filter(item => item.pkgName == package.name);
   
   if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
-    if (package.isDependency) break;
-
-    logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
+    if (!package.isDependency) {
+      logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
     
-    input.stdout("> ");
-    const choice = await input.stdin();
-  
-    if (!choice.toLowerCase().startsWith("y")) {
-      break;
+      input.stdout("> ");
+      const choice = await input.stdin();
+    
+      if (!choice.toLowerCase().startsWith("y")) {
+        break;
+      }
     }
   }
   
