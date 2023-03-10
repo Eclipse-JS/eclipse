@@ -7,7 +7,6 @@ kprint.log("init: Loading libraries...");
 const fbData = Kernel.display.getFramebuffer(true);
 
 // Again, not sandboxed yet, so *should* be fine(?)
-document.getElementById("framebuffer").style.visibility = "hidden";
 fbData.style.backgroundColor = "#000000";
 
 async function read(path) {

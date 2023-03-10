@@ -64,15 +64,8 @@ self.Kernel = {
     getPID: () => processCount,
   },
   display: {
-    getFramebuffer(futureMode) {
-      if (futureMode) {
-        require("./Kernel/display/getFramebuffer.js");
-
-        return true;
-      }
-
-      console.warn(" !! WARNING !! - Framebuffer has been loaded in legacy mode!");
-      require("./Kernel/display/getLegacyFramebuffer.js");
+    getFramebuffer() {
+      require("./Kernel/display/getFramebuffer.js");
     },
   },
 };
