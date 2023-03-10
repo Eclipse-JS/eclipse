@@ -1,6 +1,6 @@
 const VFS = Kernel.extensions.get("Vfs");
 
-let hostname = "localhost";
+let hostname = VFS.existsSync("/etc/hostname", "file") ? VFS.read("/etc/hostname") : "localhost";
 
 function extensionExists(name) {
   try {
@@ -14,6 +14,7 @@ function extensionExists(name) {
 if (!extensionExists("libnet")) {
   Kernel.extensions.load("libnet", {
     setHostname: function(name) {
+      VFS.write("/etc/hostname", name);
       hostname = name;
     },
     getHostname: function() {
@@ -27,6 +28,8 @@ if (!extensionExists("libnet")) {
 
   if (argv[0] == "set-hostname" && typeof argv[1] == "string") {
     input.stdout(`Set hostname to '${argv[1]}'\n`);
+    VFS.write("/etc/hostname", argv[1]);
+
     hostname = argv[1];
   }
 }
