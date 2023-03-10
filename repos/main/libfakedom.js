@@ -23,7 +23,11 @@ Kernel.extensions.load("LibFakeDOM", function(evtListen, evtRemoveListen, enable
     vdom.removeEventListener = removeEventListener;
 
     vdom.createElement = function (item) {
-      if (item != "script") return document.createElement(item);
+      const elem = document.createElement(item);
+      elem.addEventListener = eventListener;
+      elem.removeEventListener = removeEventListener;
+      
+      return elem;
     }
   }
 
