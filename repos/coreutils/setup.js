@@ -23,53 +23,15 @@ input.stdout(" - Initializing package manager\n\n");
 
 await exec("/bin/pkg", ["init"]);
 
-input.stdout("\nWould you like to try the WIP graphical installer?\n> ");
-const isGraphicsMode = await input.stdin();
+input.stdout("\n - Initializing...\n\n");
+await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
 
-if (isGraphicsMode.toLowerCase().startsWith("y")) {
-  input.stdout("\nInitializing...\n\n");
-  await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
-  
-  VFS.mkdir("/etc/sonnesvr");
-  VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
-    autoStart: "/bin/setup-gui"
-  }));
+VFS.mkdir("/etc/sonnesvr");
+VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+  autoStart: "/bin/setup-gui"
+}));
 
-  input.stdout("$c:clear");
-  await exec("/bin/dusk", ["/bin/setup-gui"]);
-}
+input.stdout("$c:clear");
+await exec("/bin/dusk", ["/bin/setup-gui"]);
 
-input.stdout("\n");
-input.stdout("Welcome to EclipseOS! What do you want your username and password to be?\n\nUsername: ");
-const username = await input.stdin();
-
-input.stdout("Password: ");
-const password = await input.stdin();
-
-input.stdout("\nPlease wait, adding profile...\n");
-await users.addUser(username, [username], 1, password);
-VFS.mkdir("/home/" + username);
-
-input.stdout("What do you want to name this install?\n\nName: ");
-const name = await input.stdin();
-
-localStorage.setItem("bootername", name);
-
-input.stdout("\nWould you like to enable a desktop environment to start on startup?\n> ");
-const opt = await input.stdin();
-
-input.stdout("Loading your desktop...\n");
-
-if (opt.toLowerCase().startsWith("y")) {
-  await exec("/bin/pkg", ["install", "tinyws", "dawn", "dusk", "duskterm"]);
-
-  VFS.write("/etc/init.d/init.conf", "/bin/dawn\n/bin/tinyws");
-  VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
-  VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
-
-  await exec("/bin/dusk", []);
-} else {
-  VFS.write("/etc/ttysh.conf", "shell=/bin/login");
-
-  await exec("/bin/login", []);
-}
+return;
