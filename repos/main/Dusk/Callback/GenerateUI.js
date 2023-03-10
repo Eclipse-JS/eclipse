@@ -12,16 +12,14 @@ function generateUI(x, y, width, height, uuid) {
     overlay.style.height = height + "px";
     overlay.style.overflow = "hidden";
     
-    overlay.style.backgroundColor = "white";
-    overlay.style.color = "black";
+    overlay.style.backgroundColor = theme.styles.general.background["background-color"];
+    overlay.style.color = theme.styles.general.accents.white["background-color"];
 
     overlay.style.fontFamily = "system-ui";
     overlay.style.fontSize = "14px";
 
     overlay.style.zIndex = 12;
-    overlay.style.backgroundColor = theme.styles.general.background["background-color"];
-    overlay.style.color = theme.styles.general.accents.white["background-color"];
-
+  
   const titlebar = document.createElement("div");
     titlebar.style.position = "absolute";
     titlebar.style.left = "0px";

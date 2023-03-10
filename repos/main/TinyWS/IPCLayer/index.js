@@ -2,33 +2,40 @@ qb.enableRegularRequire();
 
 require("./Utilities/OutputDetails.js");
 require("./Utilities/InputWrapper.js");
+require("./Utilities/DisabledTemplate.js");
 
 return {
   hasWMStarted: hasWindowManagerRegistered,
   registerWM(name) {
-    if (hasWindowManagerRegistered) throw new Error("Window Manager already registered!");
+    if (hasWindowManagerRegistered)
+      throw new Error("Window Manager already registered!");
 
     wmConf.name = name;
-  
+
     hasWindowManagerRegistered = true;
-    this.hasWMStarted = true; 
+    this.hasWMStarted = true;
 
     return {
-      outputWrapper: (outputWrapper) => wmConf.outputWrapper = outputWrapper,
-      inputWrapper: inputWrapper
-    }
+      outputWrapper: (outputWrapper) => (wmConf.outputWrapper = outputWrapper),
+      inputWrapper: inputWrapper,
+    };
   },
   async createWindow(x, y, width, height, callback, options = {}) {
-    if (!hasWindowManagerRegistered) throw new Error("Window Manager not registered yet!");
+    if (!hasWindowManagerRegistered)
+      throw new Error("Window Manager not registered yet!");
     const id = uuidv4();
 
     outputDetails("WindowCreate", id, x, y, width, height);
-    const resp = outputDetails("WindowUpdate", id, x, y, width, height);
+    const resp = options.disableTemplate
+      ? createFakeWin(x, y, width, height)
+      : outputDetails("WindowUpdate", id, x, y, width, height);
 
     const overlay = resp;
-    
+
     if (!(overlay instanceof HTMLDivElement)) {
-      throw new Error("The window manager has failed to supply a window template!");
+      throw new Error(
+        "The window manager has failed to supply a window template!"
+      );
     }
 
     const mainElement = framebuffer.createElement("div");
@@ -42,20 +49,32 @@ return {
 
     function updated() {
       if (!wsData.contains(mainElement)) return;
-      
-      if (mainElement.style.top != "" && mainElement.style.top != overlay.style.top) {
+
+      if (
+        mainElement.style.top != "" &&
+        mainElement.style.top != overlay.style.top
+      ) {
         overlay.style.top = mainElement.style.top;
       }
 
-      if (mainElement.style.left != "" && mainElement.style.left != overlay.style.left) {
+      if (
+        mainElement.style.left != "" &&
+        mainElement.style.left != overlay.style.left
+      ) {
         overlay.style.left = mainElement.style.left;
       }
 
-      if (mainElement.style.width != "" && mainElement.style.width != overlay.style.width) {
+      if (
+        mainElement.style.width != "" &&
+        mainElement.style.width != overlay.style.width
+      ) {
         overlay.style.width = mainElement.style.width;
       }
-      
-      if (mainElement.style.height != "" && mainElement.style.height != overlay.style.height) {
+
+      if (
+        mainElement.style.height != "" &&
+        mainElement.style.height != overlay.style.height
+      ) {
         overlay.style.height = mainElement.style.height;
       }
 
@@ -78,15 +97,19 @@ return {
     focusedUUID = id;
 
     try {
-      await callback(mainElement, eventListeners.addEventListener, eventListeners.removeEventListener);
+      await callback(
+        mainElement,
+        eventListeners.addEventListener,
+        eventListeners.removeEventListener
+      );
     } catch (e) {
       console.error(e);
     }
 
     outputDetails("WindowClose", id, x, y, width, height);
     if (focusedUUID == id) focusedUUID = null;
-   
+
     mainElement.remove();
     overlay.remove();
-  }
-}
+  },
+};
