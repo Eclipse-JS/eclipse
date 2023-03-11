@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "postinstall": "patch-package"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@creamy-dev/qbuild": "^0.1.0"
+    "@creamy-dev/qbuild": "^0.1.0",
+    "patch-package": "^6.5.1"
   }
 }
