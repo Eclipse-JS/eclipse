@@ -87,6 +87,10 @@ await ws.createWindow(300, 300, 400, 600, async function main(win) {
       VFS.write("/etc/ttysh.conf", "shell=/bin/login");
     }
 
+    VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+      autoStart: "/bin/duskterm"
+    }));    
+
     await users.addUser(usernameInput.value, [usernameInput.value], 1, passwordInput.value);
 
     hasFinishedFlag = true;

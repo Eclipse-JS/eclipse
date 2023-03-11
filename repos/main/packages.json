@@ -18,15 +18,23 @@
         "src": "Dusk/index.js"
       }
     },
-    "fakedom": {
-      "ver": "0.0.1",
-      "path": "libfakedom.js"
-    },
     "dawn": {
       "ver": "0.0.1",
       "path": "dawn.js",
       "compilerOpts": {
         "src": "DawnUI/index.js"
+      }
+    },
+    "fakedom": {
+      "ver": "0.0.1",
+      "path": "libfakedom.js"
+    },
+
+    "duskterm": {
+      "ver": "0.0.1",
+      "path": "duskterm.js",
+      "compilerOpts": {
+        "src": "DuskTerm/index.js"
       }
     }
   }
