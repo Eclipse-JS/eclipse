@@ -1,10 +1,11 @@
-qb.enableRegularRequire();
-
 const elemCreate = document.createElement;
 
 require("./FrameSecurity/createElementInject.js");
 require("./FrameSecurity/createElementSecurity.js");
 require("./FrameSecurity/elementSentry.js");
+
+import { createElementInject } from "./FrameSecurity/createElementInject.js";
+import { createElementSec } from "./FrameSecurity/createElementSecurity.js";
 
 document.getElementById("framebuffer_v2").createElement = createElementSec;
 document.createElement = createElementSec;

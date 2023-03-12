@@ -12,5 +12,9 @@
   "dependencies": {
     "@creamy-dev/qbuild": "^0.1.0",
     "patch-package": "^6.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/register": "^7.21.0"
   }
 }

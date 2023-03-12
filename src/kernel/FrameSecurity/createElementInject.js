@@ -5,3 +5,6 @@ function createElementInject(...argv) {
   document.createElement32 = null;
   return element;
 }
+
+
+export { createElementInject };

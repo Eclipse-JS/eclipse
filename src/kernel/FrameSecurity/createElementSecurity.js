@@ -6,3 +6,5 @@ function createElementSec(elem) {
 
   return createdElement;
 }
+
+export { createElementSec };
