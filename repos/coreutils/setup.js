@@ -26,7 +26,13 @@ await exec("/bin/pkg", ["init"]);
 input.stdout("\n - Initializing...\n\n");
 await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
 
-VFS.mkdir("/etc/sonnesvr");
+try {
+  VFS.mkdir("/etc/sonnesvr");
+} catch (e) {
+  e.name = "DirectoryError";
+  input.stdout(e.toString());
+}
+
 VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
   autoStart: "/bin/setup-gui"
 }));
