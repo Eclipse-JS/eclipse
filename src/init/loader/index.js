@@ -93,6 +93,7 @@ for (i of initPrgms) {
     await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
   } catch (e) {
     kprint.error("init: Failed to execute '" + i + "'.");
+    console.log(e);
   }
 }
 

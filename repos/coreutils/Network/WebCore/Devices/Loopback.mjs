@@ -2,7 +2,7 @@
  * Loads loopback connection
  * @param {object} netAPI Network API object
  */
-export function loadLoopback(netAPI) {
+function loadLoopback(netAPI) {
   const itemTable = []; // Stores client data, not used much
 
   /**

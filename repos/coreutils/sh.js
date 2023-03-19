@@ -7,7 +7,7 @@ const VFS = Kernel.extensions.get("Vfs");
 const net = Kernel.extensions.get("libnet");
 
 while (true) {
-  input.stdout(`${Kernel.accounts.getCurrentInfo().username}@${net.getHostname()}$ `);
+  input.stdout(`${Kernel.accounts.getCurrentInfo().username}@${net.core.hostname.get()}$ `);
   const command = await input.stdin();
 
   if (command.trim() == "") continue;

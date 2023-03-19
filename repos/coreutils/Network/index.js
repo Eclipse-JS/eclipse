@@ -1,5 +1,3 @@
-const { netAPI } = require("./WebCore/DeviceCore.mjs");
-
 qb.enableRegularRequire();
 
 const VFS = Kernel.extensions.get("Vfs");
