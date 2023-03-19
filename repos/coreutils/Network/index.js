@@ -1,15 +1,7 @@
+qb.enableRegularRequire();
+
 const VFS = Kernel.extensions.get("Vfs");
-
 let hostname = VFS.existsSync("/etc/hostname", "file") ? VFS.read("/etc/hostname") : "localhost";
-
-function extensionExists(name) {
-  try {
-    Kernel.extensions.get(name);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
 
 if (!extensionExists("libnet")) {
   Kernel.extensions.load("libnet", {
