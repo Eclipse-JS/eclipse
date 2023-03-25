@@ -20,11 +20,17 @@ function gbrfsCompatCheck() {
   }
 }
 
-function loadGbrfs(userData) {
-  const fileSystem = JSON.parse(
-    localStorage.getItem("gbrfs") ? localStorage.getItem("gbrfs") : wipeGbrfs()
-  );
+// WARNING -- WARNING -- WARNING
+// DO NOT PUT THE FILESYSTEM PARSER CODE INSIDE loadGbrfs()
+// EVEN IF IT MAKES SENSE
 
+// That will break the entire OS!
+
+const fileSystem = JSON.parse( // TODO: rename
+  localStorage.getItem("gbrfs") ? localStorage.getItem("gbrfs") : wipeGbrfs()
+);
+
+function loadGbrfs(userData) {
   const gbrfs = {
     version: () => localStorage.getItem("gbrfs_ver"),
     async read(rawPath) {

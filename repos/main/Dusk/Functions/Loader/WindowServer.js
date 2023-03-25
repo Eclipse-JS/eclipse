@@ -12,5 +12,5 @@ if (!(await extensionExists("WindowServer"))) {
   const wmData = await VFS.read("/bin/tinyws");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
-  Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), []);
+  await Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), ["-disablefun"]);
 }

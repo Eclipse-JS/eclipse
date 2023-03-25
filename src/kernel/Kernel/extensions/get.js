@@ -1,5 +1,5 @@
 if (!extensions.find(val => val.name == name)) {
-  throw "Extension not loaded!";
+  throw "Extension '" + name + "' not loaded!";
 }
 
 const extFind = extensions.find(val => val.name == name);

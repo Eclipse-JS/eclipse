@@ -12,5 +12,5 @@ if (!(await extensionExists("LibreDawn"))) {
   const dawnData = await VFS.read("/bin/dawn");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
-  Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), []);
+  await Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), []);
 }

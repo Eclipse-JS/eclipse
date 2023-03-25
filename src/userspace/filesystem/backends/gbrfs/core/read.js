@@ -1,8 +1,6 @@
 const path = rawPath.split("/").filter((word) => word.trim().length > 0);
 
 const fileName = path.pop();
-console.log(fileName);
-
 const folders = "/" + path.join("/");
 
 const fileExists = fileSystem.filter(
