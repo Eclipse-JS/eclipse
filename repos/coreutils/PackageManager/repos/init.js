@@ -5,7 +5,7 @@ if (await isSetUp()) {
   break;
 }
 
-if (!(await vfs.exists("/etc/pkg", "directory"))) await vfs.mkdir("/etc/pkg");
+if (!(await vfs.exists("/etc/pkg", "folder"))) await vfs.mkdir("/etc/pkg");
 
 logger("info", "Downloading root packages...");
 

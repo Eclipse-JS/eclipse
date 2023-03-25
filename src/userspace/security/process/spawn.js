@@ -12,7 +12,7 @@ processTreeExtras.push(item);
 try {
   await Kernel.process.spawn(name, func, argv, genKernel(account, item, inputProvider, envArgs));
 } catch (e) {
-  console.error("Error in proc: %s, pid: %s", processTelementry.name, processTelementry.id);
+  if (processTelementry) console.error("Error in proc: %s, pid: %s", processTelementry.name, processTelementry.id);
   console.error(e);
 }
 
