@@ -1,5 +1,5 @@
 // Loads Window Server
-if (!extensionExists("WindowServer")) {
+if (!(await extensionExists("WindowServer"))) {
   input.stdout("WM<WARN>: Window Manager is not running. Attempting to start...\n");
   if (!(await VFS.exists("/bin/tinyws", "file"))) {
     input.stdout("WM<FATAL> Window Manager is not installed! Aborting...\n");

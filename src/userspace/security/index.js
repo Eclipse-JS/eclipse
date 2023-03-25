@@ -1,8 +1,8 @@
 qb.enableRegularRequire();
 
-const users = Kernel.extensions.get("users");
-const hash = Kernel.extensions.get("hashcat");
-const kprint = Kernel.extensions.get("kprint");
+const users = await Kernel.extensions.get("users");
+const hash = await Kernel.extensions.get("hashcat");
+const kprint = await Kernel.extensions.get("kprint");
 
 // Implements virtual kernels.
 kprint.log("Security: Preparing...");
@@ -55,7 +55,7 @@ function genKernel(localAccount, processTelementry, inputProviderDefault, envArg
       load(name, data, isGenFunction) {
         require("./extensions/load.js")
       },
-      get(name) {
+      async get(name) {
         require("./extensions/get.js")
       }
     },

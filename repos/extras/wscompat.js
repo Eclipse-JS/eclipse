@@ -1,9 +1,8 @@
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
+const ws = await Kernel.extensions.get("WindowServer");
 
 Kernel.extensions.load("wscompat", {
   createWindow(w, h, func) {
-    const ws = Kernel.extensions.get("WindowServer");
-
     async function dummy(win, add, rm) {
       const canvas = document.createElement("canvas");
       canvas.width = w;

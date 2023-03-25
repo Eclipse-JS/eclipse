@@ -1,7 +1,7 @@
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
-const users = Kernel.extensions.get("users");
-const VFS = Kernel.extensions.get("Vfs");
+const users = await Kernel.extensions.get("users");
+const VFS = await Kernel.extensions.get("Vfs");
 
 function ok() {
   input.stdout(" [OK]\n");

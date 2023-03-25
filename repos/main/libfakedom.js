@@ -1,4 +1,4 @@
-const VFS = Kernel.extensions.get("Vfs");
+const VFS = await Kernel.extensions.get("Vfs");
 const initConf = await VFS.read("/etc/init.d/init.conf");
 
 if (!initConf.split("\n").includes("/bin/fakedom")) {

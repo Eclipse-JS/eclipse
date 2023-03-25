@@ -1,5 +1,5 @@
 // Loads UI Library
-if (!extensionExists("LibreDawn")) {
+if (!(await extensionExists("LibreDawn"))) {
   input.stdout("WM<WARN>: UI Framework is not running. Attempting to start...\n");
   if (!(await VFS.exists("/bin/dawn", "file"))) {
     input.stdout("WM<FATAL> UI Framework is not installed! Aborting...\n");

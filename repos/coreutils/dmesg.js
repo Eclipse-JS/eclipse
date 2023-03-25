@@ -1,5 +1,5 @@
-const input = Kernel.extensions.get("input");
-const kprint = Kernel.extensions.get("kprint");
+const input = await Kernel.extensions.get("input");
+const kprint = await Kernel.extensions.get("kprint");
 
 const kprintLog = kprint.getLog();
 

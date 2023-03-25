@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
 document.title = "EclipseOS";
-const kprint = Kernel.extensions.get("kprint");
+const kprint = await Kernel.extensions.get("kprint");
 kprint.log("init: Loading libraries...");
 
 const fbData = Kernel.display.getFramebuffer(true);
@@ -57,16 +57,16 @@ for (const i in lowLevelLibraries) {
   await execJS(lowLevelLibraries[i].name, lowLevelLibraries[i].contents);
 }
 
-const security = Kernel.extensions.get("genkernel");
-const users = Kernel.extensions.get("users");
+const security = await Kernel.extensions.get("genkernel");
+const users = await Kernel.extensions.get("users");
 
 if (!users.parseUser("root")) await users.addUser("root", ["root"], 0, "toor", "/root");
 
 kprint.log("Loading init with sandboxing enabled...");
 const nKernel = await security("root");
 
-const env = nKernel.extensions.get("env");
-const VFS = nKernel.extensions.get("Vfs");
+const env = await nKernel.extensions.get("env");
+const VFS = await nKernel.extensions.get("Vfs");
 
 kprint.log("init: Loading binaries...");
 

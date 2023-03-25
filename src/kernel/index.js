@@ -42,10 +42,10 @@ self.Kernel = {
     assert: assert,
   },
   extensions: {
-    load: function (name, data, isGenFunction) {
+    load(name, data, isGenFunction) {
       require("./Kernel/extensions/load.js");
     },
-    get: function (name, ...params) {
+    async get(name, ...params) {
       require("./Kernel/extensions/get.js");
     },
   },
@@ -115,11 +115,15 @@ self.Kernel.extensions.load("kprint", {
   getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.
 })
 
-const kprint = Kernel.extensions.get("kprint");
+async function loadExtras() {
+  const kprint = await Kernel.extensions.get("kprint");
 
-if (localStorage.getItem("panic.log")) {
-  kprint.log(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
+  if (localStorage.getItem("panic.log")) {
+    kprint.log(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
+  }
+
+  kprint.log("Loading Sentry...");
+  sentry();
 }
 
-kprint.log("Loading Sentry...");
-sentry();
+loadExtras();

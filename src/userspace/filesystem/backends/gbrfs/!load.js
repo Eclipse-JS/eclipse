@@ -27,32 +27,32 @@ function loadGbrfs(userData) {
 
   const gbrfs = {
     version: () => localStorage.getItem("gbrfs_ver"),
-    read(rawPath) {
+    async read(rawPath) {
       gbrfsCompatCheck();
 
       require("./core/read.js")
     },
-    write(rawPath, contents) {
+    async write(rawPath, contents) {
       gbrfsCompatCheck();
 
       require("./core/write.js")
     },
-    mkdir(rawPath) {
+    async mkdir(rawPath) {
       gbrfsCompatCheck();
 
       require("./core/mkdir.js")
     },
-    readDir(rawPath) {
+    async readDir(rawPath) {
       gbrfsCompatCheck();
 
       require("./core/readDir.js")
     },
-    getType(rawPath) {
+    async getType(rawPath) {
       gbrfsCompatCheck();
       
       require("./core/getType.js")
     },
-    exists(rawPath, fileOrFolder) {
+    async exists(rawPath, fileOrFolder) {
       gbrfsCompatCheck();
 
       require("./core/existsSync.js")

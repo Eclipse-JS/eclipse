@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
-const VFS = Kernel.extensions.get("Vfs");
-const kprint = Kernel.extensions.get("kprint");
+const VFS = await Kernel.extensions.get("Vfs");
+const kprint = await Kernel.extensions.get("kprint");
 
 async function fetchTextData(url) {
   const data = await fetch(url);

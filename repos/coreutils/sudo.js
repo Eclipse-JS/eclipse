@@ -1,6 +1,6 @@
-const VFS = Kernel.extensions.get("Vfs");
-const input = Kernel.extensions.get("input");
-const env = Kernel.extensions.get("env");
+const VFS = await Kernel.extensions.get("Vfs");
+const input = await Kernel.extensions.get("input");
+const env = await Kernel.extensions.get("env");
 
 if (argv.length == 0) {
   input.stdout("sudo: No commands specified.\n");

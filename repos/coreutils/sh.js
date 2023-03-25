@@ -1,10 +1,10 @@
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
-const env = Kernel.extensions.get("env");
+const env = await Kernel.extensions.get("env");
 const path = env.get("PATH");
 
-const VFS = Kernel.extensions.get("Vfs");
-const net = Kernel.extensions.get("libnet");
+const VFS = await Kernel.extensions.get("Vfs");
+const net = await Kernel.extensions.get("libnet");
 
 while (true) {
   input.stdout(`${Kernel.accounts.getCurrentInfo().username}@${net.getHostname()}$ `);

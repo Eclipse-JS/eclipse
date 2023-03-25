@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
-const ws = Kernel.extensions.get("WindowServer");
-const VFS = Kernel.extensions.get("Vfs");
+const ws = await Kernel.extensions.get("WindowServer");
+const VFS = await Kernel.extensions.get("Vfs");
 
 let textfb = "";
 let inputfb = "";
@@ -36,7 +36,7 @@ await ws.createWindow(300, 300, 300, 300, async function main(win, addEventListe
     win.scrollTo(0, win.scrollHeight);
   });
 
-  const oldInput = Kernel.extensions.get("input");
+  const oldInput = await Kernel.extensions.get("input");
   const input = require("./inputbindings.js");
 
   oldInput.registerInput(input);

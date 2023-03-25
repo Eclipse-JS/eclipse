@@ -1,4 +1,4 @@
-const ws = Kernel.extensions.get("WindowServer");
+const ws = await Kernel.extensions.get("WindowServer");
 
 ws.createWindow(300, 300, 300, 300, async function main(win) {
   win.innerHTML = `<span>Test</span>`;

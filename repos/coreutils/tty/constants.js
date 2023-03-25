@@ -2,7 +2,7 @@ qb.enableRegularRequire();
 
 const fontSize = 14;
 
-const VFS = Kernel.extensions.get("Vfs");
+const VFS = await Kernel.extensions.get("Vfs");
 
 const fb = Kernel.display.getFramebuffer(true);
 const fbTTYData = fb.createElement("div");

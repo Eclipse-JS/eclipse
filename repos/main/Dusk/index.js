@@ -2,9 +2,9 @@ qb.enableRegularRequire();
 
 const framebuffer = Kernel.display.getFramebuffer(true);
 
-const VFS = Kernel.extensions.get("Vfs");
-const input = Kernel.extensions.get("input");
-const kprint = Kernel.extensions.get("kprint");
+const VFS = await Kernel.extensions.get("Vfs");
+const input = await Kernel.extensions.get("input");
+const kprint = await Kernel.extensions.get("kprint");
 
 input.stdout("WM: Dusk is starting up...\n");
 input.stdout("WM: Attempting to negotiate deals with the Window Server...\n");
@@ -49,11 +49,11 @@ document.body.addEventListener("mouseup", function(e) {
 const wsLoad = await loadWS();
 if (!wsLoad) return 1;
 
-const dawn = Kernel.extensions.get("LibreDawn");
+const dawn = await Kernel.extensions.get("LibreDawn");
 const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
 kprint.log("WM: Attempting to start IPC with the Window Server...");
-const ws = Kernel.extensions.get("WindowServer");
+const ws = await Kernel.extensions.get("WindowServer");
 
 if (ws.hasWMStarted) {
   kprint.log("WM<FATAL>: Another Window Manager is already running!");

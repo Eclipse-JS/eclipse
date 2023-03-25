@@ -1,9 +1,9 @@
-const ws = Kernel.extensions.get("WindowServer");
-const dawn = Kernel.extensions.get("LibreDawn");
+const ws = await Kernel.extensions.get("WindowServer");
+const dawn = await Kernel.extensions.get("LibreDawn");
 
-const users = Kernel.extensions.get("users");
+const users = await Kernel.extensions.get("users");
 
-const VFS = Kernel.extensions.get("Vfs");
+const VFS = await Kernel.extensions.get("Vfs");
 
 await ws.createWindow(300, 300, 400, 600, async function main(win) {
   let hasFinishedFlag = false;
