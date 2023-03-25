@@ -11,8 +11,8 @@ if (!attempt) {
   return;
 }
 
-if (VFS.existsSync("/etc/motd", "file")) {
-  const file = VFS.read("/etc/motd");
+if (await VFS.exists("/etc/motd", "file")) {
+  const file = await VFS.read("/etc/motd");
 
   input.stdout(file);
 }
@@ -38,7 +38,7 @@ while (!isCorrect) {
 
 input.stdout("\n");
 
-const binData = VFS.read("/bin/sh");
+const binData = await VFS.read("/bin/sh");
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
 await Kernel.process.spawn("/bin/sh", process, []);

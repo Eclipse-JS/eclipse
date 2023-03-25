@@ -41,7 +41,7 @@ await ws.createWindow(300, 300, 300, 300, async function main(win, addEventListe
 
   oldInput.registerInput(input);
 
-  const binData = VFS.read(shell);
+  const binData = await VFS.read(shell);
   win.title = "DuskTerm_v2 | " + shell;
 
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));

@@ -11,5 +11,5 @@ function getAllThemes() {
 }
 
 function getDefaultTheme() {
-  return VFS.existsSync("/etc/sonnesvr/dawn/theme", "folder") ? VFS.read("/etc/dawn.d/theme") : "Eleven (Light)";
+  return "Eleven (Light)"; // TODO!
 }

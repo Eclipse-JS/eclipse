@@ -35,7 +35,7 @@ const input = require("./inputbindings.js");
 
 oldInput.registerInput(input);
 
-const binData = VFS.read(shell);
+const binData = await VFS.read(shell);
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
 await Kernel.process.spawn(i, process, []);

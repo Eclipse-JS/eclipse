@@ -42,8 +42,8 @@ function help() {
   }
 }
 
-function isSetUp() {
-  if (vfs.existsSync("/etc/pkg/isSetup", "file")) return true;
+async function isSetUp() {
+  if (await vfs.exists("/etc/pkg/isSetup", "file")) return true;
   return false;
 }
 

@@ -1,4 +1,5 @@
 const pid = processCount;
+let errTrace;
 
 processTree.push({
   name: name,
@@ -10,11 +11,7 @@ processCount++;
 try {
   await func(argv, typeof kernel == "object" ? kernel : Kernel, pid, localStorage);
 } catch (e) {
-  console.error(e);
-
-  if (pid == 0) {
-    panic("Attempted to kill init!", "KernelSpace", e);
-  }
+  errTrace = e;
 }
 
 processTree.splice(processTree.indexOf({ name: name, id: pid }), 1);
@@ -22,3 +19,5 @@ processTree.splice(processTree.indexOf({ name: name, id: pid }), 1);
 if (pid == 0) {
   panic("Attempted to kill init!", "KernelSpace");
 }
+
+if (errTrace) throw errTrace;

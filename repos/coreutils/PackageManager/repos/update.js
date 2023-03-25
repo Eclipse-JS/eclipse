@@ -1,9 +1,9 @@
-if (!isSetUp()) {
+if (!(await isSetUp())) {
   logger("error", "The package manager is not set up! Please run 'pkg init'.");
   break;
 }
 
-const oldContents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+const oldContents = JSON.parse(await vfs.read("/etc/pkg/repos.json"));
 let items = {};
 
 for (const oldIndex of Object.keys(oldContents)) {
@@ -32,4 +32,4 @@ for (const oldIndex of Object.keys(oldContents)) {
   }
 }
 
-vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
+await vfs.write("/etc/pkg/repos.json", JSON.stringify(items));

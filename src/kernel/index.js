@@ -17,10 +17,10 @@ if (typeof BL_CMDLINE !== 'undefined') {
       return self.localStorage.getItem(prefix + key);
     },
     setItem: function(key, value) {
-      self.localStorage.setItem(prefix + key, value);
+      return self.localStorage.setItem(prefix + key, value);
     },
     removeItem: function(key) {
-      self.localStorage.removeItem(prefix + key);
+      return self.localStorage.removeItem(prefix + key);
     }
   }
 }

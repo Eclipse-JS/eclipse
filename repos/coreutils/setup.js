@@ -8,7 +8,7 @@ function ok() {
 }
 
 async function exec(path, args) {
-  const file = VFS.read(path);
+  const file = await VFS.read(path);
   await Kernel.process.spawn(path, file.replace("UWU;;\n\n"), args);
 }
 
@@ -27,13 +27,13 @@ input.stdout("\n - Initializing...\n\n");
 await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
 
 try {
-  VFS.mkdir("/etc/sonnesvr");
+  await VFS.mkdir("/etc/sonnesvr");
 } catch (e) {
   e.name = "DirectoryError";
   input.stdout(e.toString());
 }
 
-VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
   autoStart: "/bin/setup-gui"
 }));
 

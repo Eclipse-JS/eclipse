@@ -1,6 +1,6 @@
-const contents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+const contents = JSON.parse(await vfs.read("/etc/pkg/repos.json"));
 
-if (!isSetUp()) {
+if (!(await isSetUp())) {
   logger("error", "The package manager is not set up! Please run 'pkg init'.");
   break;
 } else if (argv.length != 2) {

@@ -13,5 +13,6 @@ fbTTYData.style.fontSize = fontSize + "px";
 
 fb.appendChild(fbTTYData);
 
-const config = VFS.read("/etc/ttysh.conf").split("\n");
+const configUnparsed = await VFS.read("/etc/ttysh.conf");
+const config = configUnparsed.split("\n");
 const shell = config.filter(item => item.startsWith("shell="))[0].split("=")[1];

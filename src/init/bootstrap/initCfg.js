@@ -1,8 +1,8 @@
-VFS.write("/etc/init.d/init.conf", "/bin/net");
-VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
-VFS.write("/etc/ttysh.conf", "shell=/bin/setup");
+await VFS.write("/etc/init.d/init.conf", "/bin/net");
+await VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
+await VFS.write("/etc/ttysh.conf", "shell=/bin/setup");
 
-VFS.write("/etc/motd", `
+await VFS.write("/etc/motd", `
 _______      _ _                   _____    _    
 (_______)    | (_)                 / ___ \\  | |   
  _____   ____| |_ ____   ___  ____| |   | |  \\ \\  

@@ -5,5 +5,5 @@ for (const index of Object.keys(data.packages)) {
   fillText(index + " (~" + Math.floor(percent) + "% complete)");
 
   const script = "UWU;;\n\n" + await fetchTextData("repos/coreutils/" + data.packages[index].path);
-  VFS.write("/bin/" + index, script);
+  await VFS.write("/bin/" + index, script);
 }

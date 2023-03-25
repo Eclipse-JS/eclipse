@@ -81,13 +81,13 @@ await ws.createWindow(300, 300, 400, 600, async function main(win) {
     win.title += " | Finishing Up Settings...";
 
     if (enablePermUISwitch.checked) {
-      VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
-      VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
+      await VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
+      await VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
     } else {
-      VFS.write("/etc/ttysh.conf", "shell=/bin/login");
+      await VFS.write("/etc/ttysh.conf", "shell=/bin/login");
     }
 
-    VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+    await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
       autoStart: "/bin/duskterm"
     }));    
 

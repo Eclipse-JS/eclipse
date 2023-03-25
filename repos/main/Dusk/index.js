@@ -46,7 +46,7 @@ document.body.addEventListener("mouseup", function(e) {
   }
 })
 
-const wsLoad = loadWS();
+const wsLoad = await loadWS();
 if (!wsLoad) return 1;
 
 const dawn = Kernel.extensions.get("LibreDawn");
@@ -65,13 +65,15 @@ kprint.log("WM: Attempting to register a Window Manager...");
 const wmData = ws.registerWM("ProjectDusk_RevII");
 wmData.outputWrapper(require("./Callback/index.js"));
 
-if (!VFS.existsSync("/etc/sonnesvr", "folder")) VFS.mkdir("/etc/sonnesvr");
-if (!VFS.existsSync("/etc/sonnesvr/dusk.conf.json", "file")) VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
-  autoStart: VFS.existsSync("/bin/lg_gls") ? "/bin/lg_gls" : "/bin/lg_duskterm"
+const loginSysExists = await VFS.exists("/bin/lg_gls");
+
+if (!(await VFS.exists("/etc/sonnesvr", "folder"))) await VFS.mkdir("/etc/sonnesvr");
+if (!(await VFS.exists("/etc/sonnesvr/dusk.conf.json", "file"))) await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
+  autoStart: loginSysExists ? "/bin/lg_gls" : "/bin/lg_duskterm"
 }));
 
-const conf = JSON.parse(VFS.read("/etc/sonnesvr/dusk.conf.json"));
-if (VFS.existsSync(conf.autoStart, "file")) {
+const conf = JSON.parse(await VFS.read("/etc/sonnesvr/dusk.conf.json"));
+if (await VFS.exists(conf.autoStart, "file")) {
   exec(conf.autoStart, []);
 } else {
   console.warn("Autostart program does not exist!");

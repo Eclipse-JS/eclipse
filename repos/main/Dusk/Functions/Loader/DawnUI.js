@@ -1,7 +1,7 @@
 // Loads UI Library
 if (!extensionExists("LibreDawn")) {
   input.stdout("WM<WARN>: UI Framework is not running. Attempting to start...\n");
-  if (!VFS.existsSync("/bin/dawn", "file")) {
+  if (!(await VFS.exists("/bin/dawn", "file"))) {
     input.stdout("WM<FATAL> UI Framework is not installed! Aborting...\n");
     return false;
   } else if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
@@ -9,7 +9,7 @@ if (!extensionExists("LibreDawn")) {
     return false;
   }
   
-  const dawnData = VFS.read("/bin/dawn");
+  const dawnData = await VFS.read("/bin/dawn");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
   Kernel.process.spawn("/bin/dawn", dawnData.replaceAll("UWU;;\n\n", ""), []);
