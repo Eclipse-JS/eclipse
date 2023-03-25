@@ -101,8 +101,8 @@ function genKernel(localAccount, processTelementry, inputProviderDefault, envArg
       },
     },
     verInfo: {
-      ver: "0.2.1",
-      displayVer: "EclipseOS: Codename 'Solar' Milestone 1",
+      ver: "0.3.0",
+      displayVer: "EclipseOS: Codename 'AntiSynchronous' (M-1 Build)",
       isBeta: true
     }
   }
