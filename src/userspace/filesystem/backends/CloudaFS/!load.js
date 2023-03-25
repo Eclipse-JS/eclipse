@@ -3,7 +3,7 @@ require("./fs/index.mjs");
 
 const cloudaEnableDebugLog = false;
 
-async function loadClouda() {
+async function loadClouda(userData) {
   if (!('indexedDB' in window)) {
     const err = `
 !!! Error !!!
@@ -20,7 +20,7 @@ Therefore, I am going to set the filesystem backend to be 'gbrfs'.
     return;
   }
 
-  const fsCreated = new CloudaFS("EclipsePROD_", cloudaEnableDebugLog);
+  const fsCreated = new CloudaFS("EclipsePROD_", cloudaEnableDebugLog, userData);
   await fsCreated.init();
 
   return fsCreated;

@@ -1,4 +1,4 @@
-async function write(path, contents, fsIndexes, fsFiles) {
+async function write(path, contents, fsIndexes, fsFiles, userData) {
   const pathSplit = splitFilePath(path);
 
   const pathIndexSearch = await getAllPromise(fsIndexes);
@@ -11,6 +11,12 @@ async function write(path, contents, fsIndexes, fsFiles) {
 
   if (!validateParentExists) throw new Error("Parent directory does not exist!");
 
+  if (validateNotAlreadyExists) {
+    if (validateNotAlreadyExists.owner != userData().username && userData().permLevel != 0) {
+      throw "No permission!";
+    }
+  }
+
   const indexIncrement = validateNotAlreadyExists ? validateNotAlreadyExists.index : pathIndexSearch.target.result.length + 1;
   const filesIncrement = validateNotAlreadyExists ? fsKey.index : fsIndexSearch.target.result.length + 1;
 
@@ -18,7 +24,7 @@ async function write(path, contents, fsIndexes, fsFiles) {
     index: indexIncrement,
     type: "file",
     path: path,
-    owner: "tbd"
+    owner: userData().username
   });
 
   fsFiles.put({

@@ -32,6 +32,16 @@ const uniqueFalse = {
   unique: false
 }
 
+function fakeUserDataFetch() {
+  return { // Taken from './src/userspace/security/process/getTree.mjs'
+    groups: ["root"],
+    permLevel: "0",
+    hashedPassword:
+      "2b64f2e3f9fee1942af9ff60d40aa5a719db33b8ba8dd4864bb4f11e25ca2bee00907de32a59429602336cac832c8f2eeff5177cc14c864dd116c8bf6ca5d9a9",
+    username: "root",
+  };
+}
+
 function recursiveCallFail(failItem) {
   throw new Error("Attempted to call '" + failItem + "' twice!");
 }
@@ -55,9 +65,9 @@ async function openDatabase(name, ver, onUpgradeNeeded) {
     });
   })
 };
-
 class CloudaFS {
-  constructor(fsPrefix, debugLogEnabled) {
+  constructor(fsPrefix, debugLogEnabled, fetchUserData) {
+    this.userData = typeof fetchUserData == "function" ? fetchUserData : fakeUserDataFetch
     this.debugLog = debugLogEnabled ? true : false;
     this.path = fsPrefix + "_CloudaFS";
   }
@@ -137,7 +147,7 @@ class CloudaFS {
     }
 
     this.#renewTransactions();
-    return await write(path, contents, this.fsIndexes, this.fsFiles);
+    return await write(path, contents, this.fsIndexes, this.fsFiles, this.userData);
   }
 
   async mkdir(path) {
@@ -146,7 +156,7 @@ class CloudaFS {
     }
 
     this.#renewTransactions();
-    return await mkdir(path, this.fsIndexes);
+    return await mkdir(path, this.fsIndexes, this.userData);
   }
 
   async readDir(path) {

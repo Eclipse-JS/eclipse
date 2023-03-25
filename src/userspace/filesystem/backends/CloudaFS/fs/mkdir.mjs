@@ -1,4 +1,4 @@
-async function mkdir(pathDirty, fsIndexes) {
+async function mkdir(pathDirty, fsIndexes, userData) {
   const path = pathDirty == "/" ? "/" : sanitizeDirectorySplit(pathDirty);
   const pathSplit = splitFilePath(path);
 
@@ -11,10 +11,16 @@ async function mkdir(pathDirty, fsIndexes) {
     throw new Error("Previous directory does not exist!");
   };
 
+  if (findExistingElem) {
+    if (findExistingElem.owner != userData().username && userData().permLevel != 0) {
+      throw "No permission!";
+    }
+  }
+
   fsIndexes.put({
     index: pathIndexSearch.target.result.length + 1,
     type: "folder",
     path: path,
-    owner: "tbd"  
+    owner: userData().username
   });
 }
