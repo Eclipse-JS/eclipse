@@ -101,8 +101,8 @@ function genKernel(localAccount, processTelementry, inputProviderDefault, envArg
       },
     },
     verInfo: {
-      ver: "0.3.0",
-      displayVer: "EclipseOS: Codename 'AntiSynchronous' (M-1 Build)",
+      ver: "0.3.1",
+      displayVer: "EclipseOS: Codename 'Twilight' (M-1 Build)",
       isBeta: true
     }
   }
