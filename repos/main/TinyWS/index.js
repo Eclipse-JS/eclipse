@@ -38,7 +38,7 @@ wsData.style.width = "100%";
 wsData.style.height = "100%";
 wsData.style.backgroundColor = "black";
 
-const background = framebuffer.createElement("img");
+const background = framebuffer.createElement("div");
 background.style.position = "absolute";
 background.style.zIndex = "11";
 background.style.top = "0px";
