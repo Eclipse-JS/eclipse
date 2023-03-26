@@ -5,6 +5,11 @@ const users = await Kernel.extensions.get("users");
 
 const VFS = await Kernel.extensions.get("Vfs");
 
+async function exec(path, args) {
+  const file = await VFS.read(path);
+  await Kernel.process.spawn(path, file.replace("UWU;;\n\n"), args);
+}
+
 await ws.createWindow(300, 300, 400, 600, async function main(win) {
   let hasFinishedFlag = false;
   
@@ -89,7 +94,9 @@ await ws.createWindow(300, 300, 400, 600, async function main(win) {
 
     await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
       autoStart: "/bin/duskterm"
-    }));    
+    }));
+    
+    await exec("/bin/pkg", ["install", "duskterm"]);
 
     await users.addUser(usernameInput.value, [usernameInput.value], 1, passwordInput.value);
 
