@@ -1,4 +1,4 @@
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
 if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
   input.stdout("You must be root!\n");

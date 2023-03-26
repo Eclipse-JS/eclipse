@@ -1,4 +1,4 @@
-const ws = Kernel.extensions.get("WindowServer");
+const ws = await Kernel.extensions.get("WindowServer");
 
 const vid = document.createElement("video");
 

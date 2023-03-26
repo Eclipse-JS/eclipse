@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
 document.title = "EclipseOS";
-const kprint = Kernel.extensions.get("kprint");
+const kprint = await Kernel.extensions.get("kprint");
 kprint.log("init: Loading libraries...");
 
 const fbData = Kernel.display.getFramebuffer(true);
@@ -57,38 +57,40 @@ for (const i in lowLevelLibraries) {
   await execJS(lowLevelLibraries[i].name, lowLevelLibraries[i].contents);
 }
 
-const security = Kernel.extensions.get("genkernel");
-const users = Kernel.extensions.get("users");
+const security = await Kernel.extensions.get("genkernel");
+const users = await Kernel.extensions.get("users");
 
 if (!users.parseUser("root")) await users.addUser("root", ["root"], 0, "toor", "/root");
 
 kprint.log("Loading init with sandboxing enabled...");
 const nKernel = await security("root");
 
-const env = nKernel.extensions.get("env");
-const VFS = nKernel.extensions.get("Vfs");
+const env = await nKernel.extensions.get("env");
+const VFS = await nKernel.extensions.get("Vfs");
 
 kprint.log("init: Loading binaries...");
 
-if (!VFS.existsSync("/etc/init.d/init.conf", "file")) {
+if (!(await VFS.exists("/etc/init.d/init.conf", "file"))) {
   kprint.log("init: No binaries found! Loading liboostrap...");
 
   const bootstrap = await read("init/bootstrap.js");
   await nKernel.process.spawn("bootstrap", bootstrap.replaceAll("UWU;;\n\n", ""), []);
 }
 
-if (!VFS.existsSync("/root")) VFS.mkdir("/root");
-if (!VFS.existsSync("/home")) VFS.mkdir("/home");
+if (!(await VFS.exists("/root"))) await VFS.mkdir("/root");
+if (!(await VFS.exists("/home"))) await VFS.mkdir("/home");
 
 env.add("PATH", "/bin/")
 
 kprint.log("init: Loading programs...");
-const initPrgms = VFS.read("/etc/init.d/init.conf").split("\n");
-const onloadProgram = VFS.read("/etc/init.d/initcmd.txt");
+const initPrgmsUnparsed = await VFS.read("/etc/init.d/init.conf");
+const initPrgms = initPrgmsUnparsed.split("\n");
+
+const onloadProgram = await VFS.read("/etc/init.d/initcmd.txt");
 
 for (i of initPrgms) {
   try {
-    const binData = VFS.read(i);
+    const binData = await VFS.read(i);
 
     await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);
   } catch (e) {
@@ -98,5 +100,5 @@ for (i of initPrgms) {
 
 kprint.log("init: Starting main process...");
 
-const binData = VFS.read(onloadProgram);
+const binData = await VFS.read(onloadProgram);
 await nKernel.process.spawn(i, binData.replaceAll("UWU;;\n\n", ""), []);

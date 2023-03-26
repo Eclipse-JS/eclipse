@@ -2,7 +2,7 @@ qb.enableRegularRequire();
 
 const fontSize = 14;
 
-const VFS = Kernel.extensions.get("Vfs");
+const VFS = await Kernel.extensions.get("Vfs");
 
 const fb = Kernel.display.getFramebuffer(true);
 const fbTTYData = fb.createElement("div");
@@ -13,5 +13,6 @@ fbTTYData.style.fontSize = fontSize + "px";
 
 fb.appendChild(fbTTYData);
 
-const config = VFS.read("/etc/ttysh.conf").split("\n");
+const configUnparsed = await VFS.read("/etc/ttysh.conf");
+const config = configUnparsed.split("\n");
 const shell = config.filter(item => item.startsWith("shell="))[0].split("=")[1];

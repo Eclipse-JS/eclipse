@@ -1,34 +1,31 @@
-const VFS = Kernel.extensions.get("Vfs");
+const VFS = await Kernel.extensions.get("Vfs");
 
-let hostname = VFS.existsSync("/etc/hostname", "file") ? VFS.read("/etc/hostname") : "localhost";
+const hostnameExists = await VFS.exists("/etc/hostname", "file");
+let hostname = hostnameExists ? await VFS.read("/etc/hostname") : "localhost";
 
-function extensionExists(name) {
+async function extensionExists(name) {
   try {
-    Kernel.extensions.get(name);
+    await Kernel.extensions.get(name);
     return true;
   } catch (e) {
     return false;
   }
 }
 
-if (!extensionExists("libnet")) {
+if (!(await extensionExists("libnet"))) {
   Kernel.extensions.load("libnet", {
-    setHostname: function(name) {
-      VFS.write("/etc/hostname", name);
+    async setHostname(name) {
+      await VFS.write("/etc/hostname", name);
       hostname = name;
     },
-    getHostname: function() {
-      return hostname;
-    }
+    getHostname: () => hostname
   })
 } else {
-  const input = Kernel.extensions.get("input");
-
-  input.stdout(`Network communications library:\n\n`);
+  const input = await Kernel.extensions.get("input");
 
   if (argv[0] == "set-hostname" && typeof argv[1] == "string") {
+    await VFS.write("/etc/hostname", argv[1]);
     input.stdout(`Set hostname to '${argv[1]}'\n`);
-    VFS.write("/etc/hostname", argv[1]);
 
     hostname = argv[1];
   }

@@ -1,5 +1,5 @@
-if (!VFS.existsSync("/home", "folder")) VFS.mkdir("/home");
-if (!VFS.existsSync("/root", "folder")) VFS.mkdir("/root");
-if (!VFS.existsSync("/etc", "folder")) VFS.mkdir("/etc");
-if (!VFS.existsSync("/usr", "folder")) VFS.mkdir("/usr");
-if (!VFS.existsSync("/bin", "folder")) VFS.mkdir("/bin");
+if (!(await VFS.exists("/home", "folder"))) await VFS.mkdir("/home");
+if (!(await VFS.exists("/root", "folder"))) await VFS.mkdir("/root");
+if (!(await VFS.exists("/etc", "folder"))) await VFS.mkdir("/etc");
+if (!(await VFS.exists("/usr", "folder"))) await VFS.mkdir("/usr");
+if (!(await VFS.exists("/bin", "folder"))) await VFS.mkdir("/bin");

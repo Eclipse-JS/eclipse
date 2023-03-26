@@ -1,6 +1,6 @@
-const VFS = Kernel.extensions.get("Vfs");
-const input = Kernel.extensions.get("input");
-const env = Kernel.extensions.get("env");
+const VFS = await Kernel.extensions.get("Vfs");
+const input = await Kernel.extensions.get("input");
+const env = await Kernel.extensions.get("env");
 
 if (argv.length == 0) {
   input.stdout("sudo: No commands specified.\n");
@@ -11,7 +11,7 @@ const path = env.get("PATH");
 const rawCmd = argv.shift();
 
 const validEnv = path.split(";");
-const validCmdPath = validEnv.find(path => VFS.existsSync(path + rawCmd, "file"));
+const validCmdPath = validEnv.find(async(path) => await VFS.exists(path + rawCmd, "file"));
 
 const cmd = rawCmd.startsWith("/") ? rawCmd : validCmdPath ? validCmdPath + rawCmd : new Error("Command not found.");
 
@@ -34,7 +34,7 @@ if (!runEscalate) {
 }
 
 try {
-  const binData = VFS.read(cmd);
+  const binData = await VFS.read(cmd);
 
   const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
   await Kernel.process.spawn(i, process, argv);

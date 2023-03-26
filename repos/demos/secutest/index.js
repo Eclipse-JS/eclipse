@@ -1,8 +1,8 @@
 qb.enableRegularRequire();
 
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
-const payload = `const ext = Kernel.extensions.get("users"); async function main(){ await ext.addUser("xenon", ["xenon"], 0, "xenon") }; main()`;
+const payload = `const ext = await Kernel.extensions.get("users"); async function main(){ await ext.addUser("xenon", ["xenon"], 0, "xenon") }; main()`;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

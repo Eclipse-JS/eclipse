@@ -1,4 +1,4 @@
-const hash = Kernel.extensions.get("hashcat");
+const hash = await Kernel.extensions.get("hashcat");
 
 // Userspace user parsing library.
 

@@ -1,6 +1,6 @@
-const VFS = Kernel.extensions.get("Vfs");
-const input = Kernel.extensions.get("input");
-const kprint = Kernel.extensions.get("kprint");
+const VFS = await Kernel.extensions.get("Vfs");
+const input = await Kernel.extensions.get("input");
+const kprint = await Kernel.extensions.get("kprint");
 
 // De-escelate
 kprint.log("TTY: Goodbye! De-escelating to 'nobody'...");
@@ -11,8 +11,8 @@ if (!attempt) {
   return;
 }
 
-if (VFS.existsSync("/etc/motd", "file")) {
-  const file = VFS.read("/etc/motd");
+if (await VFS.exists("/etc/motd", "file")) {
+  const file = await VFS.read("/etc/motd");
 
   input.stdout(file);
 }
@@ -38,7 +38,7 @@ while (!isCorrect) {
 
 input.stdout("\n");
 
-const binData = VFS.read("/bin/sh");
+const binData = await VFS.read("/bin/sh");
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
 await Kernel.process.spawn("/bin/sh", process, []);

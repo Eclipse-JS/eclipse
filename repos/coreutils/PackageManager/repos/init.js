@@ -1,11 +1,11 @@
 logger("info", "Bootstrapping...");
 
-if (isSetUp()) {
+if (await isSetUp()) {
   logger("error", "Pkg is already setup, silly!");
   break;
 }
 
-if (!vfs.existsSync("/etc/pkg", "directory")) vfs.mkdir("/etc/pkg");
+if (!(await vfs.exists("/etc/pkg", "folder"))) await vfs.mkdir("/etc/pkg");
 
 logger("info", "Downloading root packages...");
 
@@ -26,8 +26,8 @@ for (const index in items[rootPkgServer.identifier].contents) {
   items[rootPkgServer.identifier].contents[index].contents = file.packages;
 }
 
-vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
-vfs.write(
+await vfs.write("/etc/pkg/repos.json", JSON.stringify(items));
+await vfs.write(
   "/etc/pkg/isSetup",
   "do you want a furry for christmas - August, 2022\n"
 ); // ;) hi

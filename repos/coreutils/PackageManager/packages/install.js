@@ -1,4 +1,4 @@
-if (!isSetUp()) {
+if (!(await isSetUp())) {
   logger("error", "The package manager is not set up! Please run 'pkg init'.");
   break;
 } 
@@ -14,8 +14,8 @@ function removeDuplicateItemsFromArray(arr) {
   return [...new Set(arr)];
 }
 
-function findPackage(name, notCompliant) {
-  const contents = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+async function findPackage(name, notCompliant) {
+  const contents = JSON.parse(await vfs.read("/etc/pkg/repos.json"));
   
   for (const pkgProviderIndex of Object.keys(contents)) {
     for (const repo of contents[pkgProviderIndex].contents) {
@@ -51,20 +51,20 @@ function findPackage(name, notCompliant) {
   }
 }
 
-function findDependenciesOfPackage(packageFoundData, notCompliant) {
+async function findDependenciesOfPackage(packageFoundData, notCompliant) {
   const dependencyList = [];
   const package = packageFoundData.data;
   
   if (package.deps) {
     for (const dep of package.deps) {
-      const dependency = findPackage(dep, notCompliant);
+      const dependency = await findPackage(dep, notCompliant);
       if (!dependency) throw new Error(`Could not find package '${dep}'`);
 
       dependency.isDependency = true;
       dependencyList.push(notCompliant ? dependency : dependency.name);
 
       if (dependency.data.deps) {
-        const deps = findDependenciesOfPackage(dependency, notCompliant);
+        const deps = await findDependenciesOfPackage(dependency, notCompliant);
 
         dependencyList.push(...deps);
       }
@@ -81,7 +81,7 @@ for (const i of packagesArgv) {
   if (i == "") return;
   logger("info", `Getting package canidates for '${i}'...`);
 
-  const pkg = findPackage(i, true);
+  const pkg = await findPackage(i, true);
   if (!pkg) {
     logger("error", `Failed to find package '${i}'.`);
     break;
@@ -89,7 +89,7 @@ for (const i of packagesArgv) {
 
   let deps = {};
   try {
-    deps = findDependenciesOfPackage(pkg, true);
+    deps = await findDependenciesOfPackage(pkg, true);
   } catch (e) {
     logger("error", `A dependency for package '${i}' could not be found.`);
     break;
@@ -101,13 +101,14 @@ for (const i of packagesArgv) {
 }
 
 // TODO: Migrate package install to findPackage();
-const pkgData = JSON.parse(vfs.read("/etc/pkg/repos.json"));
+const pkgData = JSON.parse(await vfs.read("/etc/pkg/repos.json"));
 
 for (const package of removeDuplicateItemsFromArray(packages)) {
   logger("info", `Locating package '${package.name}'...`);
   const data = package; // TODO?
+  const existsCheck = await vfs.exists("/etc/pkg/caches.json", "file");
   
-  const cache = vfs.existsSync("/etc/pkg/caches.json", "file") ? JSON.parse(vfs.read("/etc/pkg/caches.json")) : [];
+  const cache = existsCheck ? JSON.parse(await vfs.read("/etc/pkg/caches.json")) : [];
   const pkgCacheData = cache.filter(item => item.pkgName == package.name);
   
   if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
@@ -138,7 +139,7 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
   const url = rootPkg.join("/") + "/" + corePkg.join("/") + "/" + data.pkgData.path;
   const appData = "UWU;;\n\n" + await read(url);
   
-  vfs.write(`/bin/${package.name}`, appData);
+  await vfs.write(`/bin/${package.name}`, appData);
   
   const itemData = {
     pkgName: package.name,
@@ -148,5 +149,5 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
   };
   
   cache.push(itemData);
-  vfs.write("/etc/pkg/caches.json", JSON.stringify(cache));
+  await vfs.write("/etc/pkg/caches.json", JSON.stringify(cache));
 }
