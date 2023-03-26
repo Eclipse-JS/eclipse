@@ -74,8 +74,8 @@ await ws.createWindow(300, 300, 400, 600, async function main(win) {
   const btn = ui.input.buttonElem();
   btn.innerText = "Next";
   btn.style.position = "absolute";
-  btn.style.top = "544px";  
-  btn.style.left = "353px";
+  btn.style.bottom = "5px";  
+  btn.style.right = "5px";
   
   win.appendChild(span);
   win.appendChild(instructionText);
