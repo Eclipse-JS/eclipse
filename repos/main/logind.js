@@ -1,4 +1,4 @@
-await Kernel.accounts.elevate("nobody", "nobody");
+//await Kernel.accounts.elevate("nobody", "nobody");
 
 const ws = await Kernel.extensions.get("WindowServer");
 const dawn = await Kernel.extensions.get("LibreDawn");
@@ -29,6 +29,16 @@ function style(elem) {
   elem.style.height = "20px";
 }
 
+function centerWin(width, height) {
+  const fbWidth = Kernel.display.size.getWidth();
+  const fbHeight = Kernel.display.size.getHeight();
+
+  const x = (fbWidth - width) / 2;
+  const y = (fbHeight - height) / 2;
+
+  return [Math.floor(y), Math.floor(x)];
+}
+
 const canvas = fb.createElement("canvas");
 if (true) { // TODO: Add banner support
   canvas.width = 365;
@@ -39,7 +49,10 @@ if (true) { // TODO: Add banner support
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-await ws.createWindow(100, 100, 365, 178, function logindMain(win) {
+const centered = centerWin(365, 178);
+centered[0] -= 200;
+
+await ws.createWindow(centered[0], centered[1], 365, 178, function logindMain(win) {
   return new Promise(async(resolve, reject) => {
     const ui = dawn.UIGenerator;
     win.title = "Login to EclipseOS";

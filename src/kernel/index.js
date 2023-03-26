@@ -67,6 +67,10 @@ self.Kernel = {
     getFramebuffer() {
       require("./Kernel/display/getFramebuffer.js");
     },
+    size: {
+      getWidth: () => window.innerWidth,
+      getHeight: () => window.innerHeight
+    }
   },
 };
 
