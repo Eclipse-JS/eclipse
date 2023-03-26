@@ -93,10 +93,10 @@ await ws.createWindow(300, 300, 400, 600, async function main(win) {
     }
 
     await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
-      autoStart: "/bin/duskterm"
+      autoStart: "/bin/logind"
     }));
     
-    await exec("/bin/pkg", ["install", "duskterm"]);
+    await exec("/bin/pkg", ["install", "duskterm", "logind"]);
 
     await users.addUser(usernameInput.value, [usernameInput.value], 1, passwordInput.value);
 

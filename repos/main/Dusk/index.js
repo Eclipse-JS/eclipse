@@ -65,11 +65,11 @@ kprint.log("WM: Attempting to register a Window Manager...");
 const wmData = ws.registerWM("ProjectDusk_RevII");
 wmData.outputWrapper(require("./Callback/index.js"));
 
-const loginSysExists = await VFS.exists("/bin/lg_gls");
+const loginSysExists = await VFS.exists("/bin/logind");
 
 if (!(await VFS.exists("/etc/sonnesvr", "folder"))) await VFS.mkdir("/etc/sonnesvr");
 if (!(await VFS.exists("/etc/sonnesvr/dusk.conf.json", "file"))) await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
-  autoStart: loginSysExists ? "/bin/lg_gls" : "/bin/lg_duskterm"
+  autoStart: loginSysExists ? "/bin/logind" : "/bin/duskterm"
 }));
 
 const conf = JSON.parse(await VFS.read("/etc/sonnesvr/dusk.conf.json"));
