@@ -5,12 +5,26 @@ const users = await Kernel.extensions.get("users");
 
 const VFS = await Kernel.extensions.get("Vfs");
 
+const fb = Kernel.display.getFramebuffer();
+
 async function exec(path, args) {
   const file = await VFS.read(path);
   await Kernel.process.spawn(path, file.replace("UWU;;\n\n"), args);
 }
 
-await ws.createWindow(300, 300, 400, 600, async function main(win) {
+function centerWin(width, height) {
+  const fbWidth = Kernel.display.size.getWidth();
+  const fbHeight = Kernel.display.size.getHeight();
+
+  const x = (fbWidth - width) / 2;
+  const y = (fbHeight - height) / 2;
+
+  return [Math.floor(y), Math.floor(x)];
+}
+
+const centered = centerWin(400, 600);
+
+await ws.createWindow(centered[0], centered[1], 400, 600, async function main(win) {
   let hasFinishedFlag = false;
   
   const ui = dawn.UIGenerator;
