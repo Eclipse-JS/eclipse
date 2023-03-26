@@ -29,7 +29,10 @@
       "ver": "0.0.1",
       "path": "libfakedom.js"
     },
-
+    "logind": {
+      "ver": "0.1.0",
+      "path": "logind.js"
+    },
     "duskterm": {
       "ver": "0.0.1",
       "path": "duskterm.js",
