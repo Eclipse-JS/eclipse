@@ -23,7 +23,7 @@ input.stdout(" - Initializing package manager\n\n");
 
 await exec("/bin/pkg", ["init"]);
 
-input.stdout("\n - Initializing...\n\n");
+input.stdout("\n - Initializing desktop\n\n");
 await exec("/bin/pkg", ["install", "dusk", "setup-gui"]);
 
 try {
