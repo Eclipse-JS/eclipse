@@ -35,6 +35,8 @@ const UIRules = {
 const UIGenerator = {
   input: {
     buttonElem: function() {
+      const style = getStyle().styles;
+      
       const element = document.createElement("button");
       const elem = UIRules.genericInput(element);
 
