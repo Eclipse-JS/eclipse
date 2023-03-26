@@ -13,30 +13,14 @@ Kernel.extensions.load("Vfs", async function(userData) {
   const backend = await backendData.func(userData);
 
   const VFS = {
-    version: async() => {
-      return await backend.version();
-    },
-    read: async(rawPath) => { 
-      return await backend.read(rawPath);
-    },
-    write: async(rawPath, contents) => {
-      return await backend.write(rawPath, contents);
-    },
-    mkdir: async(rawPath) => {
-      return await backend.mkdir(rawPath);
-    },
-    readDir: async(rawPath) => {
-      return await backend.readDir(rawPath);
-    },
-    getType: async(rawPath) => {
-      return await backend.getType(rawPath);
-    },
-    exists: async(rawPath, fileOrFolder) => {
-      return await backend.exists(rawPath, fileOrFolder);
-    },
-    sync: async() => {
-      return await backend.sync();
-    }
+    version: () => backend.version(),
+    read: async(rawPath) => await backend.read(rawPath),
+    write: async(rawPath, contents) => await backend.write(rawPath, contents),
+    mkdir: async(rawPath) => await backend.mkdir(rawPath),
+    readDir: async(rawPath) => await backend.readDir(rawPath),
+    getType: async(rawPath) => await backend.getType(rawPath),
+    exists: async(rawPath, fileOrFolder) => await backend.exists(rawPath, fileOrFolder),
+    sync: async() => await backend.sync()
   };
 
   if (localStorage.getItem("panic.log")) {
