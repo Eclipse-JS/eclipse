@@ -7,14 +7,14 @@ const VFS = await Kernel.extensions.get("Vfs");
 
 const fb = Kernel.display.getFramebuffer();
 
-if (!await VFS.exists("/etc/sonnesvr/gls.conf.json", "file")) {
+if (!await VFS.exists("/etc/sonnesvr/logind.conf.json", "file")) {
   if (!await VFS.exists("/etc/sonnesvr")) await VFS.mkdir("/etc/sonnesvr");
-  await VFS.write("/etc/sonnesvr/gls.conf.json", JSON.stringify({
+  await VFS.write("/etc/sonnesvr/logind.conf.json", JSON.stringify({
     exec: "/bin/duskterm"
   }));
 }
 
-const conf = JSON.parse(await VFS.read("/etc/sonnesvr/gls.conf.json"));
+const conf = JSON.parse(await VFS.read("/etc/sonnesvr/logind.conf.json"));
 
 async function exec(path, args) {
   const file = await VFS.read(path);
