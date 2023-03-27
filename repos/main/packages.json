@@ -25,6 +25,13 @@
         "src": "DawnUI/index.js"
       }
     },
+    "dpanel": {
+      "ver": "0.0.1",
+      "path": "dpanel.js",
+      "compilerOpts": {
+        "src": "DPanel/index.js"
+      }
+    },
     "fakedom": {
       "ver": "0.0.1",
       "path": "libfakedom.js"
