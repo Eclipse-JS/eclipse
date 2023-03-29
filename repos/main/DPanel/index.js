@@ -22,16 +22,32 @@ function calcWinPos() {
 const winPos = calcWinPos();
 const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
+const ui = dawn.UIGenerator;
+
 await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(win) {
+  // Init
+  win.title = "DPanel//DoNotDisplay";
+
+  // Main functions
+  function createApplet(name, uuid) {
+    const button = ui.input.buttonElem();
+    button.style.width = "150px"; // Increase if needed...?
+    button.innerText = name; // FIXME: Text is alligned but I don't want it to be for some reason
+
+    button.addEventListener("click", () => ws.control.focus(uuid));
+
+    return button;
+  }
+
   // Init styles
-  const ui = dawn.UIGenerator;
-  
   const main = fb.createElement("div");
   main.style.position = "absolute";
   main.style.width = "100%";
   main.style.height = "100%";
+  
   main.style.backgroundColor = theme.styles["duskplus-config"].titlebar["background-color"];
   main.style.color = theme.styles.general.accents.white["background-color"];
+  
   main.style.padding = "3px";
 
   const startButton = ui.input.buttonElem();
@@ -45,18 +61,43 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
 
   const appsDiv = document.createElement("div");
   appsDiv.style.overflow = "hidden";
-  
+  appsDiv.style.display = "inline";
+  appsDiv.style.whiteSpace = "nowrap";
+
   main.appendChild(appsDiv);
   win.appendChild(main);
 
+  // push the tempo
+  let appList = [];
+
   while (true) {
-    const refresh = calcWinPos();
+    const winUUIDList = ws.fetch.getWindowUUIDList();
+    const refreshPos = calcWinPos();
 
-    win.style.top = refresh.y + "px";
-    win.style.left = refresh.x + "px";
-    win.style.width = refresh.width + "px";
+    win.style.top = refreshPos.y + "px";
+    win.style.left = refreshPos.x + "px";
+    win.style.width = refreshPos.width + "px";
 
-    await new Promise((i) => setTimeout(i, 100));
+    // INCREDIBLY HACKY and slow
+    if (JSON.stringify(appList) != JSON.stringify(winUUIDList)) {
+      appList = winUUIDList;
+      appsDiv.innerHTML = "";
+
+      for (const uuid of winUUIDList) {
+        const name = ws.fetch.getWindowUUIDName(uuid);
+        if (name == "DPanel//DoNotDisplay") continue;
+        
+        const applet = createApplet(name, uuid);
+
+        const nbspSpace = document.createElement("span");
+        nbspSpace.innerHTML = "&nbsp;";
+
+        appsDiv.appendChild(applet);
+        appsDiv.appendChild(nbspSpace);
+      }
+    }
+
+    await new Promise((i) => setTimeout(i, 50));
   }
 }, {
   disableTemplate: true
