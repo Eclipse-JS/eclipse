@@ -34,10 +34,19 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
   main.style.color = theme.styles.general.accents.white["background-color"];
   main.style.padding = "3px";
 
-  const demoButton = ui.input.buttonElem();
-  demoButton.innerText = "Start";
+  const startButton = ui.input.buttonElem();
+  startButton.innerText = "Menu";
 
-  main.appendChild(demoButton);
+  const nbspDoubleSpace = document.createElement("span");
+  nbspDoubleSpace.innerHTML = "&nbsp;&nbsp;";
+
+  main.appendChild(startButton);
+  main.appendChild(nbspDoubleSpace);
+
+  const appsDiv = document.createElement("div");
+  appsDiv.style.overflow = "hidden";
+  
+  main.appendChild(appsDiv);
   win.appendChild(main);
 
   while (true) {
