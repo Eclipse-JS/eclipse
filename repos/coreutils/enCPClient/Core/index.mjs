@@ -1,6 +1,6 @@
 const relayList = ["ws://127.0.0.1:1281"];
 
-export async function register() {
+async function register() {
   for (const relayIndex in relayList) {
     const relay = relayList[relayIndex];
     const conf = await enCPConfig(relay);
