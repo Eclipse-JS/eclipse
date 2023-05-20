@@ -8,8 +8,6 @@ const input = await Kernel.extensions.get("input");
 const fb = Kernel.display.getFramebuffer(true);
 const height = 30;
 
-qb.require("./libs/renderCanvas.js");
-
 function calcWinPos() {
   const fbWidth = Kernel.display.size.getWidth();
   const fbHeight = Kernel.display.size.getHeight();
@@ -24,13 +22,20 @@ function calcWinPos() {
   }
 }
 
+async function exec(path, argv) {
+  const VFS = await Kernel.extensions.get("Vfs");
+    
+  const file = await VFS.read(path);
+  await Kernel.process.spawn(path, file.replace("UWU;;\n\n", ""), [...argv]);
+}
+
 const winPos = calcWinPos();
 const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
 const ui = dawn.UIGenerator;
 
-// TODO: maybe move this?
-renderCanvas(ws, input);
+// Replaced with CanvasWall, now a dependency
+await exec("/bin/canvaswall", ["SimpleRGB"]);
 
 // TODO: remove this!
 async function spawnTerminal() {
@@ -85,7 +90,6 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
   main.appendChild(appsDiv);
   win.appendChild(main);
 
-  // push the tempo
   let appList = [];
 
   while (true) {
