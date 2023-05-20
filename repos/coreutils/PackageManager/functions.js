@@ -28,8 +28,16 @@ function help() {
       desc: "Updates kernel and low level processes. Init is not required for this command."
     },
     {
+      name: "fsu",
+      desc: "Update the package list, low level processes, and then all the (known) packages installed."
+    },
+    {
       name: "add-repo",
       desc: "Adds repo"
+    },
+    {
+      name: "search",
+      desc: "Searches packages for item"
     },
     {
       name: "install",

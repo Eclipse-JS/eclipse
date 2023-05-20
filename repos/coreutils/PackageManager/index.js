@@ -46,6 +46,12 @@ switch (argv[0]) {
 
     break;
   }
+
+  case "fsu": {
+    require("./packages/fsu.js")
+
+    break;
+  }
   
   default: {
     input.stdout("ERR: No commands specified!\n\n");
