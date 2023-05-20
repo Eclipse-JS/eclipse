@@ -97,10 +97,14 @@ return {
     focusedUUID = id;
 
     try {
+      // As a treat you can get the container.
+      // Jokes aside, this is needed for scrolling in terminal contexts,
+      // Because I'm dumb.
       await callback(
         mainElement,
         eventListeners.addEventListener,
-        eventListeners.removeEventListener
+        eventListeners.removeEventListener,
+        overlay.getElementsByClassName("container")[0]
       );
     } catch (e) {
       console.error(e);
