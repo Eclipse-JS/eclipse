@@ -9,8 +9,10 @@ const fb = Kernel.display.getFramebuffer();
 
 if (!await VFS.exists("/etc/sonnesvr/logind.conf.json", "file")) {
   if (!await VFS.exists("/etc/sonnesvr")) await VFS.mkdir("/etc/sonnesvr");
+  const panelInstalled = await VFS.exists("/bin/dpanel", "file");
+  
   await VFS.write("/etc/sonnesvr/logind.conf.json", JSON.stringify({
-    exec: "/bin/duskterm"
+    exec: panelInstalled ? "/bin/dpanel" : "/bin/duskterm"
   }));
 }
 

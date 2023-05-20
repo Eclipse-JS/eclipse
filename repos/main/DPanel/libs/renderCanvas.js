@@ -23,12 +23,13 @@ async function renderCanvas(ws, input) {
   ctx.fillRect(0, 0, fbWidth, fbHeight);
 
   // Code translated from https://seenaburns.com/2018/04/04/writing-to-the-framebuffer/
-  input.stdout("Rendering background, get ready for slowness!");
+  input.stdout("Rendering background...\n");
 
   for (let y = 0; y < fbHeight; y++) {
+    const g = Math.floor(Math.min(y / (fbHeight/256), 255));
+    
     for (let x = 0; x < fbWidth; x++) {
       const r = Math.floor(Math.min(x / (fbWidth/256), 255));
-      const g = Math.floor(Math.min(y / (fbHeight/256), 255));
       const b = 0;
 
       image[0] = r;
