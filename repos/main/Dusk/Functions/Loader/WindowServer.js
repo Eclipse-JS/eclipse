@@ -1,7 +1,7 @@
 // Loads Window Server
-if (!extensionExists("WindowServer")) {
+if (!(await extensionExists("WindowServer"))) {
   input.stdout("WM<WARN>: Window Manager is not running. Attempting to start...\n");
-  if (!VFS.existsSync("/bin/tinyws", "file")) {
+  if (!(await VFS.exists("/bin/tinyws", "file"))) {
     input.stdout("WM<FATAL> Window Manager is not installed! Aborting...\n");
     return false;
   } else if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
@@ -9,8 +9,8 @@ if (!extensionExists("WindowServer")) {
     return false;
   }
   
-  const wmData = VFS.read("/bin/tinyws");
+  const wmData = await VFS.read("/bin/tinyws");
 
   // Pipe all stdout and input to null -- It gets logged to the console anyways
-  Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), []);
+  await Kernel.process.spawn("/bin/tinyws", wmData.replaceAll("UWU;;\n\n", ""), ["-disablefun"]);
 }

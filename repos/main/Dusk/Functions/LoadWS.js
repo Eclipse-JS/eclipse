@@ -1,6 +1,6 @@
 qb.enableRegularRequire();
 
-function loadWS() {
+async function loadWS() {
   require("./Loader/WindowServer.js");
   require("./Loader/DawnUI.js");
   

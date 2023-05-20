@@ -97,10 +97,14 @@ return {
     focusedUUID = id;
 
     try {
+      // As a treat you can get the container.
+      // Jokes aside, this is needed for scrolling in terminal contexts,
+      // Because I'm dumb.
       await callback(
         mainElement,
         eventListeners.addEventListener,
-        eventListeners.removeEventListener
+        eventListeners.removeEventListener,
+        overlay.getElementsByClassName("container")[0]
       );
     } catch (e) {
       console.error(e);
@@ -112,4 +116,54 @@ return {
     mainElement.remove();
     overlay.remove();
   },
+
+  setBackground(element) {
+    // I can't think of a way to validate the element, and I'm lazy.
+    background.innerHTML = "";
+    background.appendChild(element);
+
+    return true;
+  },
+
+  fetch: {
+    getWindowUUIDList() {
+      const res = [];
+
+      for (const i of wsData.children) {
+        if (!i.className) continue;
+
+        res.push(i.className);
+      }
+
+      return res.map((i) => i.replace("_overlay", ""));
+    },
+    getWindowUUIDName(uuid) {
+      const elem = wsData.getElementsByClassName(uuid + "_overlay");
+      if (!elem) throw new Error("Failed to find the Window UUID.");
+
+      return elem[0].getElementsByClassName("title")[0].innerText;
+    }
+  },
+
+  control: {
+    focus(uuid) {
+      if (!uuid) throw new Error("UUID not specified!")
+
+      const window = wsData.getElementsByClassName(uuid + "_overlay")[0];
+      if (!window) throw new Error("Window does not exist!");
+
+      if (focusedUUID) {
+        const window = wsData.getElementsByClassName(focusedUUID + "_overlay")[0];
+
+        if (window) {
+          window.style.zIndex = 12;
+        }
+      }
+
+      window.style.zIndex = 13;
+      focusedUUID = uuid;
+
+      return true;
+    }
+  }
 };

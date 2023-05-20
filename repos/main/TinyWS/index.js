@@ -7,8 +7,8 @@ let hasWindowManagerRegistered = false;
 let focusedUUID = null;
 const wmConf = {};
 
-const input = Kernel.extensions.get("input");
-const kprint = Kernel.extensions.get("kprint");
+const input = await Kernel.extensions.get("input");
+const kprint = await Kernel.extensions.get("kprint");
 
 require("./Functions/logger.js");
 require("./Functions/convert.js");
@@ -38,7 +38,7 @@ wsData.style.width = "100%";
 wsData.style.height = "100%";
 wsData.style.backgroundColor = "black";
 
-const background = framebuffer.createElement("img");
+const background = framebuffer.createElement("div");
 background.style.position = "absolute";
 background.style.zIndex = "11";
 background.style.top = "0px";
@@ -56,6 +56,8 @@ Kernel.extensions.load("WindowServer", function() {
   require("./IPCLayer/index.js");
 }, true);
 
-while (true) {
-  await new Promise((i) => setTimeout(i, 1000*1000));
+if (argv[0] != "-disablefun") {
+  while (true) { // -disablefun, used internally (hopefully) by any window managers to seperate the window server code
+    await new Promise((i) => setTimeout(i, 1000*1000));
+  }
 }

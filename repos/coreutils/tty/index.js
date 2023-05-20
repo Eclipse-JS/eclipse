@@ -1,6 +1,6 @@
 qb.enableRegularRequire();
 
-const events = Kernel.extensions.get("eventListener");
+const events = await Kernel.extensions.get("eventListener");
 
 require("./constants.js");
 require("./draw/functions.js");
@@ -30,12 +30,12 @@ events.addEventListener("keydown", function(e) {
   redraw(textfb + inputfb);
 })
 
-const oldInput = Kernel.extensions.get("input");
+const oldInput = await Kernel.extensions.get("input");
 const input = require("./inputbindings.js");
 
 oldInput.registerInput(input);
 
-const binData = VFS.read(shell);
+const binData = await VFS.read(shell);
 
 const process = Kernel.process.create(binData.replaceAll("UWU;;\n\n", ""));
 await Kernel.process.spawn(i, process, []);

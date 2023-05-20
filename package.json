@@ -1,11 +1,11 @@
 {
   "name": "eclipse",
-  "version": "0.1.0",
+  "version": "0.3.2",
   "description": "EclipseOS",
   "main": "",
   "scripts": {
     "build": "cd buildagent && node index.js",
-    "start-server": "cd out && python3 -m http.server",
+    "start-server": "cd out && python -m http.server",
     "postinstall": "cd buildagent && npm install",
     "start": "npm run build && npm run start-server"
   },

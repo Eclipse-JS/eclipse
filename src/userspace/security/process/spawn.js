@@ -9,6 +9,11 @@ const item = {
 
 processTreeExtras.push(item);
 
-await Kernel.process.spawn(name, func, argv, genKernel(account, item, inputProvider, envArgs));
+try {
+  await Kernel.process.spawn(name, func, argv, genKernel(account, item, inputProvider, envArgs));
+} catch (e) {
+  if (processTelementry) console.error("Error in proc: %s, pid: %s", processTelementry.name, processTelementry.id);
+  console.error(e);
+}
 
 processTreeExtras.splice(processTreeExtras.indexOf(item), 1);

@@ -1,3 +1,3 @@
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
 input.stdout("$c:clear");

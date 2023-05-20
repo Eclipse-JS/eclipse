@@ -4,13 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "postinstall": "patch-package"
+    "start": "node ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@creamy-dev/qbuild": "^0.1.0",
+    "@creamy-dev/qbuild": "^0.2.0",
     "patch-package": "^6.5.1"
   }
 }

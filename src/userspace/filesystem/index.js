@@ -1,56 +1,32 @@
 qb.enableRegularRequire();
+require("./backends/index.js")
 
-function wipeVFS() {
-  localStorage.setItem("vfs", JSON.stringify([{type: "directory", name: "/", owner: "root"}]));
-  localStorage.setItem("vfs_ver", "gbvfsR5");
-  return JSON.stringify([{type: "directory", name: "/"}]);
-}
+if (!localStorage.getItem("active_fs")) localStorage.setItem("active_fs", "gbrfs");
+const activeFS = localStorage.getItem("active_fs");
 
-let fileSystem = !localStorage.getItem("vfs") ? wipeVFS() : localStorage.getItem("vfs");
-fileSystem = JSON.parse(fileSystem);
+const fsOptions = getEligibleFilesystems();
 
-let activeBackend = "gbrfs";
+Kernel.extensions.load("Vfs", async function(userData) {
+  const backendData = fsOptions.find((i) => i.name == activeFS);
+  if (!backendData) throw new Error("FSError: Cannot find eligible filesystem.");
 
-require("./selectBackends.js");
-
-Kernel.extensions.load("Vfs", function(userData) {
-  const backendData = fsMap.find(i => i.name == activeBackend);
-
-  if (!backendData) {
-    throw "VFS Panic!! Cannot find eligible filesystem.";
-  }
-
-  const backend = backendData.func(userData, true);
+  const backend = await backendData.func(userData);
 
   const VFS = {
     version: () => backend.version(),
-    read: (rawPath) => backend.read(rawPath),
-    write: (rawPath, contents) => backend.write(rawPath, contents),
-    mkdir: (rawPath) => backend.mkdir(rawPath),
-    readDir: (rawPath) => backend.readDir(rawPath),
-    getType: (rawPath) => backend.getType(rawPath),
-    existsSync: (rawPath, fileOrFolder) => backend.existsSync(rawPath, fileOrFolder),
-    sync: () => backend.sync(),
-    changeBackend: (name) => {
-      if (userData.permLevel != 0) {
-        throw new Error("No permission!");
-      }
-  
-      const newBackend = fsMap.find(i => i.name == name);
-      if (!newBackend) {
-        throw new Error("Filesystem backend does not exist!");
-      }
-  
-      activeBackend = name;
-    }
+    read: async(rawPath) => await backend.read(rawPath),
+    write: async(rawPath, contents) => await backend.write(rawPath, contents),
+    mkdir: async(rawPath) => await backend.mkdir(rawPath),
+    readDir: async(rawPath) => await backend.readDir(rawPath),
+    getType: async(rawPath) => await backend.getType(rawPath),
+    exists: async(rawPath, fileOrFolder) => await backend.exists(rawPath, fileOrFolder),
+    sync: async() => await backend.sync()
   };
 
   if (localStorage.getItem("panic.log")) {
-    if (!VFS.existsSync("/etc", "directory")) {
-      VFS.mkdir("/etc");
-    }
+    if (!(await VFS.exists("/etc", "folder"))) await VFS.mkdir("/etc");
+    await VFS.write("/etc/panic.log", localStorage.getItem("panic.log"));
 
-    VFS.write("/etc/panic.log", localStorage.getItem("panic.log"));
     localStorage.removeItem("panic.log");
   }
 

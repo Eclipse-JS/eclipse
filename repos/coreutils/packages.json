@@ -40,7 +40,7 @@
     },
     "encpd": {
       "ver": "0.1.0",
-      "path": "wsd.js",
+      "path": "encpd.js",
       "compilerOpts": {
         "src": "enCPClient/index.js"
       }

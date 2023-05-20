@@ -1,7 +1,7 @@
 qb.enableRegularRequire();
 
-const VFS = Kernel.extensions.get("Vfs");
-const kprint = Kernel.extensions.get("kprint");
+const VFS = await Kernel.extensions.get("Vfs");
+const kprint = await Kernel.extensions.get("kprint");
 
 async function fetchTextData(url) {
   const data = await fetch(url);
@@ -34,7 +34,7 @@ let indexes = 2;
 require("./installAll.js");
 
 kprint.log("boostrap: Configuring packages...");
-if (!VFS.existsSync("/etc/init.d", "folder")) VFS.mkdir("/etc/init.d");
+if (!(await VFS.exists("/etc/init.d", "folder"))) await VFS.mkdir("/etc/init.d");
 
 require("./initCfg.js");
 

@@ -7,6 +7,7 @@
     }
 
     redraw(textfb);
+    container.scrollTo(0, container.scrollHeight);
   },
   
   stdin: async function() {
@@ -14,7 +15,6 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // TODO: Make custom API as a service or a kernel for this.
     inputIsActive = true;
 
     while (inputIsActive) await sleep(100);

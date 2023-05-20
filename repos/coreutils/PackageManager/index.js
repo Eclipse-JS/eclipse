@@ -1,12 +1,12 @@
 qb.enableRegularRequire();
-const input = Kernel.extensions.get("input");
+const input = await Kernel.extensions.get("input");
 
 if (Kernel.accounts.getCurrentInfo().permLevel != 0) {
   input.stdout("You must be root!\n");
   return;
 }
 
-const vfs = Kernel.extensions.get("Vfs");
+const vfs = await Kernel.extensions.get("Vfs");
 
 require("./functions.js");
 
@@ -43,6 +43,12 @@ switch (argv[0]) {
 
   case "install": {
     require("./packages/install.js")
+
+    break;
+  }
+
+  case "fsu": {
+    require("./packages/fsu.js")
 
     break;
   }

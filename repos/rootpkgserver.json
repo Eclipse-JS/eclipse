@@ -14,12 +14,6 @@
       "path": "main/packages.json"
     },
     {
-      "displayName": "Main (Legacy)",
-      "name": "mainrepo_legacy",
-      "description": "Legacy important applications, that are built upon the old canvas framebuffer.",
-      "path": "main_legacy/packages.json"
-    },
-    {
       "displayName": "Demos",
       "name": "demos",
       "description": "Some epic demos",

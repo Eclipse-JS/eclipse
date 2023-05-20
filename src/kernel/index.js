@@ -17,10 +17,10 @@ if (typeof BL_CMDLINE !== 'undefined') {
       return self.localStorage.getItem(prefix + key);
     },
     setItem: function(key, value) {
-      self.localStorage.setItem(prefix + key, value);
+      return self.localStorage.setItem(prefix + key, value);
     },
     removeItem: function(key) {
-      self.localStorage.removeItem(prefix + key);
+      return self.localStorage.removeItem(prefix + key);
     }
   }
 }
@@ -42,10 +42,10 @@ self.Kernel = {
     assert: assert,
   },
   extensions: {
-    load: function (name, data, isGenFunction) {
+    load(name, data, isGenFunction) {
       require("./Kernel/extensions/load.js");
     },
-    get: function (name, ...params) {
+    async get(name, ...params) {
       require("./Kernel/extensions/get.js");
     },
   },
@@ -67,6 +67,10 @@ self.Kernel = {
     getFramebuffer() {
       require("./Kernel/display/getFramebuffer.js");
     },
+    size: {
+      getWidth: () => window.innerWidth,
+      getHeight: () => window.innerHeight
+    }
   },
 };
 
@@ -134,11 +138,15 @@ self.Kernel.extensions.load("kprint", {
   getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.
 })
 
-const kprint = Kernel.extensions.get("kprint");
+async function loadExtras() {
+  const kprint = await Kernel.extensions.get("kprint");
 
-if (localStorage.getItem("panic.log")) {
-  kprint.log(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
+  if (localStorage.getItem("panic.log")) {
+    kprint.log(`Recovering from panic!\n\n${localStorage.getItem("panic.log")}`);
+  }
+
+  kprint.log("Loading Sentry...");
+  sentry();
 }
 
-kprint.log("Loading Sentry...");
-sentry();
+loadExtras();
