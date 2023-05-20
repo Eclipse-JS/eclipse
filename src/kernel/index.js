@@ -116,6 +116,25 @@ self.Kernel.extensions.load("kprint", {
     document.body.scrollTo(0, document.body.scrollHeight);
   },
 
+  error(str) {
+    if (typeof str != "string" && typeof str != "number") panic("Unknown argument specified in kprint call", "Kernel::extension::kprint", new Error("kperr"));
+
+    const loggedData = {
+      msg: str,
+      time: Date.now()
+    };
+
+    klog.push(loggedData);
+
+    // Uncomment to enable console debugging.
+    //console.log("[%s] %s", ((loggedData.time-klog[0].time)/1000).toFixed(3), loggedData.msg);
+
+    const logMsg = `[${((loggedData.time-klog[0].time)/1000).toFixed(3)}] [!!ERROR/unknown_severe!!] ${loggedData.msg}`
+    fillText(logMsg, klogfb);
+
+    document.body.scrollTo(0, document.body.scrollHeight);
+  },
+
   getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.
 })
 

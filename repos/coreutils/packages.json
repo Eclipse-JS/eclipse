@@ -33,7 +33,17 @@
     },
     "net": {
       "ver": "0.1.0",
-      "path": "libnet.js"
+      "path": "libnet.js",
+      "compilerOpts": {
+        "src": "Network/index.js"
+      }
+    },
+    "encpd": {
+      "ver": "0.1.0",
+      "path": "encpd.js",
+      "compilerOpts": {
+        "src": "enCPClient/index.js"
+      }
     },
     "pkg": {
       "ver": "0.1.1",
