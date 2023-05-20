@@ -1,9 +1,12 @@
 const ws = await Kernel.extensions.get("WindowServer");
 const dawn = await Kernel.extensions.get("LibreDawn");
 
-const fb = Kernel.display.getFramebuffer(true);
+const input = await Kernel.extensions.get("input");
 
+const fb = Kernel.display.getFramebuffer(true);
 const height = 30;
+
+qb.require("./libs/renderCanvas.js");
 
 function calcWinPos() {
   const fbWidth = Kernel.display.size.getWidth();
@@ -23,6 +26,8 @@ const winPos = calcWinPos();
 const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
 const ui = dawn.UIGenerator;
+
+renderCanvas(ws, input);
 
 await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(win) {
   // Init

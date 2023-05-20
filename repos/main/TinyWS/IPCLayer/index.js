@@ -113,6 +113,14 @@ return {
     overlay.remove();
   },
 
+  setBackground(element) {
+    // I can't think of a way to validate the element, and I'm lazy.
+    background.innerHTML = "";
+    background.appendChild(element);
+
+    return true;
+  },
+
   fetch: {
     getWindowUUIDList() {
       const res = [];
