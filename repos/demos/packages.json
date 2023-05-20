@@ -20,6 +20,10 @@
       "compilerOpts": {
         "src": "testwin/index.js"
       }
+    },
+    "ver": {
+      "ver": "1.0.0",
+      "path": "ver.js"
     }
   }
 }
