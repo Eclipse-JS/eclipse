@@ -53,13 +53,13 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
   const startButton = ui.input.buttonElem();
   startButton.innerText = "Menu";
 
-  const nbspDoubleSpace = document.createElement("span");
+  const nbspDoubleSpace = fb.createElement("span");
   nbspDoubleSpace.innerHTML = "&nbsp;&nbsp;";
 
   main.appendChild(startButton);
   main.appendChild(nbspDoubleSpace);
 
-  const appsDiv = document.createElement("div");
+  const appsDiv = fb.createElement("div");
   appsDiv.style.overflow = "hidden";
   appsDiv.style.display = "inline";
   appsDiv.style.whiteSpace = "nowrap";
@@ -89,7 +89,7 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
         
         const applet = createApplet(name, uuid);
 
-        const nbspSpace = document.createElement("span");
+        const nbspSpace = fb.createElement("span");
         nbspSpace.innerHTML = "&nbsp;";
 
         appsDiv.appendChild(applet);
