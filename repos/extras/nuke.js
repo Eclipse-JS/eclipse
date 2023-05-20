@@ -20,4 +20,4 @@ if ((await FS.version()).startsWith("CloudaFS")) {
 input.stdout("Buh bye!\n");
 
 localStorage.clear();
-window.location.reload();
+if (argv[0] != "disable-reboot") window.location.reload();

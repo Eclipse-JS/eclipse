@@ -107,7 +107,23 @@ await ws.createWindow(centered[0], centered[1], 400, 600, function main(win) {
 
     btn.addEventListener("click", async function() {
       win.title += " | Finishing Up Settings...";
-      localStorage.setItem("active_fs", enableFutureFSSwitch ? "CloudaFS" : "gbrfs");
+      const newFSBackendName = enableFutureFSSwitch.checked ? "CloudaFS" : "gbrfs";
+
+      // Reset the OS when changing the filesystem, so we don't get partial installs.
+      // A better way to do this, is if there was a way we could manually call bootstrap from the OS,
+      // then reconfigure everything, but there currently isn't an easy way to do that. For now, we'll
+      // just nuke all changes to make it equal, to avoid having partially setup OSes.
+      if (localStorage.getItem("active_fs") != newFSBackendName) {
+        // Manually nuke the changes because I'm too lazy to debug why nuke doesn't work in this context.
+        if (newFSBackendName == "gbrfs") indexedDB.deleteDatabase("EclipsePROD__CloudaFS");
+        localStorage.clear();
+
+        // Set the new active FS, then "reboot".
+        localStorage.setItem("active_fs", newFSBackendName);
+        window.location.reload();
+
+        return;
+      }
 
       if (enablePermUISwitch.checked) {
         await VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
@@ -123,7 +139,6 @@ await ws.createWindow(centered[0], centered[1], 400, 600, function main(win) {
       }));
 
       await users.addUser(usernameInput.value, [usernameInput.value], 1, passwordInput.value);
-
       resolve();
     });
   
