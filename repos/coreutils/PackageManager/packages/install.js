@@ -109,9 +109,9 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
   const existsCheck = await vfs.exists("/etc/pkg/caches.json", "file");
   
   const cache = existsCheck ? JSON.parse(await vfs.read("/etc/pkg/caches.json")) : [];
-  const pkgCacheData = cache.filter(item => item.pkgName == package.name);
+  const pkgCacheData = cache.find(item => item.pkgName == package.name);
   
-  if (pkgCacheData.length != 0 && pkgCacheData[0].pkgData.ver == data.pkgData.ver) {
+  if (typeof pkgCacheData != "undefined" && pkgCacheData.pkgData.ver == data.pkgData.ver) {
     if (!package.isDependency) {
       logger("warn", "Package is already installed, with no updates! Would you like to update anyways?");
     
@@ -123,11 +123,7 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
       }
     }
   }
-  
-  for (const data in pkgCacheData) {
-    cache.splice(cache.indexOf(data), 1);
-  }
-  
+
   logger("info", `Downloading '${package.name}'...`);
   
   const rootPkg = data.rootPkg.path.split("/");
@@ -147,7 +143,12 @@ for (const package of removeDuplicateItemsFromArray(packages)) {
     corePkg: data.corePkg,
     pkgData: data.pkgData
   };
+
+  if (pkgCacheData) {
+    cache.splice(cache.indexOf(pkgCacheData), 1, itemData);
+  } else {
+    cache.push(itemData);
+  }
   
-  cache.push(itemData);
   await vfs.write("/etc/pkg/caches.json", JSON.stringify(cache));
 }
