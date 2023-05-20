@@ -1,14 +1,14 @@
 {
   "packages": {
     "tinyws": {
-      "ver": "0.0.1",
+      "ver": "1.0.0",
       "path": "tws.js",
       "compilerOpts": {
         "src": "TinyWS/index.js"
       }
     },
     "dusk": {
-      "ver": "0.0.1",
+      "ver": "1.0.0",
       "path": "dusk.js",
       "deps": [
         "tinyws",
@@ -19,33 +19,57 @@
       }
     },
     "dawn": {
-      "ver": "0.0.1",
+      "ver": "1.0.0",
       "path": "dawn.js",
+      "deps": [
+        "tinyws"
+      ],
       "compilerOpts": {
         "src": "DawnUI/index.js"
       }
     },
     "dpanel": {
-      "ver": "0.0.1",
+      "ver": "0.1.0",
       "path": "dpanel.js",
+      "deps": [
+        "dawn",
+        "canvaswall"
+      ],
       "compilerOpts": {
         "src": "DPanel/index.js"
+      }
+    },
+    "logind": {
+      "ver": "1.0.0",
+      "path": "logind.js",
+      "deps": [
+        "dawn",
+        "duskterm"
+      ]
+    },
+    "duskterm": {
+      "ver": "0.1.0",
+      "path": "duskterm.js",
+      "deps": [
+        "dawn"
+      ],
+      "compilerOpts": {
+        "src": "DuskTerm/index.js"
+      }
+    },
+    "canvaswall": {
+      "ver": "1.0.0",
+      "path": "canvaswall.js",
+      "deps": [
+        "tinyws"
+      ],
+      "compilerOpts": {
+        "src": "CanvasWall/index.js"
       }
     },
     "fakedom": {
       "ver": "0.0.1",
       "path": "libfakedom.js"
-    },
-    "logind": {
-      "ver": "0.1.0",
-      "path": "logind.js"
-    },
-    "duskterm": {
-      "ver": "0.0.1",
-      "path": "duskterm.js",
-      "compilerOpts": {
-        "src": "DuskTerm/index.js"
-      }
     }
   }
 }
