@@ -80,9 +80,19 @@ await ws.createWindow(centered[0], centered[1], 400, 600, function main(win) {
   
     const enablePermUISwitch = ui.input.inputElem();
     enablePermUISwitch.type = "checkbox";
+
+    const enableFutureFS = document.createElement("span");
+    enableFutureFS.innerHTML = "Enable future FS (currently CloudaFS):&nbsp;"
+  
+    const enableFutureFSSwitch = ui.input.inputElem();
+    enableFutureFSSwitch.type = "checkbox";
+    enableFutureFSSwitch.checked = (await VFS.version()).startsWith("CloudaFS");
   
     optsDiv.appendChild(enablePermUI);
     optsDiv.appendChild(enablePermUISwitch);
+    optsDiv.appendChild(document.createElement("br"));
+    optsDiv.appendChild(enableFutureFS);
+    optsDiv.appendChild(enableFutureFSSwitch);
   
     const btn = ui.input.buttonElem();
     btn.innerText = "Next";
@@ -97,10 +107,13 @@ await ws.createWindow(centered[0], centered[1], 400, 600, function main(win) {
 
     btn.addEventListener("click", async function() {
       win.title += " | Finishing Up Settings...";
+      localStorage.setItem("active_fs", enableFutureFSSwitch ? "CloudaFS" : "gbrfs");
 
       if (enablePermUISwitch.checked) {
         await VFS.write("/etc/init.d/initcmd.txt", "/bin/ttysh");
         await VFS.write("/etc/ttysh.conf", "shell=/bin/dusk");
+
+        await exec("/bin/pkg", ["install", "duskterm", "logind", "dpanel"]);
       } else {
         await VFS.write("/etc/ttysh.conf", "shell=/bin/login");
       }
@@ -108,8 +121,7 @@ await ws.createWindow(centered[0], centered[1], 400, 600, function main(win) {
       await VFS.write("/etc/sonnesvr/dusk.conf.json", JSON.stringify({
         autoStart: "/bin/logind"
       }));
-    
-      await exec("/bin/pkg", ["install", "duskterm", "logind"]);
+
       await users.addUser(usernameInput.value, [usernameInput.value], 1, passwordInput.value);
 
       resolve();
