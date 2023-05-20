@@ -1,3 +1,5 @@
+const fs = await Kernel.extensions.get("Vfs");
+
 const ws = await Kernel.extensions.get("WindowServer");
 const dawn = await Kernel.extensions.get("LibreDawn");
 
@@ -27,7 +29,18 @@ const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
 const ui = dawn.UIGenerator;
 
+// TODO: maybe move this?
 renderCanvas(ws, input);
+
+// TODO: remove this!
+async function spawnTerminal() {
+  const termApp = await fs.read("/bin/duskterm");
+  const proc = Kernel.process.create(termApp.replace("UWU;;\n\n", ""));
+
+  await Kernel.process.spawn("/bin/duskterm", proc, []);
+}
+
+spawnTerminal();
 
 await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(win) {
   // Init
