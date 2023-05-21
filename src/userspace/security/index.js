@@ -28,13 +28,16 @@ function genKernel(localAccount, processTelementry, inputProviderDefault, envArg
     add(arg, value) {
       if (envArgs.find(i => i.name == arg)) {
         const index = envArgs.indexOf(envArgs.find(i => i.name == arg));
-        envArgs.splice(index, 1);
+        envArgs.splice(index, 1, {
+          name: arg,
+          value: value
+        });
+      } else {
+        envArgs.push({
+          name: arg,
+          value: value
+        });
       }
-
-      envArgs.push({
-        name: arg,
-        value: value
-      });
     },
     remove(arg) {
       if (envArgs.find(i => i.name == arg)) {
