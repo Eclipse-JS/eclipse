@@ -1,3 +1,5 @@
+qb.enableRegularRequire();
+
 const fs = await Kernel.extensions.get("Vfs");
 
 const ws = await Kernel.extensions.get("WindowServer");
@@ -7,6 +9,9 @@ const input = await Kernel.extensions.get("input");
 
 const fb = Kernel.display.getFramebuffer(true);
 const height = 30;
+
+require("./libs/parseAllDesktopEntries.js");
+require("./libs/showAppDrawer.js");
 
 function calcWinPos() {
   const fbWidth = Kernel.display.size.getWidth();
@@ -34,22 +39,14 @@ const theme = dawn.themes.getTheme(dawn.themes.getDefaultTheme());
 
 const ui = dawn.UIGenerator;
 
+const desktopEntries = await parseAllDesktopEntries();
+
 // Replaced with CanvasWall, now a dependency
-await exec("/bin/canvaswall", ["SimpleRGB"]);
-
-// TODO: remove this!
-async function spawnTerminal() {
-  const termApp = await fs.read("/bin/duskterm");
-  const proc = Kernel.process.create(termApp.replace("UWU;;\n\n", ""));
-
-  await Kernel.process.spawn("/bin/duskterm", proc, []);
-}
-
-spawnTerminal();
+exec("/bin/canvaswall", ["SimpleRGB"]);
 
 await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(win) {
   // Init
-  win.title = "DPanel//DoNotDisplay";
+  win.title = "DPanel-Panel";
 
   // Main functions
   function createApplet(name, uuid) {
@@ -75,6 +72,9 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
 
   const startButton = ui.input.buttonElem();
   startButton.innerText = "Menu";
+  startButton.addEventListener("click", async() => {
+    await showAppDrawer(desktopEntries);
+  });
 
   const nbspDoubleSpace = fb.createElement("span");
   nbspDoubleSpace.innerHTML = "&nbsp;&nbsp;";
@@ -113,7 +113,7 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
       appsDiv.innerHTML = "";
 
       for (const app of winList) {
-        if (app.name == "DPanel//DoNotDisplay") continue;
+        if (app.name.startsWith("DPanel")) continue;
         
         const applet = createApplet(app.name, app.uuid);
 

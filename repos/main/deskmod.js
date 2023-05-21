@@ -20,7 +20,7 @@ switch (argv[0]) {
     if (!(await VFS.exists(path, "file"))) return input.stdout("error: File specified does not exist!\n");
     if (!(await VFS.exists("/etc/sonnesvr/desktop", "folder"))) await VFS.mkdir("/etc/sonnesvr/desktop");
 
-    await VFS.write(`/etc/sonnesvr/desktop/${name}.desktop.json`, JSON.stringify({
+    await VFS.write(`/etc/sonnesvr/desktop/${name.toLowerCase()}.desktop.json`, JSON.stringify({
       path,
       name
     }));
