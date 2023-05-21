@@ -1,7 +1,30 @@
 qb.enableRegularRequire();
 
+async function extensionExists(name) {
+  try {
+    await Kernel.extensions.get(name);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function exec(path, argv) {
+  const VFS = await Kernel.extensions.get("Vfs");
+    
+  const file = await VFS.read(path);
+  await Kernel.process.spawn(path, file.replace("UWU;;\n\n", ""), [...argv]);
+}
+
 const input = await Kernel.extensions.get("input");
 const VFS = await Kernel.extensions.get("Vfs");
+
+if (!(await extensionExists("pSBC"))) {
+  console.log("Starting pSBC...");
+  await exec("/bin/pSBC", []);
+}
+
+const pSBC = await Kernel.extensions.get("pSBC");
 
 require("./ThemeLoader.js");
 

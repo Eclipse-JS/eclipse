@@ -1,10 +1,6 @@
-qb.enableRegularRequire();
-
 function getStyle() {
   return handler.themes.getTheme(handler.themes.getDefaultTheme());
 }
-
-require("./pSBC.js");
 
 const UIRules = {
   genericInput: function applyRulesGenericInput(element) {

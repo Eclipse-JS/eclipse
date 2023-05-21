@@ -22,7 +22,8 @@
       "ver": "1.0.0",
       "path": "dawn.js",
       "deps": [
-        "tinyws"
+        "tinyws",
+        "pSBC"
       ],
       "compilerOpts": {
         "src": "DawnUI/index.js"
@@ -32,8 +33,9 @@
       "ver": "0.1.0",
       "path": "dpanel.js",
       "deps": [
+        "canvaswall",
         "dawn",
-        "canvaswall"
+        "pSBC"
       ],
       "compilerOpts": {
         "src": "DPanel/index.js"
@@ -74,6 +76,10 @@
     "deskmod": {
       "ver": "1.0.0",
       "path": "deskmod.js"
+    },
+    "pSBC": {
+      "ver": "1.0.0",
+      "path": "pSBC.js"
     }
   }
 }

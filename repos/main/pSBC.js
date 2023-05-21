@@ -1,6 +1,21 @@
-// From https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
-// This portion of the code is licensed under LGPL v3.
-// https://raw.githubusercontent.com/PimpTrizkit/PJs/master/LICENSE.
+// From: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors.
+// License: https://raw.githubusercontent.com/PimpTrizkit/PJs/master/LICENSE.
+// This code is licensed under LGPL v3.
+
+const VFS = await Kernel.extensions.get("Vfs");
+const initConf = await VFS.read("/etc/init.d/init.conf");
+
+if (!initConf.split("\n").includes("/bin/pSBC")) {
+  if (Kernel.accounts.getCurrentInfo().permLevel != 0) return;
+
+  const init = await VFS.read("/etc/init.d/init.conf");
+  await VFS.write("/etc/init.d/init.conf", "/bin/pSBC\n" + init);
+
+  if (argv.length != 0) {
+    argv[0].stdout("Installed pSBC.\n");
+    return;
+  }
+}
 
 const pSBC=(p,c0,c1,l)=>{
   let r,g,b,P,f,t,h,i=parseInt,m=Math.round,a=typeof(c1)=="string";
@@ -26,3 +41,5 @@ const pSBC=(p,c0,c1,l)=>{
   if(h)return"rgb"+(f?"a(":"(")+r+","+g+","+b+(f?","+m(a*1000)/1000:"")+")";
   else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
 }
+
+Kernel.extensions.load("pSBC", pSBC);

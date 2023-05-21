@@ -1,6 +1,3 @@
-// pSBC strikes again!
-qb.require("./pSBC.js");
-
 let isAppDrawerRunning = false;
 
 async function showAppDrawer(desktopEntries) {

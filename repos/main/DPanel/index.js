@@ -5,7 +5,7 @@ const fs = await Kernel.extensions.get("Vfs");
 const ws = await Kernel.extensions.get("WindowServer");
 const dawn = await Kernel.extensions.get("LibreDawn");
 
-const input = await Kernel.extensions.get("input");
+const pSBC = await Kernel.extensions.get("pSBC");
 
 const fb = Kernel.display.getFramebuffer(true);
 const height = 30;
