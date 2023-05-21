@@ -1,7 +1,7 @@
 {
   "name": "eclipse",
-  "version": "0.3.2",
-  "description": "EclipseOS",
+  "version": "0.4.0",
+  "description": "EclipseOS is a web-based operating system.",
   "main": "",
   "scripts": {
     "build": "cd buildagent && node index.js",

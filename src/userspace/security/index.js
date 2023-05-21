@@ -163,8 +163,8 @@ function genKernel(localAccount, processTelementry, inputProviderDefault, envArg
       },
     },
     verInfo: {
-      ver: "0.3.2",
-      displayVer: "EclipseOS: Codename 'Twilight' (Milestone 1)",
+      ver: "0.4.0",
+      displayVer: "EclipseOS 'Rebirth' (Milestone 2 beta)",
       isBeta: true
     }
   }
