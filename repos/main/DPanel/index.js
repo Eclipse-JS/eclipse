@@ -94,22 +94,28 @@ await ws.createWindow(winPos.y, winPos.x, winPos.width, height, async function(w
 
   while (true) {
     const winUUIDList = ws.fetch.getWindowUUIDList();
+    const winList = winUUIDList.map((i) => {
+      return {
+        uuid: i,
+        name: ws.fetch.getWindowUUIDName(i)
+      }
+    });
+
     const refreshPos = calcWinPos();
 
     win.style.top = refreshPos.y + "px";
     win.style.left = refreshPos.x + "px";
     win.style.width = refreshPos.width + "px";
 
-    // INCREDIBLY HACKY and slow
-    if (JSON.stringify(appList) != JSON.stringify(winUUIDList)) {
+    // Done this way so the menu doesn't flicker. Not the best way, I know. Also, very hacky, and slow.
+    if (JSON.stringify(appList) != JSON.stringify(winList)) {
       appList = winUUIDList;
       appsDiv.innerHTML = "";
 
-      for (const uuid of winUUIDList) {
-        const name = ws.fetch.getWindowUUIDName(uuid);
-        if (name == "DPanel//DoNotDisplay") continue;
+      for (const app of winList) {
+        if (app.name == "DPanel//DoNotDisplay") continue;
         
-        const applet = createApplet(name, uuid);
+        const applet = createApplet(app.name, app.uuid);
 
         const nbspSpace = fb.createElement("span");
         nbspSpace.innerHTML = "&nbsp;";
