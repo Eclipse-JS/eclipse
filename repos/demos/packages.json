@@ -21,6 +21,10 @@
         "src": "testwin/index.js"
       }
     },
+    "encpinput": {
+      "ver": "0.1.0",
+      "path": "enCPInput.js"
+    },
     "ver": {
       "ver": "1.0.0",
       "path": "ver.js"
