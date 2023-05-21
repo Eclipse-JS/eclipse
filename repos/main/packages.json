@@ -70,6 +70,10 @@
     "fakedom": {
       "ver": "0.0.1",
       "path": "libfakedom.js"
+    },
+    "deskmod": {
+      "ver": "1.0.0",
+      "path": "deskmod.js"
     }
   }
 }
