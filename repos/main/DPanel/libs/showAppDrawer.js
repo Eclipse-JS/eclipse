@@ -39,7 +39,8 @@ async function showAppDrawer(desktopEntries) {
     return div;
   }
 
-  await ws.createWindow(winPos.y-winHeight, winPos.x, winWidth, winHeight, function(win) {
+  const fbHeight = Kernel.display.size.getHeight();
+  await ws.createWindow(fbHeight-winHeight-height, 0, winWidth, winHeight, function(win) {
     return new Promise(async(resolve) => {
       win.title = "DPanel-AppDrawer";
 
