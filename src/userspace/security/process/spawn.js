@@ -1,12 +1,11 @@
 const pid = Kernel.process.getPID(); // Hack to get pid
-const func = genFunc(funcStr);
-
 const item = {
   name: name,
-  id: pid,
+  pid: pid,
   userInfo: account,
 };
 
+const func = genFunc(funcStr, item);
 processTreeExtras.push(item);
 
 try {
