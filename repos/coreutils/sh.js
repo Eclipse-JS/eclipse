@@ -6,6 +6,20 @@ const path = env.get("PATH");
 const VFS = await Kernel.extensions.get("Vfs");
 const net = await Kernel.extensions.get("libnet");
 
+// Thanks, JavaScript, for not working in a sane way with async code!
+async function findAsync(arr, func) {
+  for await (const item of arr) {
+    try {
+      const data = await func(item);
+      if (Boolean(data)) return item;
+
+      continue;
+    } catch (e) {
+      continue;
+    }
+  }
+}
+
 while (true) {
   input.stdout(`${Kernel.accounts.getCurrentInfo().username}@${net.core.hostname.get()}$ `);
   const command = await input.stdin();
@@ -14,15 +28,16 @@ while (true) {
   if (command.trim() == "exit") return;
 
   if (!command.startsWith("/")) {
+    // Thanks JS!
     const validEnv = path.split(";");
-    let validPath = validEnv.filter(async(path) => await VFS.exists(path + command.split(" ")[0], "file"));
+    const validPathDirectory = await findAsync(validEnv, async(path) => await VFS.exists(path + command.split(" ")[0], "file"));
 
-    if (validPath.length == 0) {
+    if (!validPathDirectory) {
       input.stdout("error: No such file or directory.\n");
       continue;
     }
 
-    validPath += command.split(" ")[0];
+    const validPath = validPathDirectory + command.split(" ")[0];
 
     try {
       const binData = await VFS.read(validPath);
