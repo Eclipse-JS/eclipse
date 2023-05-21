@@ -37,6 +37,7 @@ let processCount = 0;
 require("./ErrorHandler/panic.js");
 
 self.Kernel = {
+  params: typeof localStorage["kernel_parameters"] == "string" ? localStorage["kernel_parameters"] : "",
   kernelLevel: {
     panic: panic,
     assert: assert,
@@ -136,7 +137,7 @@ self.Kernel.extensions.load("kprint", {
   },
 
   getLog: () => JSON.parse(JSON.stringify(klog)) // Since all objects are pointers, we don't want people polluting the kernel log directly.
-})
+});
 
 async function loadExtras() {
   const kprint = await Kernel.extensions.get("kprint");
